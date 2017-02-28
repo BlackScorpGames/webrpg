@@ -1,10 +1,37 @@
 <?php
-function isPost(){
-    return filter_input(INPUT_SERVER,'HTTP_METHOD') === 'POST';
+function isPost()
+{
+    return filter_input(INPUT_SERVER, 'HTTP_METHOD') === 'POST';
 }
-function isGet(){
-    return filter_input(INPUT_SERVER,'HTTP_METHOD') === 'GET';
+
+function isGet()
+{
+    return filter_input(INPUT_SERVER, 'HTTP_METHOD') === 'GET';
 }
+
+/**
+ * @return mysqli
+ */
+function getDb()
+{
+    /**
+     * @var mysqli
+     */
+    static $mysqli = null;
+    if ($mysqli) {
+        return $mysqli;
+    }
+
+    list($host, $user, $password, $database, $port, $charset) = array_values(config('db'));
+    $mysqli = mysqli_connect($host, $user, $password, $database, $port);
+
+    if (mysqli_connect_error()) {
+        throw  new Exception(mysqli_connect_error());
+    }
+    mysqli_set_charset($mysqli, $charset);
+    return $mysqli;
+}
+
 function sharedVariable($name, $value = null)
 {
     static $variables = [];
@@ -61,7 +88,7 @@ function router($path, $action = null)
         if (preg_match("~^$route$~", $path, $match)) {
             try {
                 array_shift($match);
-                return call_user_func_array($action,$match);
+                return call_user_func_array($action, $match);
             } catch (Exception $exception) {
                 return event('http.500', [$exception]);
             }

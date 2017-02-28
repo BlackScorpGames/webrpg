@@ -16,9 +16,11 @@ require_once __DIR__ . '/source/template.php';
 
 require_once __DIR__ . '/config/default.php';
 if (!is_file(__DIR__ . '/config/database.php')) {
-    $message  =sprintf("File '%s' is missing please copy and rename '%s' to '%s'", __DIR__ . '/config/database.php',__DIR__ . '/config/database.example.php', __DIR__ . '/config/database.php');
+    $message = sprintf("File '%s' is missing please copy and rename '%s' to '%s'", __DIR__ . '/config/database.php', __DIR__ . '/config/database.example.php', __DIR__ . '/config/database.php');
     die($message);
 }
+require_once __DIR__ . '/config/database.php';
+
 /**
  * Setup basic events
  */

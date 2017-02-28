@@ -7,5 +7,6 @@ function login()
         'username' => $username,
         'password' => $password
     ];
+    $db = getDb();
     echo render('index', $data);
 }
