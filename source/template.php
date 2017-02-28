@@ -40,11 +40,15 @@ function _getTemplateFile($path)
     $fileName = '';
     foreach ($templateDirectories as $templateDirectory) {
         $fileName = $templateDirectory . $path . '.php';
+        if (is_file($fileName)) {
+            return realpath($fileName);
+        }
     }
-    if (!is_file($fileName)) {
+    if (!(bool)$fileName) {
         throw new Exception(sprintf('Template file "%s" not found in directories "%s"', $path . '.php', implode('","', $templateDirectories)));
     }
-    return realpath($fileName);
+
+    return $fileName;
 
 }
 
@@ -71,7 +75,7 @@ function section($name)
     $content = ob_get_clean();
     $data = _templateData('data');
     $data[$name] = $content;
-    _templateData('data',$data);
+    _templateData('data', $data);
     unset($sections[$name]);
     return true;
 }
@@ -86,13 +90,13 @@ function sectionAppend($name)
     }
     $content = ob_get_clean();
     $data = _templateData('data');
-    $data[$name] =   $data[$name].$content;
-    _templateData('data',$data);
+    $data[$name] = $data[$name] . $content;
+    _templateData('data', $data);
     unset($sections[$name]);
     return true;
 }
 
 function escape($value)
 {
-    return htmlspecialchars($value,ENT_QUOTES,'UTF-8');
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 }
