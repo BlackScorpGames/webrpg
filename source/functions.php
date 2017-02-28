@@ -26,7 +26,7 @@ function getDb()
     $mysqli = mysqli_connect($host, $user, $password, $database, $port);
 
     if (mysqli_connect_error()) {
-        throw  new Exception(mysqli_connect_error());
+        trigger_error(mysqli_connect_error());
     }
     mysqli_set_charset($mysqli, $charset);
     return $mysqli;
@@ -86,12 +86,8 @@ function router($path, $action = null)
         $match = [];
 
         if (preg_match("~^$route$~", $path, $match)) {
-            try {
-                array_shift($match);
-                return call_user_func_array($action, $match);
-            } catch (Exception $exception) {
-                return event('http.500', [$exception]);
-            }
+            array_shift($match);
+            return call_user_func_array($action, $match);
         }
     }
     return event('http.404', [$path, 'Route not found']);

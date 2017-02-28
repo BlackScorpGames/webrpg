@@ -11,14 +11,8 @@ function render($path, array $data = [])
     }
 
 
-
     ob_start();
-    try {
-        require_once $fileName;
-    } catch (Exception $exception) {
-        ob_end_clean();
-        throw $exception;
-    }
+    require_once $fileName;
     return ob_get_clean();
 }
 
@@ -45,7 +39,7 @@ function _getTemplateFile($path)
         }
     }
     if (!(bool)$fileName) {
-        throw new Exception(sprintf('Template file "%s" not found in directories "%s"', $path . '.php', implode('","', $templateDirectories)));
+        trigger_error(sprintf('Template file "%s" not found in directories "%s"', $path . '.php', implode('","', $templateDirectories)));
     }
 
     return $fileName;

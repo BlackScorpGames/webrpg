@@ -21,6 +21,9 @@ if (!is_file(__DIR__ . '/config/database.php')) {
 }
 require_once __DIR__ . '/config/database.php';
 
+set_error_handler(function () {
+    event('http.500', ['message' => func_get_arg(1), 'context' => func_get_arg(4)]);
+});
 /**
  * Setup basic events
  */
@@ -36,10 +39,10 @@ event('http.404', [], function ($path) {
     echo sprintf("Path '%s' not found", $path);
 });
 
-event('http.500', [], function (Exception $exception) {
+event('http.500', [], function ($message,$context) {
     header('Content-Type:text/html;charset=utf-8');
     header('HTTP/1.0 500 Internal Server Error');
-    echo sprintf("Something went wrong, got exception with message '%s'", $exception->getMessage());
+    echo sprintf("Something went wrong, got exception with message '%s' <pre>%s</pre>", $message,print_r($context,true));
 });
 router('/', function () {
     echo "Hello world!";
