@@ -24,8 +24,13 @@ require_once __DIR__ . '/source/account/index.php'; //include account module
 require_once __DIR__ . '/source/map/index.php'; //include map module
 
 router('/', function () {
-    echo render('index');
+    $data = [
+        'title' => "Welcome",
+        'variable' =>'foo & bar<br/>'
+    ];
+    echo render('index',$data);
 });
+
 
 /**
  * Setup basic events
