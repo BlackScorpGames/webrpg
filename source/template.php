@@ -11,7 +11,7 @@ function render($path, array $data = [])
     }
 
 
-    ob_clean();
+
     ob_start();
     try {
         require_once $fileName;
@@ -69,7 +69,7 @@ function section($name)
     static $sections = [];
 
     if (!isset($sections[$name])) {
-        ob_clean();
+
         return $sections[$name] = ob_start();
     }
     $content = ob_get_clean();

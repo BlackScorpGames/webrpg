@@ -54,7 +54,8 @@ function router($path, $action = null)
 
         if (preg_match("~^$route$~", $path, $match)) {
             try {
-                return call_user_func_array($action, $match);
+                array_shift($match);
+                return call_user_func_array($action,$match);
             } catch (Exception $exception) {
                 return event('http.500', [$exception]);
             }

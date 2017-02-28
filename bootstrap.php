@@ -40,9 +40,9 @@ event('http.500', [], function (Exception $exception) {
 router('/', function () {
     $data = [
         'title' => "Welcome",
-        'variable' =>'foo & bar<br/>'
+        'variable' => 'foo & bar<br/>'
     ];
-    echo render('index',$data);
+    echo render('index', $data);
 });
 
 
