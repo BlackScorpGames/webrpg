@@ -3,14 +3,28 @@
  * This is a place where we configure our application
  */
 
+/**
+ * Include base classes
+ */
 require_once __DIR__ . '/source/event.php';
 require_once __DIR__ . '/source/router.php';
+require_once __DIR__ . '/source/template.php';
+require_once __DIR__ . '/source/config.php';
 
+/**
+ * Include configuration files
+ */
+
+require_once __DIR__ . '/config/default.php';
+
+/**
+ * Enable modules
+ */
 require_once __DIR__ . '/source/account/index.php'; //include account module
 require_once __DIR__ . '/source/map/index.php'; //include map module
 
 router('/', function () {
-    echo "Hello World";
+    echo 'Hello World!';
 });
 
 /**
