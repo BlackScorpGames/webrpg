@@ -18,8 +18,12 @@ function router($path, $action = null)
         $match = [];
 
         if (preg_match("~^$route$~", $path, $match)) {
-            return call_user_func_array($action, $match);
+            try {
+                return call_user_func_array($action, $match);
+            } catch (Exception $exception) {
+                return event('http.500', [$exception]);
+            }
         }
     }
-    return event('http.404', [$path,'Route not found']);
+    return event('http.404', [$path, 'Route not found']);
 }

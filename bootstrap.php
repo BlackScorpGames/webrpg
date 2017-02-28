@@ -24,7 +24,7 @@ require_once __DIR__ . '/source/account/index.php'; //include account module
 require_once __DIR__ . '/source/map/index.php'; //include map module
 
 router('/', function () {
-    echo 'Hello World!';
+    echo render('index');
 });
 
 /**
@@ -42,3 +42,8 @@ event('http.404', [], function ($path) {
     echo sprintf("Path '%s' not found", $path);
 });
 
+event('http.500', [], function (Exception $exception) {
+    header('Content-Type:text/html;charset=utf-8');
+    header('HTTP/1.0 500 Internal Server Error');
+    echo sprintf("Something went wrong, got exception with message '%s'", $exception->getMessage());
+});

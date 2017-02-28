@@ -1,4 +1,8 @@
 <?php
 
-
-config('templateDirectory', __DIR__ . '/../templates');
+config('templateDirectories',
+    [
+        __DIR__ . '/../templates/default/',
+        __DIR__ . '/../templates/'
+    ]
+);
