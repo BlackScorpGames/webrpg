@@ -1,4 +1,13 @@
 <?php
+function sharedVariable($name, $value = null)
+{
+    static $variables = [];
+    if ($value) {
+        return $variables[$name] = $value;
+    }
+    return isset($variables[$name]) ? $variables[$name] : null;
+}
+
 function event($name, array $data = [], $action = null)
 {
     static $events = [];
