@@ -10,6 +10,13 @@
 <?php section('content') ?>
 
     <div class="grid-40">
+        <?php if (count($errors) > 0): ?>
+            <div class="error">
+                <?php foreach ($errors as $message): ?>
+                    <p><?= $message?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
         <form method="POST" action="/login">
             <div class="grid-100 grid-parent">
                 <label class="grid-30 grid-parent" for="username"><?= _('Username') ?></label>

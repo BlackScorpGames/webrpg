@@ -1,12 +1,12 @@
 <?php
 function isPost()
 {
-    return filter_input(INPUT_SERVER, 'HTTP_METHOD') === 'POST';
+    return filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST';
 }
 
 function isGet()
 {
-    return filter_input(INPUT_SERVER, 'HTTP_METHOD') === 'GET';
+    return filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET';
 }
 
 /**

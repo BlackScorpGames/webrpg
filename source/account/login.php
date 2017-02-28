@@ -3,10 +3,38 @@ function login()
 {
     $username = filter_input(INPUT_POST, 'username');
     $password = filter_input(INPUT_POST, 'password');
+    $errors = doLogin($username, $password);
+
     $data = [
         'username' => $username,
-        'password' => $password
+        'password' => $password,
+        'errors' => $errors
     ];
-    $db = getDb();
+
+
     echo render('index', $data);
+}
+
+function doLogin($username, $password)
+{
+
+    if (!isPost()) {
+        return [];
+    }
+
+    if (!$username || !$password) {
+        return [_('Please fill Username and Password')];
+    }
+
+    $passwordHash = getPasswordHashForUsername($username);
+    if (!$passwordHash) {
+        return [_('User not exists')];
+    }
+
+    $passwordIsCorrect = password_verify($password, $passwordHash);
+    if (!$passwordIsCorrect) {
+        return [_('Invalid login')];
+    }
+    $_SESSION['username'] = $username;
+    return [];
 }
