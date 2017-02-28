@@ -3,7 +3,7 @@
 function render($path, array $data = [])
 {
 
-    $fileName = getFile($path);
+    $fileName = _getTemplateFile($path);
 
     _templateData('data', $data);
     if (count($data) > 0) {
@@ -33,7 +33,7 @@ function _templateData($key, $value = null)
     return isset($data[$key]) ? $data[$key] : [];
 }
 
-function getFile($path)
+function _getTemplateFile($path)
 {
     $templateDirectories = config('templateDirectories');
 
