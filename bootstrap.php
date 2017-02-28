@@ -36,14 +36,7 @@ event('http.500', [], function (Exception $exception) {
     header('HTTP/1.0 500 Internal Server Error');
     echo sprintf("Something went wrong, got exception with message '%s'", $exception->getMessage());
 });
-
-router('/', function () {
-    $data = [
-        'title' => "Welcome",
-        'variable' => 'foo & bar<br/>'
-    ];
-    echo render('index', $data);
-});
+router('/', function () {echo "Hello world!";});
 
 
 /**
