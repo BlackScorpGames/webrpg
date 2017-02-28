@@ -1,6 +1,6 @@
 <?php
 
-function event($name, array $data = null, $action = null)
+function event($name, array $data = [], $action = null)
 {
     static $events = [];
 
