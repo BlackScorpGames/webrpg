@@ -17,21 +17,6 @@ require_once __DIR__ . '/source/template.php';
 require_once __DIR__ . '/config/default.php';
 
 /**
- * Enable modules
- */
-require_once __DIR__ . '/source/account/index.php'; //include account module
-require_once __DIR__ . '/source/map/index.php'; //include map module
-
-router('/', function () {
-    $data = [
-        'title' => "Welcome",
-        'variable' =>'foo & bar<br/>'
-    ];
-    echo render('index',$data);
-});
-
-
-/**
  * Setup basic events
  */
 event('http.403', [], function () {
@@ -51,3 +36,19 @@ event('http.500', [], function (Exception $exception) {
     header('HTTP/1.0 500 Internal Server Error');
     echo sprintf("Something went wrong, got exception with message '%s'", $exception->getMessage());
 });
+
+router('/', function () {
+    $data = [
+        'title' => "Welcome",
+        'variable' =>'foo & bar<br/>'
+    ];
+    echo render('index',$data);
+});
+
+
+/**
+ * Enable modules
+ */
+require_once __DIR__ . '/source/account/index.php'; //include account module
+require_once __DIR__ . '/source/map/index.php'; //include map module
+
