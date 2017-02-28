@@ -15,7 +15,10 @@ require_once __DIR__ . '/source/template.php';
  */
 
 require_once __DIR__ . '/config/default.php';
-
+if (!is_file(__DIR__ . '/config/database.php')) {
+    $message  =sprintf("File '%s' is missing please copy and rename '%s' to '%s'", __DIR__ . '/config/database.php',__DIR__ . '/config/database.example.php', __DIR__ . '/config/database.php');
+    die($message);
+}
 /**
  * Setup basic events
  */
@@ -36,7 +39,9 @@ event('http.500', [], function (Exception $exception) {
     header('HTTP/1.0 500 Internal Server Error');
     echo sprintf("Something went wrong, got exception with message '%s'", $exception->getMessage());
 });
-router('/', function () {echo "Hello world!";});
+router('/', function () {
+    echo "Hello world!";
+});
 
 
 /**
