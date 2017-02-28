@@ -6,10 +6,9 @@
 /**
  * Include base classes
  */
-require_once __DIR__ . '/source/event.php';
-require_once __DIR__ . '/source/router.php';
+require_once __DIR__ . '/source/functions.php';
 require_once __DIR__ . '/source/template.php';
-require_once __DIR__ . '/source/config.php';
+
 
 /**
  * Include configuration files
