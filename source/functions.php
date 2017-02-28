@@ -1,4 +1,10 @@
 <?php
+function isPost(){
+    return filter_input(INPUT_SERVER,'HTTP_METHOD') === 'POST';
+}
+function isGet(){
+    return filter_input(INPUT_SERVER,'HTTP_METHOD') === 'GET';
+}
 function sharedVariable($name, $value = null)
 {
     static $variables = [];
