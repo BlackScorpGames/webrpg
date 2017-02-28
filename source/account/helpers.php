@@ -7,12 +7,13 @@ function isLoggedIn()
 function getPasswordHashForUsername($username)
 {
     $db = getDb();
-    $sql = "SELECT passwordHash FROM users WHERE username = " . mysqli_real_escape_string($db, $username);
+    $sql = "SELECT password FROM users WHERE username = '" . mysqli_real_escape_string($db, $username)."'";
     $result = mysqli_query($db, $sql);
     if (!$result) {
+        trigger_error(mysqli_error($db),E_USER_ERROR);
         return null;
     }
-    return mysqli_fetch_row($result);
+    return mysqli_fetch_row($result)[0];
 }
 
 function createUser($username, $password, $email)

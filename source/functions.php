@@ -9,6 +9,12 @@ function isGet()
     return filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET';
 }
 
+function redirect($path)
+{
+    header('Location:'.$path);
+    return;
+}
+
 /**
  * @return mysqli
  */

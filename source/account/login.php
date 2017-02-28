@@ -1,6 +1,10 @@
 <?php
 function login()
 {
+    if (isLoggedIn()) {
+        echo router('/map');
+        return;
+    }
     $username = filter_input(INPUT_POST, 'username');
     $password = filter_input(INPUT_POST, 'password');
     $errors = doLogin($username, $password);
@@ -36,5 +40,6 @@ function doLogin($username, $password)
         return [_('Invalid login')];
     }
     $_SESSION['username'] = $username;
+    redirect('/');
     return [];
 }
