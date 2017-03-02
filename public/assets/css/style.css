@@ -10,21 +10,47 @@ body {
     top: 0;
     left: 0;
 }
-header{
+
+header {
     text-align: center;
 }
+
 .grid-container {
 
     border-radius: 5px;
 }
-.border-small{
+
+.border-small {
     border: 2px groove #94A9AA;
 }
-.grid-container.main{
-    border: 4px groove #94A9AA;
-    padding-top: 10px ;
-    padding-bottom: 10px ;
+
+.grid-container.main {
+    border: 4px ridge #586B90;
+
+
+    background: rgba(0,0,0,0.3);
+    padding-bottom: 10px;
 }
+
+input[type="text"], input[type="password"],button,input[type="submit"],a.button {
+    border: 2px ridge #7e623d;
+    background: #62351C;
+    color: #ffffff;
+    padding: 5px;
+    display: inline-block;
+}
+button:hover{
+    cursor: pointer;
+}
+.form-group{
+    margin-bottom: 10px;
+}
+label{
+    line-height: 1em;
+    padding: 5px;
+
+}
+
 @media (max-width: 767px) {
     .grid-container.main {
         border: 0;
