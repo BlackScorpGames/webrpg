@@ -26,14 +26,14 @@
     <div class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3><?= $activeCharacter['name']?></h3>
+                <h3><input type="text"></h3>
             </div>
             <div class="panel-body">
 
             </div>
             <div class="panel-footer">
-                <a href="/select/<?= $activeCharacter['name']?>" class="btn btn-success">Select</a>
-                <a href="/delete/<?= $activeCharacter['name']?>" class="btn btn-default">Delete</a>
+                <a href="/select/" class="btn btn-success">Select</a>
+                <a href="/delete/" class="btn btn-default">Delete</a>
             </div>
         </div>
 

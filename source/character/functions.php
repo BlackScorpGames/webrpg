@@ -4,8 +4,25 @@ function isCharacterSelected()
     return isset($_SESSION['characterName']);
 }
 
-function selectCharacter()
+function selectCharacter($character = null)
 {
+
+    navigation(_('Select character'), '/selectCharacter');
+    navigation(_('Logout'), '/logout');
+
+    activateNavigation('/selectCharacter');
+
+    $characters = getCharactersForUser(getCurrentUsername());
+
+    $data = [
+        'characters' => $characters,
+        'activeCharacter' => $characters[0]
+    ];
+    echo render('selectCharacter', $data);
+}
+function newCharacter()
+{
+
     navigation(_('Select character'), '/selectCharacter');
     navigation(_('Logout'), '/logout');
 
@@ -16,7 +33,7 @@ function selectCharacter()
     $data = [
         'characters' => $characters
     ];
-    echo render('selectCharacter', $data);
+    echo render('newCharacter', $data);
 }
 
 function getCharactersForUser($username)
