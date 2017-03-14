@@ -6,13 +6,7 @@
 
 <?php section('styles') ?>
 
-<?php section('navigation') ?>
-    <ul class="nav navbar-nav">
-        <?php foreach (navigation() as $item): ?>
-            <li<?= $item['isActive']?' class="active"':'' ?>><a  href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
-        <?php endforeach; ?>
-    </ul>
-<?php section('navigation') ?>
+<?php require_once __DIR__.'/../partials/navigationSection.php'; ?>
 <?php section('content') ?>
 
     <div class="col-lg-4">

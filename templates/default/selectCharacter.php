@@ -5,54 +5,40 @@
 <?php section('styles') ?>
 
 <?php section('styles') ?>
-<?php section('navigation') ?>
-
-<?php section('navigation') ?>
+<?php require_once __DIR__ . '/../partials/navigationSection.php'; ?>
 
 
 <?php section('content') ?>
 
-    <div class="row">
-        <div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
-            <div class="thumbnail">
-                <img src="..." alt="...">
-                <div class="caption">
-                    <h3>Thumbnail label</h3>
 
-                    <p>
-                        <a href="#" class="btn btn-primary" role="button">Button</a>
-                        <a href="#" class="btn btn-default" role="button">Button</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
-            <div class="thumbnail">
-                <img src="..." alt="...">
-                <div class="caption">
-                    <h3>Thumbnail label</h3>
+    <div class="col-md-4">
 
-                    <p>
-                        <a href="#" class="btn btn-primary" role="button">Button</a>
-                        <a href="#" class="btn btn-default" role="button">Button</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
-            <div class="thumbnail">
-                <img src="..." alt="...">
-                <div class="caption">
-                    <h3>Thumbnail label</h3>
 
-                    <p>
-                        <a href="#" class="btn btn-primary" role="button">Button</a>
-                        <a href="#" class="btn btn-default" role="button">Button</a>
-                    </p>
-                </div>
-            </div>
+        <div class="list-group">
+            <a href="/new" class="list-group-item active">New</a>
+            <?php foreach ($characters as $character): ?>
+                <a href="/view/<?= $character['name'] ?>" class="list-group-item"><?= $character['name'] ?></a>
+            <?php endforeach; ?>
+
+
         </div>
     </div>
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3><input type="text"></h3>
+            </div>
+            <div class="panel-body">
+
+            </div>
+            <div class="panel-footer">
+                <a href="/select/" class="btn btn-success">Select</a>
+                <a href="/delete/" class="btn btn-default">Delete</a>
+            </div>
+        </div>
+
+    </div>
+
 <?php section('content') ?>
 
 <?php section('scripts') ?>
