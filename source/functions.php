@@ -11,7 +11,7 @@ function isGet()
 
 function redirect($path)
 {
-    header('Location:'.$path);
+    header('Location:' . $path);
     return;
 }
 
@@ -36,6 +36,44 @@ function getDb()
     }
     mysqli_set_charset($mysqli, $charset);
     return $mysqli;
+}
+
+function activateNavigation($url)
+{
+    $navigationItems = sharedVariable('navigation');
+    foreach ($navigationItems as $key => $navigationItem) {
+        $navigationItems[$key]['isActive'] = false;
+    }
+    foreach ($navigationItems as $key => $navigationItem) {
+        if ($navigationItem['url'] === $url) {
+            $navigationItems[$key]['isActive'] = true;
+        }
+    }
+
+    sharedVariable('navigation', $navigationItems);
+}
+
+function navigation($title = null, $url = null)
+{
+    if ($title) {
+        $item = [
+            'title' => $title,
+            'url' => $url,
+            'isActive' => false
+        ];
+        $items = sharedVariable('navigation');
+        if (!$items) {
+            $items = [];
+        }
+        $items[] = $item;
+
+        return sharedVariable('navigation', $items);
+    }
+    $navigation = sharedVariable('navigation');
+    if (!$navigation) {
+        return [];
+    }
+    return $navigation;
 }
 
 function sharedVariable($name, $value = null)

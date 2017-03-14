@@ -5,19 +5,54 @@
 <?php section('styles') ?>
 
 <?php section('styles') ?>
+<?php section('navigation') ?>
+
+<?php section('navigation') ?>
 
 
 <?php section('content') ?>
 
-    <div class="grid-40">
-        character list
+    <div class="row">
+        <div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
+            <div class="thumbnail">
+                <img src="..." alt="...">
+                <div class="caption">
+                    <h3>Thumbnail label</h3>
 
+                    <p>
+                        <a href="#" class="btn btn-primary" role="button">Button</a>
+                        <a href="#" class="btn btn-default" role="button">Button</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
+            <div class="thumbnail">
+                <img src="..." alt="...">
+                <div class="caption">
+                    <h3>Thumbnail label</h3>
+
+                    <p>
+                        <a href="#" class="btn btn-primary" role="button">Button</a>
+                        <a href="#" class="btn btn-default" role="button">Button</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
+            <div class="thumbnail">
+                <img src="..." alt="...">
+                <div class="caption">
+                    <h3>Thumbnail label</h3>
+
+                    <p>
+                        <a href="#" class="btn btn-primary" role="button">Button</a>
+                        <a href="#" class="btn btn-default" role="button">Button</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="grid-60">
-        preview
-    </div>
-
-
 <?php section('content') ?>
 
 <?php section('scripts') ?>

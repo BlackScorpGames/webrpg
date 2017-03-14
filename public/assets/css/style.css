@@ -1,65 +1,8 @@
-body {
-    background-color: #2F8136;
-    color: white;
-    font-family: junction, sans, sans-serif;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+.jumbotron{
+    background: #586B90;
+    color: #f7f7f7;
 }
 
-header {
-    text-align: center;
+body{
+    background: #e3e3e3;
 }
-
-.grid-container {
-
-    border-radius: 5px;
-}
-
-.border-small {
-    border: 2px groove #94A9AA;
-}
-
-.grid-container.main {
-    border: 4px ridge #586B90;
-
-
-    background: rgba(0,0,0,0.3);
-    padding-bottom: 10px;
-}
-
-input[type="text"], input[type="password"],button,input[type="submit"],a.button {
-    border: 2px ridge #7e623d;
-    background: #62351C;
-    color: #ffffff;
-    padding: 5px;
-    display: inline-block;
-}
-button:hover{
-    cursor: pointer;
-}
-.form-group{
-    margin-bottom: 10px;
-}
-label{
-    line-height: 1em;
-    padding: 5px;
-
-}
-
-@media (max-width: 767px) {
-    .grid-container.main {
-        border: 0;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-    .grid-container.main {
-        border: 0;
-    }
-}
-

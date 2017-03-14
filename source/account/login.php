@@ -15,6 +15,10 @@ function login()
         'errors' => $errors
     ];
 
+    navigation(_('login'), '/');
+    navigation(_('create account'), '/register');
+
+    activateNavigation('/');
 
     echo render('index', $data);
 }

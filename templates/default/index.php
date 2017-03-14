@@ -6,39 +6,58 @@
 
 <?php section('styles') ?>
 
-
+<?php section('navigation') ?>
+    <ul class="nav navbar-nav">
+        <?php foreach (navigation() as $item): ?>
+            <li<?= $item['isActive']?' class="active"':'' ?>><a  href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
+        <?php endforeach; ?>
+    </ul>
+<?php section('navigation') ?>
 <?php section('content') ?>
-    <nav class="form-group">
-        <a class="button">News</a>
-        <a class="button">About</a>
-    </nav>
-    <div class="grid-40">
-        <?php if (count($errors) > 0): ?>
-            <div class="error">
-                <?php foreach ($errors as $message): ?>
-                    <p><?= $message ?></p>
-                <?php endforeach; ?>
+
+    <div class="col-lg-4">
+        <form method="POST" action="/login" class="form-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">Login</div>
+                <div class="panel-body">
+                    <?php if (count($errors) > 0): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?php foreach ($errors as $message): ?>
+                                <?= $message ?>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="form-group">
+                        <label for="username"><?= _('Username') ?></label>
+                        <input class="form-control" id="username" type="text" name="username"
+                               placeholder="<?= _('Username') ?>"
+                               value="<?= $username ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><?= _('Password') ?></label>
+                        <input class="form-control" id="password" type="password" name="password"
+                               placeholder="<?= _('Password') ?>"
+                               value="<?= $password ?>">
+                    </div>
+
+
+                </div>
+                <div class="panel-footer">
+                    <button name="login" class="btn btn-default"><?= _('Login') ?></button>
+                </div>
             </div>
-        <?php endif; ?>
-        <form method="POST" action="/login">
-            <div class="grid-100 grid-parent form-group">
-                <label class="grid-30 grid-parent" for="username"><?= _('Username') ?></label>
-                <input class="grid-70 grid-parent" id="username" type="text" name="username"
-                       placeholder="<?= _('Username') ?>"
-                       value="<?= $username ?>">
-            </div>
-            <div class="grid-100 grid-parent form-group">
-                <label class="grid-30 grid-parent" for="password"><?= _('Password') ?></label>
-                <input class="grid-70 grid-parent" id="password" type="password" name="password"
-                       placeholder="<?= _('Password') ?>"
-                       value="<?= $password ?>">
-            </div>
-            <button name="login" class="grid-100 grid-parent"><?= _('Login') ?></button>
+
         </form>
+
     </div>
-    <div class="grid-60">
-        <h2>WebRPG</h2>
-        <p><?= _('very long text') ?></p>
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h2>WebRPG</h2>
+                <p><?= _('very long text') ?></p>
+            </div>
+        </div>
     </div>
 
 
