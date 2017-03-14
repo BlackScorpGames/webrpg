@@ -2,7 +2,7 @@
 a simple Online RPG for PHP newbies. The goal of the project is to see if it is possible to create an RPG with simple sourcecode.
 
 
-#installation
+# installation
 
 1. download the script from github
 2. unzip eg in C:\webrpg
