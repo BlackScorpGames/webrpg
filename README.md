@@ -13,6 +13,7 @@ a simple Online RPG for PHP newbies. The goal of the project is to see if it is 
 or define the folder public as document root
 
  b) change the path to your local php.exe in local-server.bat and run the local-server.bat
+
 4. copy config/database.example.php to config/database.php 
 5. create a database and import the install.sql
 6. apply the database configs
