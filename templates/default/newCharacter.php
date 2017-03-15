@@ -18,16 +18,24 @@
         </div>
     </div>
     <div class="col-md-8">
+        <?php if (count($errors) > 0): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php foreach ($errors as $message): ?>
+                    <?= $message ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
         <form action="/newCharacter" method="POST">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <input type="text" class="form-control" name="characterName" placeholder="<?= _('Charactername') ?>"
+                    <label for="characterName"><?= _('Charactername') ?></label>
+                    <input type="text" class="form-control" id="characterName" name="characterName" placeholder="<?= _('Charactername') ?>"
                            value="<?= escape($newCharacter['name']) ?>">
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12 text-center">
-                            <h4>Select a class</h4>
+                            <h5><strong>Select a class</strong></h5>
                         </div>
 
                     </div>

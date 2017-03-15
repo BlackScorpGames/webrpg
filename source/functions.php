@@ -111,6 +111,11 @@ function config($key, $value = null)
     return isset($config[$key]) ? $config[$key] : null;
 }
 
+function getBlackList()
+{
+    return require_once __DIR__ . '/../config/blacklist.php';
+}
+
 /**
  * @param $path
  * @param closure|string|array $action
@@ -130,7 +135,7 @@ function router($path, $action = null)
         $match = [];
 
         if (preg_match("~^$route$~", $path, $match)) {
-            if(!is_callable($action)){
+            if (!is_callable($action)) {
                 return event('http.404', [$path, 'Route not found']);
             }
             array_shift($match);
