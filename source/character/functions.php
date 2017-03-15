@@ -51,7 +51,7 @@ function newCharacter()
     $data = [
         'characters' => $characters,
         'newCharacter' => $newCharacter,
-        'errors'=>$errors
+        'errors' => $errors
     ];
 
     echo render('newCharacter', $data);
@@ -73,6 +73,7 @@ function validateCharacterName($characterName)
 
     if (!(bool)$characterName) {
         $errors[] = _('Character name is empty');
+        return $errors;
     }
 
     if (mb_strlen($characterName) < $minLength) {
@@ -84,8 +85,8 @@ function validateCharacterName($characterName)
     if (in_array($characterName, $blacklist)) {
         $errors[] = _("Selected name is not allowed to use");
     }
-    if(characterNameExists($characterName)){
-        $errors[] = _(sprintf("The character name %s already exists",$characterName));
+    if (characterNameExists($characterName)) {
+        $errors[] = _(sprintf("The character name %s already exists", $characterName));
     }
     return $errors;
 }
