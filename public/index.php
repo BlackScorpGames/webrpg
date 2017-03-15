@@ -4,4 +4,7 @@ error_reporting(-1);
 ini_set('display_errors', true);
 
 require_once __DIR__ . '/../bootstrap.php';
-router(filter_input(INPUT_SERVER,'PATH_INFO'));
+$request = filter_input(INPUT_SERVER,'REQUEST_URI');
+$request = str_replace('index.php/','',$request);
+
+router($request);
