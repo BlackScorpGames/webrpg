@@ -20,6 +20,7 @@ function selectCharacter($character = null)
     ];
     echo render('selectCharacter', $data);
 }
+
 function newCharacter()
 {
 
@@ -30,9 +31,25 @@ function newCharacter()
 
     $characters = getCharactersForUser(getCurrentUsername());
 
-    $data = [
-        'characters' => $characters
+
+    $characterName = '';
+    $characterClass = '';
+
+
+    if (isPost()) {
+        $characterName = filter_input(INPUT_POST, 'characterName');
+        $characterClass = filter_input(INPUT_POST, 'class');
+
+    }
+    $newCharacter = [
+        'name' => $characterName,
+        'class' => $characterClass
     ];
+    $data = [
+        'characters' => $characters,
+        'newCharacter' => $newCharacter
+    ];
+
     echo render('newCharacter', $data);
 }
 
