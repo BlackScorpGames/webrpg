@@ -6,12 +6,12 @@ a simple Online RPG for PHP newbies. The goal of the project is to see if it is 
 
 1. download the script from github
 2. unzip eg in C:\webrpg
-3. start php built-in webserver (http://php.net/features.commandline.webserver)
+3. 1. start php built-in webserver (http://php.net/features.commandline.webserver)
 
 ```php -S localhost:8080 -t C:\webrpg\public```
 
 or define the folder public as document root
-
+3. 2. change the path to your local php.exe in local-server.bat and run the local-server.bat
 4. copy config/database.example.php to config/database.php 
 5. create a database and import the install.sql
 6. apply the database configs
