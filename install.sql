@@ -13,9 +13,11 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `characterId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `userId` int(11) unsigned NOT NULL,
+  `class` varchar(10) NOT NULL,
+  `gender` tinyint(1) unsigned NOT NULL,
   `lastAction` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`characterId`),
   UNIQUE KEY `name` (`name`),
   KEY `FK_USER` (`userId`),
   CONSTRAINT `FK_USER` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
