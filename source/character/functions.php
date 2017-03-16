@@ -7,13 +7,17 @@ function isCharacterSelected()
 function selectCharacter($character = null)
 {
 
+
+    $characters = getCharactersForUser(getCurrentUsername());
+    if (count($characters) === 0) {
+        router('/newCharacter');
+        return;
+    }
+
     navigation(_('Select character'), '/selectCharacter');
     navigation(_('Logout'), '/logout');
 
     activateNavigation('/selectCharacter');
-
-    $characters = getCharactersForUser(getCurrentUsername());
-
     $data = [
         'characters' => $characters,
         'activeCharacter' => $characters[0]

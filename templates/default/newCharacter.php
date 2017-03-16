@@ -11,7 +11,7 @@
 <?php section('content') ?>
     <div class="col-md-4">
         <div class="list-group">
-            <a href="/newCharacter" class="list-group-item">New</a>
+            <a href="/newCharacter" class="list-group-item active">New</a>
             <?php foreach ($characters as $character): ?>
                 <a href="/view/<?= $character['name'] ?>" class="list-group-item"><?= $character['name'] ?></a>
             <?php endforeach; ?>
