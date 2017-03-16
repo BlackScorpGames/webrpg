@@ -50,6 +50,10 @@ function newCharacter()
         $classErrors = validateCharacterClass($characterClass);
         $genderErrors = validateCharacterGender($characterGender);
         $errors = array_merge($nameErrors, $classErrors, $genderErrors);
+        if (count($errors) === 0) {
+            createCharacter(getCurrentUserId(), $characterName, $characterClass, $characterGender);
+            return router('/view/' . $characterName);
+        }
     }
     $newCharacter = [
         'name' => $characterName,
@@ -65,17 +69,24 @@ function newCharacter()
     echo render('newCharacter', $data);
 }
 
+function createCharacter($userId, $characterName, $characterClass, $characterGender)
+{
+    $db = getDb();
+
+    $sql = "INSERT INTO characters(name,userId,class,gender) VALUES ()";
+}
+
 function validateCharacterGender($gender)
 {
     $errors = [];
-    $availableGenders = ['male','female'];
+    $availableGenders = ['male', 'female'];
 
     if (!(bool)$gender) {
         $errors[] = _('Please select a gender');
         return $errors;
     }
-    if(!in_array($gender,$availableGenders)){
-        $errors[]= _('Invalid gender selected');
+    if (!in_array($gender, $availableGenders)) {
+        $errors[] = _('Invalid gender selected');
     }
     return $errors;
 }
