@@ -35,6 +35,24 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12 text-center">
+                            <h5><strong>Select gender</strong></h5>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                            <label class="thumbnail text-center">
+                                <input<?= $newCharacter['gender'] === 'male'?  ' checked="checked"':""?> type="radio" name="gender" value="male"> <?= _('Male') ?> ♂
+                            </label>
+                        </div>
+                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                            <label class="thumbnail text-center">
+                                <input<?= $newCharacter['gender'] === 'female'? ' checked="checked"':""?> type="radio" name="gender" value="female"> <?= _('Female') ?> ♀
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
                             <h5><strong>Select a class</strong></h5>
                         </div>
 

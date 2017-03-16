@@ -38,19 +38,23 @@ function newCharacter()
 
     $characterName = '';
     $characterClass = '';
+    $characterGender = '';
     $errors = [];
 
 
     if (isPost()) {
         $characterName = filter_input(INPUT_POST, 'characterName', FILTER_SANITIZE_STRING);
         $characterClass = filter_input(INPUT_POST, 'class', FILTER_SANITIZE_STRING);
+        $characterGender = filter_input(INPUT_POST, 'gender', FILTER_SANITIZE_STRING);
         $nameErrors = validateCharacterName($characterName);
         $classErrors = validateCharacterClass($characterClass);
-        $errors = array_merge($nameErrors, $classErrors);
+        $genderErrors = validateCharacterGender($characterGender);
+        $errors = array_merge($nameErrors, $classErrors, $genderErrors);
     }
     $newCharacter = [
         'name' => $characterName,
-        'class' => $characterClass
+        'class' => $characterClass,
+        'gender' => $characterGender
     ];
     $data = [
         'characters' => $characters,
@@ -61,9 +65,32 @@ function newCharacter()
     echo render('newCharacter', $data);
 }
 
+function validateCharacterGender($gender)
+{
+    $errors = [];
+    $availableGenders = ['male','female'];
+
+    if (!(bool)$gender) {
+        $errors[] = _('Please select a gender');
+        return $errors;
+    }
+    if(!in_array($gender,$availableGenders)){
+        $errors[]= _('Invalid gender selected');
+    }
+    return $errors;
+}
+
 function validateCharacterClass($characterClass)
 {
     $errors = [];
+    $availableClasses = ['warrior', 'archer', 'mage'];
+    if (!(bool)$characterClass) {
+        $errors[] = _('Please select a class');
+        return $errors;
+    }
+    if (!in_array($characterClass, $availableClasses)) {
+        $errors[] = _('Invalid class selected');
+    }
 
     return $errors;
 }
