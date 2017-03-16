@@ -111,9 +111,9 @@ function config($key, $value = null)
     return isset($config[$key]) ? $config[$key] : null;
 }
 
-function getBlackList()
+function getBadWords()
 {
-    return require_once __DIR__ . '/../config/blacklist.php';
+    return require_once __DIR__ . '/../config/badwords.php';
 }
 
 /**

@@ -69,7 +69,7 @@ function validateCharacterName($characterName)
     $errors = [];
     $minLength = 3;
     $maxLength = 32;
-    $blacklist = getBlackList();
+    $blacklist = getBadWords();
 
     if (!(bool)$characterName) {
         $errors[] = _('Character name is empty');
