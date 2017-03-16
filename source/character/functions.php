@@ -51,8 +51,10 @@ function newCharacter()
         $genderErrors = validateCharacterGender($characterGender);
         $errors = array_merge($nameErrors, $classErrors, $genderErrors);
         if (count($errors) === 0) {
-            createCharacter(getCurrentUserId(), $characterName, $characterClass, $characterGender);
-            return router('/view/' . $characterName);
+            if(createCharacter(getCurrentUserId(), $characterName, $characterClass, $characterGender)){
+                redirect('/view/' . $characterName);
+            }
+            $errors[]=_('Failed to create character');
         }
     }
     $newCharacter = [
@@ -72,8 +74,17 @@ function newCharacter()
 function createCharacter($userId, $characterName, $characterClass, $characterGender)
 {
     $db = getDb();
-
-    $sql = "INSERT INTO characters(name,userId,class,gender) VALUES ()";
+    $characterName = mysqli_real_escape_string($db, $characterName);
+    $characterClass = mysqli_real_escape_string($db, $characterClass);
+    $characterGender = (int)($characterGender === 'male');
+    $sql = "INSERT INTO characters(name,userId,class,gender) 
+    VALUES ('" . $characterName . "'," . $userId . ",'" . $characterClass . "','" . $characterGender . "')";
+    $result = mysqli_query($db, $sql);
+    if (!$result) {
+        trigger_error(mysqli_error($db), E_USER_ERROR);
+        return false;
+    }
+    return true;
 }
 
 function validateCharacterGender($gender)
@@ -94,7 +105,7 @@ function validateCharacterGender($gender)
 function validateCharacterClass($characterClass)
 {
     $errors = [];
-    $availableClasses = ['warrior', 'archer', 'mage'];
+    $availableClasses = ['warrior', 'ranger', 'mage'];
     if (!(bool)$characterClass) {
         $errors[] = _('Please select a class');
         return $errors;
