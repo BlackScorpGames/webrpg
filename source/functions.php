@@ -1,12 +1,12 @@
 <?php
 function isPost()
 {
-    return filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST';
+    return $_SERVER['REQUEST_METHOD'] === 'POST';
 }
 
 function isGet()
 {
-    return filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET';
+    return $_SERVER['REQUEST_METHOD'] === 'GET';
 }
 
 function redirect($path)
