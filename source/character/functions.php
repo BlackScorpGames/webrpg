@@ -13,14 +13,18 @@ function selectCharacter($character = null)
         router('/newCharacter');
         return;
     }
-
+    $activeCharacter = array_values($characters)[0];
+    if ($character) {
+        $key = md5($character);
+        $activeCharacter = isset($characters[$key]) ? $characters[$key] : $activeCharacter;
+    }
     navigation(_('Select character'), '/selectCharacter');
     navigation(_('Logout'), '/logout');
 
     activateNavigation('/selectCharacter');
     $data = [
         'characters' => $characters,
-        'activeCharacter' => $characters[0]
+        'activeCharacter' =>$activeCharacter
     ];
     echo render('selectCharacter', $data);
 }
@@ -51,10 +55,10 @@ function newCharacter()
         $genderErrors = validateCharacterGender($characterGender);
         $errors = array_merge($nameErrors, $classErrors, $genderErrors);
         if (count($errors) === 0) {
-            if(createCharacter(getCurrentUserId(), $characterName, $characterClass, $characterGender)){
+            if (createCharacter(getCurrentUserId(), $characterName, $characterClass, $characterGender)) {
                 redirect('/view/' . $characterName);
             }
-            $errors[]=_('Failed to create character');
+            $errors[] = _('Failed to create character');
         }
     }
     $newCharacter = [
@@ -160,9 +164,9 @@ function getCharactersForUser($username)
 {
     $db = getDb();
     $username = mysqli_real_escape_string($db, $username);
-    $sql = "SELECT name FROM characters 
+    $sql = "SELECT name,class,gender FROM characters 
       INNER JOIN users ON(characters.userId = users.userId) 
-      WHERE username = '" . $username . "'";
+      WHERE username = '" . $username . "' ORDER BY characters.lastAction DESC";
 
     $characters = [];
 
@@ -172,7 +176,8 @@ function getCharactersForUser($username)
     }
 
     while ($row = $result->fetch_assoc()) {
-        $characters[] = $row;
+        $characterKey = md5($row['name']);
+        $characters[$characterKey] = $row;
     }
     return $characters;
 }

@@ -17,7 +17,7 @@
         <div class="list-group">
             <a href="/newCharacter" class="list-group-item">New</a>
             <?php foreach ($characters as $character): ?>
-                <a href="/view/<?= $character['name'] ?>" class="list-group-item"><?= $character['name'] ?></a>
+                <a href="/view/<?= $character['name'] ?>" class="list-group-item <?= $activeCharacter['name'] === $character['name']?'active':''?>  "><?= $character['name'] ?></a>
             <?php endforeach; ?>
 
 
