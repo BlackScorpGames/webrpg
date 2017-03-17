@@ -18,6 +18,8 @@ function selectCharacter($character = null)
         $key = md5($character);
         $activeCharacter = isset($characters[$key]) ? $characters[$key] : $activeCharacter;
     }
+    $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
+
     navigation(_('Select character'), '/selectCharacter');
     navigation(_('Logout'), '/logout');
 

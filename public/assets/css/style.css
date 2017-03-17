@@ -1,29 +1,55 @@
-.jumbotron{
+.jumbotron {
     background: #586B90;
     color: #f7f7f7;
 }
 
-body{
+body {
     background: #e3e3e3;
+    position: relative;
 }
-.equipment.ranger{
 
-
+.equipment {
+    position: relative;
 }
-.body.male.walk.south{
+
+.body.male.walk.south {
     height: 128px;
     width: 128px;
     background-image: url("/assets/img/inventory/walkcycle/BODY_male.png");
     background-repeat: no-repeat;
     background-size: 1152px 512px;
     background-position-y: -256px;
-
+    position: relative;
 }
-.body.female.walk.south{
+
+.body.female.walk.south {
     height: 128px;
     width: 128px;
     background-image: url("/assets/img/inventory/walkcycle/BODY_female.png");
     background-repeat: no-repeat;
     background-size: 1152px 512px;
     background-position-y: -256px;
+    position: relative;
+}
+
+.head.male_leather_armor_hat.walk.south {
+    height: 128px;
+    width: 128px;
+    background-image: url("/assets/img/inventory/walkcycle/HEAD_leather_armor_hat.png");
+    background-repeat: no-repeat;
+    background-size: 1152px 512px;
+    background-position-y: -256px;
+    position: absolute;
+    top: 0;
+}
+
+.torso.male_leather_armor.walk.south {
+    height: 128px;
+    width: 128px;
+    background-image: url("/assets/img/inventory/walkcycle/TORSO_leather_armor_torso.png");
+    background-repeat: no-repeat;
+    background-size: 1152px 512px;
+    background-position-y: -256px;
+    position: absolute;
+    top: 0;
 }
