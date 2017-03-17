@@ -34,12 +34,14 @@
                     <div class="col-lg-2">
                         <div class="equipment <?= $activeCharacter['class'] ?>">
                             <div class="body <?= $activeCharacter['gender'] ?> walk south"></div>
-                            <div class="head"></div>
-                            <div class="torso"></div>
-                            <div class="hands"></div>
-                            <div class="belt"></div>
-                            <div class="legs"></div>
-                            <div class="feet"></div>
+                            <div class="head <?= $activeCharacter['inventory'][0] ?> walk south"></div>
+                            <div class="torso <?= $activeCharacter['inventory'][1] ?> walk south"></div>
+                            <div class="hands <?= $activeCharacter['inventory'][2] ?> walk south"></div>
+                            <div class="belt <?= $activeCharacter['inventory'][3] ?> walk south"></div>
+                            <div class="legs <?= $activeCharacter['inventory'][4] ?> walk south"></div>
+                            <div class="feet <?= $activeCharacter['inventory'][5] ?> walk south"></div>
+                            <div class="weapon-left <?= $activeCharacter['inventory'][6] ?> walk south"></div>
+                            <div class="weapon-right <?= $activeCharacter['inventory'][7] ?> walk south"></div>
                         </div>
                     </div>
                     <div class="col-lg-10">
