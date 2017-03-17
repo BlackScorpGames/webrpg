@@ -55,5 +55,6 @@ router('/', function () {
  */
 require_once __DIR__ . '/source/account/index.php'; //include account module
 require_once __DIR__ . '/source/character/index.php'; //include character module
+require_once __DIR__ . '/source/inventory/index.php'; //include inventory module
 require_once __DIR__ . '/source/map/index.php'; //include map module
 
