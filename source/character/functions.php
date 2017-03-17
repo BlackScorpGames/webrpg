@@ -24,7 +24,7 @@ function selectCharacter($character = null)
     activateNavigation('/selectCharacter');
     $data = [
         'characters' => $characters,
-        'activeCharacter' =>$activeCharacter
+        'activeCharacter' => $activeCharacter
     ];
     echo render('selectCharacter', $data);
 }
@@ -56,6 +56,12 @@ function newCharacter()
         $errors = array_merge($nameErrors, $classErrors, $genderErrors);
         if (count($errors) === 0) {
             if (createCharacter(getCurrentUserId(), $characterName, $characterClass, $characterGender)) {
+                $newCharacter = [
+                    'name' => $characterName,
+                    'class' => $characterClass,
+                    'gender' => $characterGender
+                ];
+                event('game.newCharacter',$newCharacter);
                 redirect('/view/' . $characterName);
             }
             $errors[] = _('Failed to create character');
