@@ -34,15 +34,9 @@
                     <div class="col-lg-2">
                         <div class="equipment <?= $activeCharacter['class'] ?>">
                             <div class="body <?= $activeCharacter['gender'] ?> walk south"></div>
-                            <div class="head <?= $activeCharacter['inventory'][0]['itemName'] ?> walk south"></div>
-                            <div class="torso <?= $activeCharacter['inventory'][1]['itemName'] ?> walk south"></div>
-                            <div class="shoulders <?= $activeCharacter['inventory'][2]['itemName'] ?> walk south"></div>
-                            <div class="hands <?= $activeCharacter['inventory'][3]['itemName'] ?> walk south"></div>
-                            <div class="belt <?= $activeCharacter['inventory'][4]['itemName'] ?> walk south"></div>
-                            <div class="legs <?= $activeCharacter['inventory'][5]['itemName'] ?> walk south"></div>
-                            <div class="feet <?= $activeCharacter['inventory'][6]['itemName'] ?> walk south"></div>
-                            <div class="weapon-left <?= $activeCharacter['inventory'][7]['itemName'] ?> walk south"></div>
-                            <div class="weapon-right <?= $activeCharacter['inventory'][8]['itemName'] ?> walk south"></div>
+                            <?php foreach ($equipmentSlots as $slotNumber => $name): ?>
+                                <div class="<?= $name ?> <?= $activeCharacter['inventory'][$slotNumber]['itemName'] ?> walk south"></div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                     <div class="col-lg-10">

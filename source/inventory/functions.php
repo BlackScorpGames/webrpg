@@ -3,7 +3,7 @@ function getEquipmentForCharacter($characterName)
 {
     $db = getDb();
     $characterName = mysqli_real_escape_string($db, $characterName);
-    $maxEquipmentSlots = 9;
+    $maxEquipmentSlots = count(config('equipmentSlots'));
     $sql = "SELECT itemName,slot,amount FROM inventory 
             INNER JOIN characters ON(inventory.characterId = characters.characterId)
             WHERE name='" . $characterName . "' AND slot <= ".$maxEquipmentSlots."

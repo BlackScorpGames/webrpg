@@ -26,7 +26,8 @@ function selectCharacter($character = null)
     activateNavigation('/selectCharacter');
     $data = [
         'characters' => $characters,
-        'activeCharacter' => $activeCharacter
+        'activeCharacter' => $activeCharacter,
+        'equipmentSlots' =>config('equipmentSlots')
     ];
     echo render('selectCharacter', $data);
 }
