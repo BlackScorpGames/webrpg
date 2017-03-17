@@ -183,6 +183,7 @@ function getCharactersForUser($username)
 
     while ($row = $result->fetch_assoc()) {
         $characterKey = md5($row['name']);
+        $row['gender'] = (int)$row['gender'] === 1?'male':'female';
         $characters[$characterKey] = $row;
     }
     return $characters;

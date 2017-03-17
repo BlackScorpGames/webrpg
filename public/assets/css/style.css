@@ -6,3 +6,24 @@
 body{
     background: #e3e3e3;
 }
+.equipment.ranger{
+
+
+}
+.body.male.walk.south{
+    height: 128px;
+    width: 128px;
+    background-image: url("/assets/img/inventory/walkcycle/BODY_male.png");
+    background-repeat: no-repeat;
+    background-size: 1152px 512px;
+    background-position-y: -256px;
+
+}
+.body.female.walk.south{
+    height: 128px;
+    width: 128px;
+    background-image: url("/assets/img/inventory/walkcycle/BODY_female.png");
+    background-repeat: no-repeat;
+    background-size: 1152px 512px;
+    background-position-y: -256px;
+}

@@ -17,7 +17,8 @@
         <div class="list-group">
             <a href="/newCharacter" class="list-group-item">New</a>
             <?php foreach ($characters as $character): ?>
-                <a href="/view/<?= $character['name'] ?>" class="list-group-item <?= $activeCharacter['name'] === $character['name']?'active':''?>  "><?= $character['name'] ?></a>
+                <a href="/view/<?= $character['name'] ?>"
+                   class="list-group-item <?= $activeCharacter['name'] === $character['name'] ? 'active' : '' ?>  "><?= $character['name'] ?></a>
             <?php endforeach; ?>
 
 
@@ -26,14 +27,29 @@
     <div class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3><?= $activeCharacter['name']?></h3>
+                <h3><?= $activeCharacter['name'] ?></h3>
             </div>
             <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="equipment <?= $activeCharacter['class'] ?>">
+                            <div class="body <?= $activeCharacter['gender'] ?> walk south"></div>
+                            <div class="head"></div>
+                            <div class="torso"></div>
+                            <div class="hands"></div>
+                            <div class="belt"></div>
+                            <div class="legs"></div>
+                            <div class="feet"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
 
+                    </div>
+                </div>
             </div>
             <div class="panel-footer">
-                <a href="/select/<?= $activeCharacter['name']?>" class="btn btn-success">Select</a>
-                <a href="/delete/<?= $activeCharacter['name']?>" class="btn btn-default">Delete</a>
+                <a href="/select/<?= $activeCharacter['name'] ?>" class="btn btn-success">Select</a>
+                <a href="/delete/<?= $activeCharacter['name'] ?>" class="btn btn-default">Delete</a>
             </div>
         </div>
 
