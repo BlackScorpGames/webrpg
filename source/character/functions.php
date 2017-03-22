@@ -27,38 +27,44 @@ function initializeCharacterData($character = null)
 
 function askToDeleteCharacter($character = null)
 {
-    list($characters,$activeCharacter) = initializeCharacterData($character);
+    list($characters, $activeCharacter) = initializeCharacterData($character);
     $data = [
         'characters' => $characters,
         'activeCharacter' => $activeCharacter,
         'equipmentSlots' => config('equipmentSlots'),
         'isDeletion' => true
     ];
-    session('characterToDelete',$activeCharacter['name']);
+    session('characterToDelete', $activeCharacter['name']);
     echo render('selectCharacter', $data);
 }
 
-function deleteCharacter(){
-    $characterName =  session('characterToDelete');
-    var_dump($characterName);
+function deleteCharacter()
+{
+    $characterName = session('characterToDelete');
+
+    if (!$characterName) {
+        router('/newCharacter');
+        return;
+    }
 }
+
 function selectCharacter($character = null)
 {
 
-    list($characters,$activeCharacter) = initializeCharacterData($character);
+    list($characters, $activeCharacter) = initializeCharacterData($character);
     $data = [
         'characters' => $characters,
         'activeCharacter' => $activeCharacter,
         'equipmentSlots' => config('equipmentSlots'),
         'isDeletion' => false
     ];
-    session('characterToDelete',null);
+    session('characterToDelete', null);
     echo render('selectCharacter', $data);
 }
 
 function newCharacter()
 {
-    session('characterToDelete',null);
+    session('characterToDelete', null);
     navigation(_('Select character'), '/selectCharacter');
     navigation(_('Logout'), '/logout');
 
