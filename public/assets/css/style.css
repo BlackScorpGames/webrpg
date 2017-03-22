@@ -40,6 +40,24 @@ body {
     position: absolute;
     top: 0;
 }
+.armor.male.leatherArmor.walk.south{
+    height: 64px;
+    width: 64px;
+    background-image: url("/assets/img/inventory/male_leather_armor.png");
+    background-repeat: no-repeat;
+    background-position-y: -128px;
+    position: absolute;
+    top: 0;
+}
+.head.male.leatherArmor.walk.south{
+    height: 64px;
+    width: 64px;
+    background-image: url("/assets/img/inventory/male_leather_cap.png");
+    background-repeat: no-repeat;
+    background-position-y: -128px;
+    position: absolute;
+    top: 0
+}
 .head.female.leatherArmor.walk.south{
     height: 64px;
     width: 64px;
@@ -52,7 +70,9 @@ body {
 .body.female.walk.south.big,
 .body.male.walk.south.big,
 .armor.female.leatherArmor.walk.south.big,
-.head.female.leatherArmor.walk.south.big
+.head.female.leatherArmor.walk.south.big,
+.head.male.leatherArmor.walk.south.big,
+.armor.male.leatherArmor.walk.south.big
 {
     height: 128px;
     width: 128px;
