@@ -75,7 +75,14 @@ function navigation($title = null, $url = null)
     }
     return $navigation;
 }
+function session($name, $value = null)
+{
 
+    if ($value) {
+        return $_SESSION[$name] = $value;
+    }
+    return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+}
 function sharedVariable($name, $value = null)
 {
     static $variables = [];

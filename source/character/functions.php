@@ -1,13 +1,11 @@
 <?php
 function isCharacterSelected()
 {
-    return isset($_SESSION['characterName']);
+    return session('characterName') !== null;
 }
 
-function selectCharacter($character = null)
+function initializeCharacterData($character = null)
 {
-
-
     $characters = getCharactersForUser(getCurrentUsername());
     if (count($characters) === 0) {
         router('/newCharacter');
@@ -24,17 +22,43 @@ function selectCharacter($character = null)
     navigation(_('Logout'), '/logout');
 
     activateNavigation('/selectCharacter');
+    return [$characters, $activeCharacter];
+}
+
+function askToDeleteCharacter($character = null)
+{
+    list($characters,$activeCharacter) = initializeCharacterData($character);
     $data = [
         'characters' => $characters,
         'activeCharacter' => $activeCharacter,
-        'equipmentSlots' =>config('equipmentSlots')
+        'equipmentSlots' => config('equipmentSlots'),
+        'isDeletion' => true
     ];
+    session('characterToDelete',$activeCharacter['name']);
+    echo render('selectCharacter', $data);
+}
+
+function deleteCharacter(){
+    $characterName =  session('characterToDelete');
+    var_dump($characterName);
+}
+function selectCharacter($character = null)
+{
+
+    list($characters,$activeCharacter) = initializeCharacterData($character);
+    $data = [
+        'characters' => $characters,
+        'activeCharacter' => $activeCharacter,
+        'equipmentSlots' => config('equipmentSlots'),
+        'isDeletion' => false
+    ];
+    session('characterToDelete',null);
     echo render('selectCharacter', $data);
 }
 
 function newCharacter()
 {
-
+    session('characterToDelete',null);
     navigation(_('Select character'), '/selectCharacter');
     navigation(_('Logout'), '/logout');
 
@@ -64,7 +88,7 @@ function newCharacter()
                     'class' => $characterClass,
                     'gender' => $characterGender
                 ];
-                event('game.newCharacter',$newCharacter);
+                event('game.newCharacter', $newCharacter);
                 redirect('/view/' . $characterName);
             }
             $errors[] = _('Failed to create character');
@@ -186,7 +210,7 @@ function getCharactersForUser($username)
 
     while ($row = $result->fetch_assoc()) {
         $characterKey = md5($row['name']);
-        $row['gender'] = (int)$row['gender'] === 1?'male':'female';
+        $row['gender'] = (int)$row['gender'] === 1 ? 'male' : 'female';
         $characters[$characterKey] = $row;
     }
     return $characters;

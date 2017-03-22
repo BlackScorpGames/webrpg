@@ -9,8 +9,27 @@
 
 
 <?php section('content') ?>
+<?php if ($isDeletion): ?>
+    <div class="modal fade in show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="/view/<?= $activeCharacter['name'] ?>" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></a>
+                    <h4 class="modal-title"><?= _('Confirm') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <p><?= sprintf(_('You are going to delete <b>%s</b>, are you sure?'), $activeCharacter['name']) ?></p>
+                </div>
+                <div class="modal-footer">
+                    <a href="/confirmDelete" class="btn btn-success">OK</a>
+                    <a href="/view/<?= $activeCharacter['name'] ?>" class="btn btn-default">Cancel</a>
 
-
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
     <div class="col-md-4">
 
 
@@ -34,8 +53,8 @@
                     <div class="col-lg-2">
                         <div class="equipment <?= $activeCharacter['class'] ?>">
                             <div class="body <?= $activeCharacter['gender'] ?> walk south"></div>
-                            <?php foreach ($equipmentSlots as $slotNumber => $name): ?>
-                                <div class="<?= $name ?> <?= $activeCharacter['inventory'][$slotNumber]['itemName'] ?> walk south"></div>
+                            <?php foreach ($equipmentSlots as $slotNumber => $slotName): ?>
+                                <div class="<?= $slotName ?> <?= $activeCharacter['gender'] ?> <?= $activeCharacter['inventory'][$slotNumber]['itemName'] ?> walk south"></div>
                             <?php endforeach; ?>
                         </div>
                     </div>

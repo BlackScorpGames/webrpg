@@ -1,19 +1,19 @@
 <?php
 function isLoggedIn()
 {
-    return isset($_SESSION['username']);
+    return session('username') !== null;
 }
 
 function getCurrentUsername()
 {
     if (isLoggedIn()) {
-        return $_SESSION['username'];
+        return session('username');
     }
     return '';
 }
 function getCurrentUserId(){
     if (isLoggedIn()) {
-        return $_SESSION['userId'];
+        return session('userId');
     }
     return 0;
 }

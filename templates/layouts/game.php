@@ -34,8 +34,8 @@
     <?= $content ?>
 
 </div>
-<script src="assets/js/vendor/jquery.min.js"></script>
-<script src="assets/js/vendor/bootstrap.min.js"></script>
+<script src="/assets/js/vendor/jquery.min.js"></script>
+<script src="/assets/js/vendor/bootstrap.min.js"></script>
 <?= $scripts ?>
 </body>
 </html>

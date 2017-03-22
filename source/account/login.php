@@ -44,8 +44,8 @@ function doLogin($username, $password)
         return [_('Invalid login')];
     }
     $userId = getUserIdForUsername($username);
-    $_SESSION['userId'] = $userId;
-    $_SESSION['username'] = $username;
+    session('userId',$userId);
+    session('username',$username);
     redirect('/');
     return [];
 }
