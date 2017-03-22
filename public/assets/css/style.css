@@ -15,73 +15,42 @@ body {
 }
 
 .body.male.walk.south {
-    height: 128px;
-    width: 128px;
-    background-image: url("/assets/img/inventory/walkcycle/BODY_male.png");
+    height: 64px;
+    width: 64px;
+    background-image: url("/assets/img/male_body.png");
     background-repeat: no-repeat;
-    background-size: 1152px 512px;
-    background-position-y: -256px;
+    background-position-y: -128px;
     position: relative;
 }
 
 .body.female.walk.south {
-    height: 128px;
-    width: 128px;
-    background-image: url("/assets/img/inventory/walkcycle/BODY_female.png");
+    height: 64px;
+    width: 64px;
+    background-image: url("/assets/img/female_body.png");
     background-repeat: no-repeat;
-    background-size: 1152px 512px;
-    background-position-y: -256px;
+    background-position-y: -128px;
     position: relative;
 }
-
-.head.male_leather_armor_hat.walk.south {
-    height: 128px;
-    width: 128px;
-    background-image: url("/assets/img/inventory/walkcycle/HEAD_leather_armor_hat.png");
+.armor.female.leatherArmor.walk.south{
+    height: 64px;
+    width: 64px;
+    background-image: url("/assets/img/inventory/female_leather_armor.png");
     background-repeat: no-repeat;
-    background-size: 1152px 512px;
-    background-position-y: -256px;
+    background-position-y: -128px;
     position: absolute;
     top: 0;
 }
 
-.torso.male_leather_armor.walk.south {
+.body.female.walk.south.big,
+.body.male.walk.south.big,
+.armor.female.leatherArmor.walk.south.big
+{
     height: 128px;
     width: 128px;
-    background-image: url("/assets/img/inventory/walkcycle/TORSO_leather_armor_torso.png");
-    background-repeat: no-repeat;
-    background-size: 1152px 512px;
+    background-size: 1664px 2688px;
     background-position-y: -256px;
-    position: absolute;
-    top: 0;
+
 }
-.shoulders.male_leather_shoulders.walk.south {
-    height: 128px;
-    width: 128px;
-    background-image: url("/assets/img/inventory/walkcycle/TORSO_leather_armor_shoulders.png");
-    background-repeat: no-repeat;
-    background-size: 1152px 512px;
-    background-position-y: -256px;
-    position: absolute;
-    top: 0;
-}
-.legs.male_leather_pants.walk.south {
-    height: 128px;
-    width: 128px;
-    background-image: url("/assets/img/inventory/walkcycle/LEGS_pants_greenish.png");
-    background-repeat: no-repeat;
-    background-size: 1152px 512px;
-    background-position-y: -256px;
-    position: absolute;
-    top: 0;
-}
-.feets.male_leather_shoes.walk.south{
-    height: 128px;
-    width: 128px;
-    background-image: url("/assets/img/inventory/walkcycle/FEET_shoes_brown.png");
-    background-repeat: no-repeat;
-    background-size: 1152px 512px;
-    background-position-y: -256px;
-    position: absolute;
-    top: 0;
-}
+
+
+

@@ -38,12 +38,12 @@ config('initialEquipment', [
         2 => 'sword',
         3 => 'shield'
     ],
-    'male.archer' => [
+    'male.ranger' => [
         0 => 'leatherArmor',
         1 => 'leatherArmor',
         2 => 'bow'
     ],
-    'female.archer' => [
+    'female.ranger' => [
         0 => 'leatherArmor',
         1 => 'leatherArmor',
         2 => 'bow'

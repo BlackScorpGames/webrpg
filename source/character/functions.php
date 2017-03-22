@@ -97,8 +97,9 @@ function newCharacter()
         $genderErrors = validateCharacterGender($characterGender);
         $errors = array_merge($nameErrors, $classErrors, $genderErrors);
         if (count($errors) === 0) {
-            if (createCharacter(getCurrentUserId(), $characterName, $characterClass, $characterGender)) {
+            if ($characterId = createCharacter(getCurrentUserId(), $characterName, $characterClass, $characterGender)) {
                 $newCharacter = [
+                    'id' => $characterId,
                     'name' => $characterName,
                     'class' => $characterClass,
                     'gender' => $characterGender
@@ -134,9 +135,9 @@ function createCharacter($userId, $characterName, $characterClass, $characterGen
     $result = mysqli_query($db, $sql);
     if (!$result) {
         trigger_error(mysqli_error($db), E_USER_ERROR);
-        return false;
+        return null;
     }
-    return true;
+    return mysqli_insert_id($db);
 }
 
 function validateCharacterGender($gender)
