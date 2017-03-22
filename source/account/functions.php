@@ -13,7 +13,7 @@ function getCurrentUsername()
 }
 function getCurrentUserId(){
     if (isLoggedIn()) {
-        return session('userId');
+        return (int)session('userId');
     }
     return 0;
 }

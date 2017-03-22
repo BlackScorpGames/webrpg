@@ -46,6 +46,15 @@ function deleteCharacter()
         router('/newCharacter');
         return;
     }
+    $db = getDb();
+    $characterName = mysqli_real_escape_string($db,$characterName);
+    $userId = getCurrentUserId();
+    $sql = "DELETE FROM characters WHERE name='".$characterName."' AND userId  = ".$userId;
+    mysqli_query($db,$sql);
+    session('characterToDelete',null);
+    redirect('/newCharacter');
+
+
 }
 
 function selectCharacter($character = null)
