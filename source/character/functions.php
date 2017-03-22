@@ -181,18 +181,20 @@ function validateCharacterName($characterName)
         $errors[] = _('Character name is empty');
         return $errors;
     }
-
+    if(preg_match('~\W+~',$characterName)){
+        $errors[]= _('Character name contain non word characters');
+    }
     if (mb_strlen($characterName) < $minLength) {
-        $errors[] = _(sprintf('Character name is too short, %d characters are at least required', $minLength));
+        $errors[] = sprintf(_('Character name is too short, %d characters are at least required', $minLength));
     }
     if (mb_strlen($characterName) >= $maxLength) {
-        $errors[] = _(sprintf('Character name is too long, maximum %d characters', $maxLength));
+        $errors[] = sprintf(_('Character name is too long, maximum %d characters', $maxLength));
     }
     if (in_array($characterName, $blacklist)) {
         $errors[] = _("Selected name is not allowed to use");
     }
     if (characterNameExists($characterName)) {
-        $errors[] = _(sprintf("The character name %s already exists", $characterName));
+        $errors[] = sprintf(_("The character name %s already exists", $characterName));
     }
     return $errors;
 }
