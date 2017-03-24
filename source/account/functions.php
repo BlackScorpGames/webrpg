@@ -18,6 +18,11 @@ function getCurrentUserId(){
     return 0;
 }
 
+function redirectIfNotLoggedIn(){
+    if (!isLoggedIn()) {
+        redirect('/');
+    }
+}
 function getUserIdForUsername($username)
 {
     $db = getDb();

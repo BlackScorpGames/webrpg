@@ -150,8 +150,14 @@ function router($path, $action = null)
             if (!is_callable($action)) {
                 return event('http.404', [$path, 'Route not found']);
             }
+
             array_shift($match);
-            return call_user_func_array($action, $match);
+            event('middleware.before',[$match]);
+            event('middleware.before.'.$route,[$match]);
+            call_user_func_array($action, $match);
+            event('middleware.after.'.$route,[$match]);
+            event('middleware.after',[$match]);
+            return null;
         }
     }
     return event('http.404', [$path, 'Route not found']);

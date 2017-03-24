@@ -1,8 +1,9 @@
 <?php
 
-router('/selectCharacter','selectCharacter');
-router('/newCharacter','newCharacter');
-router('/confirmDelete','deleteCharacter');
-router('/delete/(\S+)','askToDeleteCharacter');
-router('/select/(\S+)','selectCharacter');
-router('/view/(\S+)','selectCharacter');
+
+router('/character/select(/\S+)?','selectCharacter');
+router('/character/view/(\S+)','selectCharacter');
+
+router('/character/new','newCharacter');
+router('/character/confirmDelete','deleteCharacter');
+router('/character/delete/(\S+)','askToDeleteCharacter');

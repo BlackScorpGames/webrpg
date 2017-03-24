@@ -11,9 +11,9 @@
 <?php section('content') ?>
     <div class="col-md-4">
         <div class="list-group">
-            <a href="/newCharacter" class="list-group-item active">New</a>
+            <a href="/character/new" class="list-group-item active">New</a>
             <?php foreach ($characters as $character): ?>
-                <a href="/view/<?= $character['name'] ?>" class="list-group-item"><?= $character['name'] ?></a>
+                <a href="/character/view/<?= $character['name'] ?>" class="list-group-item"><?= $character['name'] ?></a>
             <?php endforeach; ?>
         </div>
     </div>
@@ -25,7 +25,7 @@
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <form action="/newCharacter" method="POST">
+        <form action="/character/new" method="POST">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <label for="characterName"><?= _('Charactername') ?></label>

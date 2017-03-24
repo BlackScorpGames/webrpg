@@ -31,7 +31,7 @@ set_error_handler(function () {
 event('http.403', [], function () {
     header('Content-Type:text/html;charset=utf-8');
     header('HTTP/1.0 403 Forbidden');
-    echo 'You are not logged in, please <a href="login">login</a> first';
+    echo 'You are not logged in, please <a href="/login">login</a> first';
 });
 
 event('http.404', [], function ($path) {

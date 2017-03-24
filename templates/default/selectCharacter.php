@@ -14,7 +14,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a href="/view/<?= $activeCharacter['name'] ?>" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <a href="/character/view/<?= $activeCharacter['name'] ?>" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></a>
                     <h4 class="modal-title"><?= _('Confirm') ?></h4>
                 </div>
@@ -22,8 +22,8 @@
                     <p><?= sprintf(_('You are going to delete <b>%s</b>, are you sure?'), $activeCharacter['name']) ?></p>
                 </div>
                 <div class="modal-footer">
-                    <a href="/confirmDelete" class="btn btn-success">OK</a>
-                    <a href="/view/<?= $activeCharacter['name'] ?>" class="btn btn-default">Cancel</a>
+                    <a href="/character/confirmDelete" class="btn btn-success">OK</a>
+                    <a href="/character/view/<?= $activeCharacter['name'] ?>" class="btn btn-default">Cancel</a>
 
                 </div>
             </div>
@@ -34,9 +34,9 @@
 
 
         <div class="list-group">
-            <a href="/newCharacter" class="list-group-item">New</a>
+            <a href="/character/new" class="list-group-item">New</a>
             <?php foreach ($characters as $character): ?>
-                <a href="/view/<?= $character['name'] ?>"
+                <a href="/character/view/<?= $character['name'] ?>"
                    class="list-group-item <?= $activeCharacter['name'] === $character['name'] ? 'active' : '' ?>  "><?= $character['name'] ?></a>
             <?php endforeach; ?>
 
@@ -64,8 +64,8 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <a href="/select/<?= $activeCharacter['name'] ?>" class="btn btn-success">Select</a>
-                <a href="/delete/<?= $activeCharacter['name'] ?>" class="btn btn-default">Delete</a>
+                <a href="/character/select/<?= $activeCharacter['name'] ?>" class="btn btn-success">Select</a>
+                <a href="/character/delete/<?= $activeCharacter['name'] ?>" class="btn btn-default">Delete</a>
             </div>
         </div>
 

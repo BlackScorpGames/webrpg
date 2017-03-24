@@ -8,7 +8,7 @@ function initializeCharacterData($character = null)
 {
     $characters = getCharactersForUser(getCurrentUsername());
     if (count($characters) === 0) {
-        router('/newCharacter');
+        router('/character/new');
         return null;
     }
     $activeCharacter = array_values($characters)[0];
@@ -18,15 +18,18 @@ function initializeCharacterData($character = null)
     }
     $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
 
-    navigation(_('Select character'), '/selectCharacter');
+    navigation(_('Select character'), '/character/select');
     navigation(_('Logout'), '/logout');
 
-    activateNavigation('/selectCharacter');
+    activateNavigation('/character/select');
     return [$characters, $activeCharacter];
 }
 
 function askToDeleteCharacter($character = null)
 {
+    if (!isLoggedIn()) {
+        return event('http.403');
+    }
     list($characters, $activeCharacter) = initializeCharacterData($character);
     $data = [
         'characters' => $characters,
@@ -40,26 +43,31 @@ function askToDeleteCharacter($character = null)
 
 function deleteCharacter()
 {
+    if (!isLoggedIn()) {
+        return event('http.403');
+    }
     $characterName = session('characterToDelete');
 
     if (!$characterName) {
-        router('/newCharacter');
+        router('/character/new');
         return;
     }
     $db = getDb();
-    $characterName = mysqli_real_escape_string($db,$characterName);
+    $characterName = mysqli_real_escape_string($db, $characterName);
     $userId = getCurrentUserId();
-    $sql = "DELETE FROM characters WHERE name='".$characterName."' AND userId  = ".$userId;
-    mysqli_query($db,$sql);
-    session('characterToDelete',null);
-    redirect('/newCharacter');
+    $sql = "DELETE FROM characters WHERE name='" . $characterName . "' AND userId  = " . $userId;
+    mysqli_query($db, $sql);
+    session('characterToDelete', null);
+    redirect('/character/new');
 
 
 }
 
 function selectCharacter($character = null)
 {
-
+    if (!isLoggedIn()) {
+        return event('http.403');
+    }
     list($characters, $activeCharacter) = initializeCharacterData($character);
     $data = [
         'characters' => $characters,
@@ -73,11 +81,14 @@ function selectCharacter($character = null)
 
 function newCharacter()
 {
+    if (!isLoggedIn()) {
+        return event('http.403');
+    }
     session('characterToDelete', null);
-    navigation(_('Select character'), '/selectCharacter');
+    navigation(_('Select character'), '/character/select');
     navigation(_('Logout'), '/logout');
 
-    activateNavigation('/selectCharacter');
+    activateNavigation('/character/select');
 
     $characters = getCharactersForUser(getCurrentUsername());
 
@@ -105,7 +116,7 @@ function newCharacter()
                     'gender' => $characterGender
                 ];
                 event('game.newCharacter', $newCharacter);
-                redirect('/view/' . $characterName);
+                redirect('/character/view/' . $characterName);
             }
             $errors[] = _('Failed to create character');
         }
@@ -181,8 +192,8 @@ function validateCharacterName($characterName)
         $errors[] = _('Character name is empty');
         return $errors;
     }
-    if(preg_match('~\W+~',$characterName)){
-        $errors[]= _('Character name contain non word characters');
+    if (preg_match('~\W+~', $characterName)) {
+        $errors[] = _('Character name contain non word characters');
     }
     if (mb_strlen($characterName) < $minLength) {
         $errors[] = sprintf(_('Character name is too short, %d characters are at least required'), $minLength);

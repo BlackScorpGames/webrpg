@@ -6,7 +6,7 @@ router('/map', function () {
     }
 
     if(!isCharacterSelected()){
-        echo router('/selectCharacter');
+        echo router('/character/select');
         return;
     }
     return 'This is a map';
