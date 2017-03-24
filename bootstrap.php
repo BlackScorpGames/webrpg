@@ -43,12 +43,12 @@ event('http.404', [], function ($path) {
 event('http.500', [], function ($message,$context) {
     header('Content-Type:text/html;charset=utf-8');
     header('HTTP/1.0 500 Internal Server Error');
-    echo sprintf("Something went wrong, got exception with message '%s' <pre>%s</pre>", $message,print_r($context,true));
+    echo sprintf('Something went wrong, got exception with message "<b style="color:indianred">%s</b>" <pre>%s</pre>', $message,print_r($context,true));
 });
 router('/', function () {
     echo "Hello world!";
 });
-
+define('ROOT_DOR',realpath(__DIR__));
 
 /**
  * Enable modules
