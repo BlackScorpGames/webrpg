@@ -9,7 +9,7 @@ function initializeCharacterData($character = null)
     $characters = getCharactersForUser(getCurrentUsername());
     if (count($characters) === 0) {
         router('/newCharacter');
-        return;
+        return null;
     }
     $activeCharacter = array_values($characters)[0];
     if ($character) {
@@ -185,16 +185,16 @@ function validateCharacterName($characterName)
         $errors[]= _('Character name contain non word characters');
     }
     if (mb_strlen($characterName) < $minLength) {
-        $errors[] = sprintf(_('Character name is too short, %d characters are at least required', $minLength));
+        $errors[] = sprintf(_('Character name is too short, %d characters are at least required'), $minLength);
     }
     if (mb_strlen($characterName) >= $maxLength) {
-        $errors[] = sprintf(_('Character name is too long, maximum %d characters', $maxLength));
+        $errors[] = sprintf(_('Character name is too long, maximum %d characters'), $maxLength);
     }
     if (in_array($characterName, $blacklist)) {
         $errors[] = _("Selected name is not allowed to use");
     }
     if (characterNameExists($characterName)) {
-        $errors[] = sprintf(_("The character name %s already exists", $characterName));
+        $errors[] = sprintf(_("The character name %s already exists"), $characterName);
     }
     return $errors;
 }
