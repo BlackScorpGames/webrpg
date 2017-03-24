@@ -81,5 +81,22 @@ body {
 
 }
 
-
-
+.atlas.base_out_atlas{
+    background-image: url("/assets/img/tilesets/base_out_atlas.png");
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+}
+.atlas.terrain_atlas{
+    background-image: url("/assets/img/tilesets/terrain_atlas.png");
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+}
+.map{
+    position: relative;
+}
+.map .tile{
+    position: absolute;
+    border: 1px solid black;
+}

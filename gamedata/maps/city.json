@@ -14,26 +14,26 @@
              "collision":"bool"
             },
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":30,
          "x":0,
          "y":0
         }, 
         {
          "draworder":"topdown",
-         "height":30,
+         "height":0,
          "name":"events",
          "objects":[
                 {
-                 "height":28.6666666666666,
+                 "height":28.6667,
                  "id":5,
                  "name":"goTo",
                  "rotation":0,
                  "type":"teleport",
                  "visible":true,
-                 "width":31.3333333333333,
+                 "width":31.3333,
                  "x":576,
-                 "y":800.666666666667
+                 "y":800.667
                 }, 
                 {
                  "height":32,
@@ -49,7 +49,7 @@
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":30,
+         "width":0,
          "x":0,
          "y":0
         }, 
@@ -124,7 +124,7 @@
         {
          "columns":32,
          "firstgid":1,
-         "image":"terrain_atlas.png",
+         "image":"..\/..\/..\/artSource\/terrain_atlas.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -197,7 +197,7 @@
         {
          "columns":32,
          "firstgid":1025,
-         "image":"base_out_atlas.png",
+         "image":"..\/..\/..\/artSource\/base_out_atlas.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -230,7 +230,7 @@
         {
          "columns":2,
          "firstgid":2049,
-         "image":"collision.png",
+         "image":"..\/..\/..\/artSource\/collision.png",
          "imageheight":32,
          "imagewidth":64,
          "margin":0,

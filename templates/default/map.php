@@ -13,6 +13,20 @@
         </div>
         <div class="panel-body">
 
+            <?php foreach ($map as $name => $mapData): ?>
+                <div class="map">
+                    <?php for ($y = 0; $y < $viewPort['height']; $y++): ?>
+                        <?php for ($x = 0; $x < $viewPort['width']; $x++): ?>
+                        <div style="
+                                height:<?= $tile['height']?>px;
+                                width:<?= $tile['width']?>px;
+                                left:<?= $x*$tile['width']?>px;
+                                top:<?= $y*$tile['height']?>px" class="tile"></div>
+                        <?php endfor; ?>
+                    <?php endfor; ?>
+                </div>
+            <?php endforeach; ?>
+
         </div>
     </div>
 <?php section('content') ?>
