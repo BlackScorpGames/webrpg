@@ -7,11 +7,13 @@
 <?php section('styles') ?>
 <?php require_once __DIR__ . '/../partials/navigationSection.php'; ?>
 <?php section('content') ?>
-    <div class="col-md-8">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <?= $location ?>
+        </div>
+        <div class="panel-body">
 
-    </div>
-    <div class="col-md-4">
-
+        </div>
     </div>
 <?php section('content') ?>
 <?php section('scripts') ?>

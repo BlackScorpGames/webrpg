@@ -14,6 +14,8 @@ router('/map', function () {
     navigation(_('Logout'), '/logout');
 
     activateNavigation('/');
-    $data = [];
+    $data = [
+        'location' => 'Test city'
+    ];
     echo render('map', $data);
 });
