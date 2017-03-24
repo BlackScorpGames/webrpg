@@ -1,12 +1,13 @@
 <?php
 function login()
 {
+
     if (isLoggedIn()) {
         echo router('/map');
         return;
     }
-    $username = filter_input(INPUT_POST, 'username',FILTER_SANITIZE_STRING);
-    $password = filter_input(INPUT_POST, 'password',FILTER_SANITIZE_STRING);
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
     $errors = doLogin($username, $password);
 
     $data = [
@@ -17,7 +18,7 @@ function login()
 
     navigation(_('login'), '/');
     navigation(_('create account'), '/register');
-    navigation(_('create dummy user'),'/dummyUser');
+    navigation(_('create dummy user'), '/dummyUser');
     activateNavigation('/');
 
     echo render('index', $data);
@@ -44,8 +45,8 @@ function doLogin($username, $password)
         return [_('Invalid login')];
     }
     $userId = getUserIdForUsername($username);
-    session('userId',$userId);
-    session('username',$username);
+    session('userId', $userId);
+    session('username', $username);
     redirect('/');
     return [];
 }

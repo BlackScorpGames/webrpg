@@ -18,7 +18,7 @@ function initializeCharacterData($character = null)
     }
     $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
 
-    navigation(_('Select character'), '/character/select');
+    navigation(_('Select character'), '/character/view');
     navigation(_('Logout'), '/logout');
 
     activateNavigation('/character/select');
@@ -30,6 +30,7 @@ function askToDeleteCharacter($character = null)
     if (!isLoggedIn()) {
         return event('http.403');
     }
+    session('characterName', null);
     list($characters, $activeCharacter) = initializeCharacterData($character);
     $data = [
         'characters' => $characters,
@@ -46,6 +47,7 @@ function deleteCharacter()
     if (!isLoggedIn()) {
         return event('http.403');
     }
+    session('characterName', null);
     $characterName = session('characterToDelete');
 
     if (!$characterName) {
@@ -60,14 +62,30 @@ function deleteCharacter()
     session('characterToDelete', null);
     redirect('/character/new');
 
-
 }
 
-function selectCharacter($character = null)
+function selectCharacter($character)
 {
     if (!isLoggedIn()) {
         return event('http.403');
     }
+    session('characterToDelete', null);
+    session('characterName', null);
+    if (!getCharacterForUser($character, getCurrentUsername())) {
+        redirect('/');
+        return;
+    }
+    session('characterName', $character);
+    redirect('/');
+}
+
+function viewCharacter($character = null)
+{
+    if (!isLoggedIn()) {
+        return event('http.403');
+    }
+    session('characterToDelete', null);
+    session('characterName', null);
     list($characters, $activeCharacter) = initializeCharacterData($character);
     $data = [
         'characters' => $characters,
@@ -75,7 +93,7 @@ function selectCharacter($character = null)
         'equipmentSlots' => config('equipmentSlots'),
         'isDeletion' => false
     ];
-    session('characterToDelete', null);
+
     echo render('selectCharacter', $data);
 }
 
@@ -85,7 +103,8 @@ function newCharacter()
         return event('http.403');
     }
     session('characterToDelete', null);
-    navigation(_('Select character'), '/character/select');
+    session('characterName', null);
+    navigation(_('Select character'), '/character/view');
     navigation(_('Logout'), '/logout');
 
     activateNavigation('/character/select');
@@ -220,6 +239,30 @@ function characterNameExists($characterName)
         return false;
     }
     return (bool)$result->num_rows;
+}
+
+function getCharacterForUser($characterName, $username)
+{
+    $db = getDb();
+    $username = mysqli_real_escape_string($db, $username);
+    $characterName = mysqli_real_escape_string($db, $characterName);
+    $sql = "SELECT name,class,gender FROM characters 
+      INNER JOIN users ON(characters.userId = users.userId) 
+      WHERE username = '" . $username . "' AND name='" . $characterName . "' LIMIT 1";
+
+
+    $result = mysqli_query($db, $sql);
+    if (!$result) {
+        return null;
+    }
+
+    $row = $result->fetch_assoc();
+    if(!$row){
+        return $row;
+    }
+
+    $row['gender'] = (int)$row['gender'] === 1 ? 'male' : 'female';
+    return $row;
 }
 
 function getCharactersForUser($username)

@@ -5,9 +5,10 @@ router('/map', function () {
         return event('http.403');
     }
 
-    if(!isCharacterSelected()){
-        echo router('/character/select');
+    if (!isCharacterSelected()) {
+        echo router('/character/view');
         return;
     }
-    return 'This is a map';
+
+    echo 'This is a map';
 });
