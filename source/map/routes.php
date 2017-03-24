@@ -9,6 +9,11 @@ router('/map', function () {
         echo router('/character/view');
         return;
     }
+    navigation(_('Map'), '/');
+    navigation(_('Select character'), '/character/view');
+    navigation(_('Logout'), '/logout');
 
-    echo 'This is a map';
+    activateNavigation('/');
+    $data = [];
+    echo render('map', $data);
 });
