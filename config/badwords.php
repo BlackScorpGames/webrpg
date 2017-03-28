@@ -3,5 +3,13 @@
 return [
     'ass',
     'fucker',
-    'sucker'
+    'sucker',
+    'anal',
+    'bangbros',
+    'bastard',
+    'bitch',
+    'butthole',
+    'neonazi',
+    'nigger',
+    'nigga'
 ];
