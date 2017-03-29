@@ -26,7 +26,7 @@ config('equipmentSlots', [
 ]);
 
 config('viewport',[
-    'width' => 7,
+    'width' => 11,
     'height'=>7
 ]);
 config('tileSize',[

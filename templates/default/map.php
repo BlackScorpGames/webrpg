@@ -7,33 +7,47 @@
 <?php section('styles') ?>
 <?php require_once __DIR__ . '/../partials/navigationSection.php'; ?>
 <?php section('content') ?>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <?= $location ?>
-        </div>
-        <div class="panel-body" style="position: relative">
-            <div style="position: relative">
-                <?php foreach ($map as $name => $mapData): ?>
-                    <div class="map <?= $name ?>" style="position: absolute">
-                        <?php for ($y = 0; $y < $viewPort['height']; $y++): ?>
-                            <?php for ($x = 0; $x < $viewPort['width']; $x++):
-                                $dataKey = $viewPort['width'] * $y + $x;
-                                $data = isset($mapData['data'][$dataKey]) ? $mapData['data'][$dataKey] : null;
-                                ?>
-
-                                <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= ($data && isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= ($data && isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"
-                                     class="tile<?= ($data && isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?>"></div>
-                            <?php endfor; ?>
-                        <?php endfor; ?>
-                    </div>
-                <?php endforeach; ?>
+    <div class="col-lg-4 col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <?= _('Actions') ?>
             </div>
-
+            <div class="panel-body">
+                
+            </div>
         </div>
 
     </div>
+    <div class="col-lg-8 col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <?= $location ?>
+            </div>
+            <div class="panel-body">
+                <div class="viewport">
+                    <div class="mapWrapper"
+                         style="margin-left:-<?= ~~(($tile['width'] * $viewPort['width']) / 2) ?>px;width:<?= $tile['width'] * $viewPort['width'] ?>px;height: <?= $tile['height'] * $viewPort['height'] ?>px ">
+                        <?php foreach ($map as $name => $mapData): ?>
+                            <div class="map <?= $name ?>">
+                                <?php for ($y = 0; $y < $viewPort['height']; $y++): ?>
+                                    <?php for ($x = 0; $x < $viewPort['width']; $x++):
+                                        $dataKey = $viewPort['width'] * $y + $x;
+                                        $data = isset($mapData['data'][$dataKey]) ? $mapData['data'][$dataKey] : null;
+                                        ?>
 
+                                        <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= ($data && isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= ($data && isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"
+                                             class="tile<?= ($data && isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?>"></div>
+                                    <?php endfor; ?>
+                                <?php endfor; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 <?php section('content') ?>
 <?php section('scripts') ?>
     <script>

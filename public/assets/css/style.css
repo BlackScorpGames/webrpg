@@ -97,3 +97,16 @@ body {
 .map .tile{
     position: absolute;
 }
+.viewport{
+    overflow: hidden;
+    position: relative;
+    margin: auto;
+    padding: 0;
+    border: 1px solid black;
+}
+
+.mapWrapper{
+    position: relative;
+    left:50%;
+
+}
