@@ -15,19 +15,18 @@ function viewMap()
     navigation(_('Logout'), '/logout');
 
     activateNavigation('/');
-    $mapData = loadMap('city', 12, 12, 7, 7, 64, 64);
+    $characterX = 12;
+    $characterY = 12;
+    $viewPort = config('viewport');
+    $tileSize = config('tileSize');
+
+    $mapData = loadMap('city', $characterX, $characterY, $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
 
     $data = [
         'location' => 'Test city',
         'map' => $mapData,
-        'viewPort' => [
-            'width' => 7,
-            'height' => 7
-        ],
-        'tile' => [
-            'width' => 64,
-            'height' => 64
-        ]
+        'viewPort' => $viewPort,
+        'tile' => $tileSize
     ];
 
     echo render('map', $data);
@@ -66,6 +65,7 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
             for ($tileSetWidth = 0; $tileSetWidth <$tileSetImageWidth; $tileSetWidth += $tileSetTileImageWidth) {
                 $tiles[$firstId] = [
                     'tileSetName' => $tileset['name'],
+                    'size' =>sprintf('%dpx %dpx',$tileSetImageWidth,$tileSetImageHeight),
                     'position' => sprintf('-%dpx -%dpx', $tileSetWidth, $tileSetHeight)
                 ];
 

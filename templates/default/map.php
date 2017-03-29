@@ -15,20 +15,21 @@
         <div class="panel-body" style="position: relative">
             <div style="position: relative">
                 <?php foreach ($map as $name => $mapData): ?>
-                    <div class="map <?= $name ?>">
+                    <div class="map <?= $name ?>" style="position: absolute">
                         <?php for ($y = 0; $y < $viewPort['height']; $y++): ?>
                             <?php for ($x = 0; $x < $viewPort['width']; $x++):
                                 $dataKey = $viewPort['width'] * $y + $x;
                                 $data = isset($mapData['data'][$dataKey]) ? $mapData['data'][$dataKey] : null;
                                 ?>
 
-                                <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= ($data && isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?>"
+                                <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= ($data && isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= ($data && isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"
                                      class="tile<?= ($data && isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?>"></div>
                             <?php endfor; ?>
                         <?php endfor; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
+
         </div>
 
     </div>

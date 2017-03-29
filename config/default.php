@@ -25,6 +25,15 @@ config('equipmentSlots', [
     5 => 'ring-right'
 ]);
 
+config('viewport',[
+    'width' => 7,
+    'height'=>7
+]);
+config('tileSize',[
+    'width' => 64,
+    'height'=>64
+]);
+
 config('initialEquipment', [
     'male.warrior' => [
         0 => 'plateArmor',
