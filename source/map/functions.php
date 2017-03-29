@@ -15,16 +15,16 @@ function viewMap()
     navigation(_('Logout'), '/logout');
 
     activateNavigation('/');
-    $mapData = loadMap('city', 12, 12, 7, 7);
+    $mapData = loadMap('city', 12, 12, 7, 7, 64, 64);
 
     $data = [
         'location' => 'Test city',
         'map' => $mapData,
-        'viewPort' =>[
+        'viewPort' => [
             'width' => 7,
             'height' => 7
         ],
-        'tile'=>[
+        'tile' => [
             'width' => 64,
             'height' => 64
         ]
@@ -33,7 +33,7 @@ function viewMap()
     echo render('map', $data);
 }
 
-function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight)
+function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $tileWidth, $tileHeight)
 {
     $pathToMapFile = realpath(ROOT_DOR . '/gamedata/maps/' . $name . '.json');
     if (!$pathToMapFile) {
@@ -51,9 +51,33 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight)
         return;
     }
     $originalLayers = $mapData['layers'];
-    $tielsets = $mapData['tilesets'];
+    $tilesets = $mapData['tilesets'];
+    $tiles = [];
+    foreach ($tilesets as $tileset) {
+        $firstId = $tileset['firstgid'];
+        $ratioHeight = ~~($tileHeight / $tileset['tileheight']);
+        $ratioWidth = ~~($tileWidth / $tileset['tilewidth']);
+        $tileSetImageWidth = ($tileset['imagewidth'] * $ratioWidth);
+        $tileSetImageHeight = ($tileset['imageheight'] * $ratioHeight);
+        $tileSetTileImageHeight =  ($tileset['tileheight'] * $ratioHeight);
+        $tileSetTileImageWidth = ($tileset['tilewidth'] * $ratioWidth);
+
+        for ($tileSetHeight = 0; $tileSetHeight < $tileSetImageHeight; $tileSetHeight +=$tileSetTileImageHeight) {
+            for ($tileSetWidth = 0; $tileSetWidth <$tileSetImageWidth; $tileSetWidth += $tileSetTileImageWidth) {
+                $tiles[$firstId] = [
+                    'tileSetName' => $tileset['name'],
+                    'position' => sprintf('-%dpx -%dpx', $tileSetWidth, $tileSetHeight)
+                ];
+
+                $firstId++;
+            }
+        }
+
+    }
 
     $layers = [];
+
+
     $halfViewPortWidth = ~~($viewPortWidth / 2);
     $halfViewportHeight = ~~($viewPortHeight / 2);
     $startX = $centerX - $halfViewPortWidth;
@@ -76,15 +100,18 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight)
         for ($y = $startY; $y < $endY; $y++) {
             for ($x = $startX; $x < $endX; $x++) {
                 $dataKey = $width * $y + $x;
-                if (isset($originalData[$dataKey])) {
-                    $data[] = $originalData[$dataKey];
+                $value = null;
+                if (isset($originalData[$dataKey]) && isset($tiles[$originalData[$dataKey]])) {
+                    $value = $tiles[$originalData[$dataKey]];
                 }
+                $data[] = $value;
             }
         }
 
         $viewPort = [
             'data' => $data,
         ];
+
         $layers[$layer['name']] = $viewPort;
 
 
