@@ -15,18 +15,23 @@ function viewMap()
     navigation(_('Logout'), '/logout');
 
     activateNavigation('/');
-    $characterX = 12;
-    $characterY = 12;
+
+    $activeCharacter = getSelectedCharacter();
+    $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
+    $activeCharacter['left'] = '0';
+    $activeCharacter['top'] = '0';
     $viewPort = config('viewport');
     $tileSize = config('tileSize');
 
-    $mapData = loadMap('city', $characterX, $characterY, $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
+    $mapData = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
 
     $data = [
-        'location' => 'Test city',
+        'location' => 'test city',
         'map' => $mapData,
         'viewPort' => $viewPort,
-        'tile' => $tileSize
+        'tile' => $tileSize,
+        'activeCharacter' => $activeCharacter,
+        'equipmentSlots' => config('equipmentSlots')
     ];
 
     echo render('map', $data);
@@ -58,14 +63,14 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
         $ratioWidth = ~~($tileWidth / $tileset['tilewidth']);
         $tileSetImageWidth = ($tileset['imagewidth'] * $ratioWidth);
         $tileSetImageHeight = ($tileset['imageheight'] * $ratioHeight);
-        $tileSetTileImageHeight =  ($tileset['tileheight'] * $ratioHeight);
+        $tileSetTileImageHeight = ($tileset['tileheight'] * $ratioHeight);
         $tileSetTileImageWidth = ($tileset['tilewidth'] * $ratioWidth);
 
-        for ($tileSetHeight = 0; $tileSetHeight < $tileSetImageHeight; $tileSetHeight +=$tileSetTileImageHeight) {
-            for ($tileSetWidth = 0; $tileSetWidth <$tileSetImageWidth; $tileSetWidth += $tileSetTileImageWidth) {
+        for ($tileSetHeight = 0; $tileSetHeight < $tileSetImageHeight; $tileSetHeight += $tileSetTileImageHeight) {
+            for ($tileSetWidth = 0; $tileSetWidth < $tileSetImageWidth; $tileSetWidth += $tileSetTileImageWidth) {
                 $tiles[$firstId] = [
                     'tileSetName' => $tileset['name'],
-                    'size' =>sprintf('%dpx %dpx',$tileSetImageWidth,$tileSetImageHeight),
+                    'size' => sprintf('%dpx %dpx', $tileSetImageWidth, $tileSetImageHeight),
                     'position' => sprintf('-%dpx -%dpx', $tileSetWidth, $tileSetHeight)
                 ];
 

@@ -7,9 +7,11 @@ body {
     background: #e3e3e3;
     position: relative;
 }
-.modal{
-    background: rgba(0,0,0,0.5);
+
+.modal {
+    background: rgba(0, 0, 0, 0.5);
 }
+
 .equipment {
     position: relative;
 }
@@ -31,7 +33,8 @@ body {
     background-position-y: -128px;
     position: relative;
 }
-.armor.female.leatherArmor.walk.south{
+
+.armor.female.leatherArmor.walk.south {
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/inventory/female_leather_armor.png");
@@ -40,7 +43,8 @@ body {
     position: absolute;
     top: 0;
 }
-.armor.male.leatherArmor.walk.south{
+
+.armor.male.leatherArmor.walk.south {
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/inventory/male_leather_armor.png");
@@ -49,7 +53,8 @@ body {
     position: absolute;
     top: 0;
 }
-.head.male.leatherArmor.walk.south{
+
+.head.male.leatherArmor.walk.south {
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/inventory/male_leather_cap.png");
@@ -58,7 +63,8 @@ body {
     position: absolute;
     top: 0
 }
-.head.female.leatherArmor.walk.south{
+
+.head.female.leatherArmor.walk.south {
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/inventory/female_leather_cap.png");
@@ -67,13 +73,13 @@ body {
     position: absolute;
     top: 0
 }
+
 .body.female.walk.south.big,
 .body.male.walk.south.big,
 .armor.female.leatherArmor.walk.south.big,
 .head.female.leatherArmor.walk.south.big,
 .head.male.leatherArmor.walk.south.big,
-.armor.male.leatherArmor.walk.south.big
-{
+.armor.male.leatherArmor.walk.south.big {
     height: 128px;
     width: 128px;
     background-size: 1664px 2688px;
@@ -81,23 +87,27 @@ body {
 
 }
 
-.map .base_out_atlas{
+.map .base_out_atlas {
     background-image: url("/assets/img/tilesets/base_out_atlas.png");
     background-repeat: no-repeat;
     background-size: 2048px 2048px;
 }
-.map .terrain_atlas{
+
+.map .terrain_atlas {
     background-image: url("/assets/img/tilesets/terrain_atlas.png");
     background-repeat: no-repeat;
     background-size: 2048px 2048px;
 }
-.map{
+
+.map {
     position: absolute;
 }
-.map .tile{
+
+.map .tile {
     position: absolute;
 }
-.viewport{
+
+.viewport {
     overflow: hidden;
     position: relative;
     margin: auto;
@@ -105,8 +115,42 @@ body {
     border: 1px solid black;
 }
 
-.mapWrapper{
+.mapWrapper {
     position: relative;
-    left:50%;
+    left: 50%;
 
+}
+
+.viewport .arrows {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+}
+.viewport .arrows a{
+    font-size: 3em;
+    color: white;
+    text-decoration: none;
+}
+.viewport .arrows .north {
+    left: 50%;
+    top: 0;
+    position: absolute;
+}
+
+.viewport .arrows .east {
+    right: 0;
+    top: 50%;
+    position: absolute;
+}
+
+.viewport .arrows .south {
+    left: 50%;
+    bottom: 0;
+    position: absolute;
+}
+.viewport .arrows .west {
+    left: 0;
+    top: 50%;
+    position: absolute;
 }

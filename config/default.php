@@ -24,7 +24,11 @@ config('equipmentSlots', [
     4 => 'ring-left',
     5 => 'ring-right'
 ]);
-
+config('initialLocation' ,[
+   'map' => 'city',
+    'x'=>10,
+    'y'=>5
+]);
 config('viewport',[
     'width' => 11,
     'height'=>7

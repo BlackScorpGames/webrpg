@@ -4,6 +4,11 @@ function isCharacterSelected()
     return session('characterName') !== null;
 }
 
+function getSelectedCharacterName()
+{
+    return session('characterName');
+}
+
 function initializeCharacterData($character = null)
 {
     $characters = getCharactersForUser(getCurrentUsername());
@@ -23,6 +28,40 @@ function initializeCharacterData($character = null)
 
     activateNavigation('/character/select');
     return [$characters, $activeCharacter];
+}
+
+function moveCharacter($direction)
+{
+    if (!isCharacterSelected()) {
+        redirect('/');
+        return;
+    }
+
+    $locationModifies = [
+        'north' => [
+            'x' => 0,
+            'y' => -1
+        ],
+        'east' => [
+            'x' => 1,
+            'y' => 0
+        ],
+        'south' => [
+            'x' => 0,
+            'y' => +1
+        ],
+        'west' => [
+            'x' => -1,
+            'y' => 0
+        ]
+    ];
+    $map = getLocationForCharacter(getSelectedCharacterName());
+    return router('/map');
+}
+
+function getLocationForCharacter($characterName)
+{
+    return ['city', 12, 12];
 }
 
 function askToDeleteCharacter($character = null)
@@ -241,12 +280,15 @@ function characterNameExists($characterName)
     return (bool)$result->num_rows;
 }
 
+function getSelectedCharacter(){
+    return getCharacterForUser(getSelectedCharacterName(),getCurrentUsername());
+}
 function getCharacterForUser($characterName, $username)
 {
     $db = getDb();
     $username = mysqli_real_escape_string($db, $username);
     $characterName = mysqli_real_escape_string($db, $characterName);
-    $sql = "SELECT name,class,gender FROM characters 
+    $sql = "SELECT name,class,gender,map,x,y FROM characters 
       INNER JOIN users ON(characters.userId = users.userId) 
       WHERE username = '" . $username . "' AND name='" . $characterName . "' LIMIT 1";
 
@@ -257,7 +299,7 @@ function getCharacterForUser($characterName, $username)
     }
 
     $row = $result->fetch_assoc();
-    if(!$row){
+    if (!$row) {
         return $row;
     }
 

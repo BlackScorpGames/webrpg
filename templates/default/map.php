@@ -13,7 +13,7 @@
                 <?= _('Actions') ?>
             </div>
             <div class="panel-body">
-                
+
             </div>
         </div>
 
@@ -24,7 +24,18 @@
                 <?= $location ?>
             </div>
             <div class="panel-body">
+
                 <div class="viewport">
+                    <div class="arrows">
+                        <div class="north"><a href="/character/move/north" class="glyphicon glyphicon-chevron-up"></a>
+                        </div>
+                        <div class="east"><a href="/character/move/east" class="glyphicon glyphicon-chevron-right"></a>
+                        </div>
+                        <div class="south"><a href="/character/move/south" class="glyphicon glyphicon-chevron-down"></a>
+                        </div>
+                        <div class="west"><a href="/character/move/west" class="glyphicon glyphicon-chevron-left"></a>
+                        </div>
+                    </div>
                     <div class="mapWrapper"
                          style="margin-left:-<?= ~~(($tile['width'] * $viewPort['width']) / 2) ?>px;width:<?= $tile['width'] * $viewPort['width'] ?>px;height: <?= $tile['height'] * $viewPort['height'] ?>px ">
                         <?php foreach ($map as $name => $mapData): ?>
@@ -36,11 +47,25 @@
                                         ?>
 
                                         <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= ($data && isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= ($data && isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"
-                                             class="tile<?= ($data && isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?>"></div>
+                                             class="tile<?= ($data && isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?>">
+
+
+                                        </div>
                                     <?php endfor; ?>
                                 <?php endfor; ?>
                             </div>
                         <?php endforeach; ?>
+                        <div class="map characters">
+                            <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $activeCharacter['left'] ?>px;top:<?= $activeCharacter['top'] ?>px"
+                                 class="tile">
+                                <div class="equipment <?= $activeCharacter['class'] ?>">
+                                    <div class="body <?= $activeCharacter['gender'] ?> walk south big"></div>
+                                    <?php foreach ($equipmentSlots as $slotNumber => $slotName): ?>
+                                        <div class="<?= $slotName ?> <?= $activeCharacter['gender'] ?> <?= $activeCharacter['inventory'][$slotNumber]['itemName'] ?> walk south big"></div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
