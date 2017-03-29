@@ -25,7 +25,7 @@ function redirect($path)
 }
 
 /**
- * @return mysqli
+ * @return mysqli | null
  */
 function getDb()
 {
@@ -43,6 +43,7 @@ function getDb()
 
     if (mysqli_connect_error()) {
         trigger_error(mysqli_connect_error());
+        return null;
     }
     mysqli_set_charset($mysqli, $charset);
 
