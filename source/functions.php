@@ -21,7 +21,7 @@ function isGet()
 function redirect($path)
 {
     header('Location:'.$path);
-    exit(0);
+    return;
 }
 
 /**
