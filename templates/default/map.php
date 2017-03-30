@@ -21,7 +21,7 @@
     <div class="col-lg-8 col-md-8">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <?= $location ?>
+                <?= $location ?> (<?=$activeCharacter['x']?>/<?=$activeCharacter['y']?>)
             </div>
             <div class="panel-body">
 

@@ -1,6 +1,6 @@
 <?php
 
-function viewMap()
+function viewMap($direction = 'south')
 {
     if (!isLoggedIn()) {
         return event('http.403');
@@ -18,8 +18,6 @@ function viewMap()
 
     $activeCharacter = getSelectedCharacter();
     $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
-    $activeCharacter['left'] = '0';
-    $activeCharacter['top'] = '0';
     $viewPort = config('viewport');
     $tileSize = config('tileSize');
 
@@ -33,6 +31,7 @@ function viewMap()
         'viewPort' => $viewPort,
         'tile' => $tileSize,
         'activeCharacter' => $activeCharacter,
+        'viewDirection' => $direction,
         'equipmentSlots' => config('equipmentSlots')
     ];
 
@@ -118,13 +117,21 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
         $originalData = $layer['data'];
 
         $width = $layer['width'];
+        $height= $layer['height'];
         for ($y = $startY; $y < $endY; $y++) {
             for ($x = $startX; $x < $endX; $x++) {
                 $dataKey = $width * $y + $x;
+
                 $value = null;
                 if (isset($originalData[$dataKey]) && isset($tiles[$originalData[$dataKey]])) {
                     $value = $tiles[$originalData[$dataKey]];
                 }
+                if($x <= 0 || $y <= 0 || $x >= $width || $y >= $height){
+                    $value = [
+                        'tileSetName' =>'empty'
+                    ];
+                }
+
                 $data[] = $value;
             }
         }

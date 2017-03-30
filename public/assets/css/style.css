@@ -16,7 +16,7 @@ body {
     position: relative;
 }
 
-.body.male.walk.south {
+.body.male {
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/male_body.png");
@@ -25,7 +25,7 @@ body {
     position: relative;
 }
 
-.body.female.walk.south {
+.body.female {
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/female_body.png");
@@ -34,7 +34,7 @@ body {
     position: relative;
 }
 
-.armor.female.leatherArmor.walk.south {
+.armor.female.leatherArmor {
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/inventory/female_leather_armor.png");
@@ -44,7 +44,7 @@ body {
     top: 0;
 }
 
-.armor.male.leatherArmor.walk.south {
+.armor.male.leatherArmor {
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/inventory/male_leather_armor.png");
@@ -54,7 +54,7 @@ body {
     top: 0;
 }
 
-.head.male.leatherArmor.walk.south {
+.head.male.leatherArmor {
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/inventory/male_leather_cap.png");
@@ -64,7 +64,7 @@ body {
     top: 0
 }
 
-.head.female.leatherArmor.walk.south {
+.head.female.leatherArmor{
     height: 64px;
     width: 64px;
     background-image: url("/assets/img/inventory/female_leather_cap.png");
@@ -84,44 +84,82 @@ body {
     width: 128px;
     background-size: 1664px 2688px;
     background-position-y: -256px;
-
 }
 
-.tile .body.female.walk.south.big,
-.tile .body.male.walk.south.big,
-.tile .armor.female.leatherArmor.walk.south.big,
-.tile .head.female.leatherArmor.walk.south.big,
-.tile .head.male.leatherArmor.walk.south.big,
-.tile .armor.male.leatherArmor.walk.south.big{
+.body.female.walk.north.big,
+.body.male.walk.north.big,
+.armor.female.leatherArmor.walk.north.big,
+.head.female.leatherArmor.walk.north.big,
+.head.male.leatherArmor.walk.north.big,
+.armor.male.leatherArmor.walk.north.big {
+    height: 128px;
+    width: 128px;
+    background-size: 1664px 2688px;
+    background-position-y: -0px;
+}
+
+.body.female.walk.west.big,
+.body.male.walk.west.big,
+.armor.female.leatherArmor.walk.west.big,
+.head.female.leatherArmor.walk.west.big,
+.head.male.leatherArmor.walk.west.big,
+.armor.male.leatherArmor.walk.west.big {
+    height: 128px;
+    width: 128px;
+    background-size: 1664px 2688px;
+    background-position-y: -128px;
+}
+
+
+.body.female.walk.east.big,
+.body.male.walk.east.big,
+.armor.female.leatherArmor.walk.east.big,
+.head.female.leatherArmor.walk.east.big,
+.head.male.leatherArmor.walk.east.big,
+.armor.male.leatherArmor.walk.east.big {
+    height: 128px;
+    width: 128px;
+    background-size: 1664px 2688px;
+    background-position-y: -384px;
+}
+
+.tile .body.female.walk,
+.tile .body.male.walk,
+.tile .armor.female.leatherArmor.walk,
+.tile .head.female.leatherArmor.walk,
+.tile .head.male.leatherArmor.walk,
+.tile .armor.male.leatherArmor.walk{
     margin-left:-32px;
     top:-64px;
-}
-
-
-.map .terrain{
-    background-image: url("/assets/img/tilesets/terrain.png");
-    background-size: 200% 200%;
-}
-.map .base_out_atlas {
-    background-image: url("/assets/img/tilesets/base_out_atlas.png");
-    background-repeat: no-repeat;
-    background-size: 200% 200%;
-}
-
-.map .terrain_atlas {
-    background-image: url("/assets/img/tilesets/terrain_atlas.png");
-    background-repeat: no-repeat;
-    background-size: 200% 200%;
-}
-
-.map {
-    position: absolute;
 }
 
 .map .tile {
     position: absolute;
 
 }
+.map .tile.empty{
+    background: black;
+}
+.map .tile.terrain{
+    background: url("/assets/img/tilesets/terrain.png") no-repeat ;
+    background-size: 200% 200%;
+}
+.map .tile.base_out_atlas {
+    background: url("/assets/img/tilesets/base_out_atlas.png") no-repeat ;
+    background-size: 200% 200%;
+}
+
+.map .tile.terrain_atlas {
+    background: url("/assets/img/tilesets/terrain_atlas.png") no-repeat ;
+    background-size: 200% 200%;
+}
+
+.map {
+    position: absolute;
+
+}
+
+
 
 .viewport {
     overflow: hidden;
