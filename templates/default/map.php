@@ -43,29 +43,18 @@
                                 <?php for ($y = 0; $y < $viewPort['height']; $y++): ?>
                                     <?php for ($x = 0; $x < $viewPort['width']; $x++):
                                         $dataKey = $viewPort['width'] * $y + $x;
-                                        $data = isset($mapData['data'][$dataKey]) ? $mapData['data'][$dataKey] : null;
+                                        $data = isset($mapData[$dataKey]) ? $mapData[$dataKey] : null;
                                         ?>
 
                                         <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= ($data && isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= ($data && isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"
                                              class="tile<?= ($data && isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?>">
-
+                                            <?php if($data && isset($data['partial'])) require_once __DIR__.'/../partials/'.$data['partial'].'.php';?>
 
                                         </div>
                                     <?php endfor; ?>
                                 <?php endfor; ?>
                             </div>
                         <?php endforeach; ?>
-                        <div class="map characters">
-                            <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $activeCharacter['left'] ?>px;top:<?= $activeCharacter['top'] ?>px"
-                                 class="tile">
-                                <div class="equipment <?= $activeCharacter['class'] ?>">
-                                    <div class="body <?= $activeCharacter['gender'] ?> walk south big"></div>
-                                    <?php foreach ($equipmentSlots as $slotNumber => $slotName): ?>
-                                        <div class="<?= $slotName ?> <?= $activeCharacter['gender'] ?> <?= $activeCharacter['inventory'][$slotNumber]['itemName'] ?> walk south big"></div>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
