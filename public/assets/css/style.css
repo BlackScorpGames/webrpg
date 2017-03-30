@@ -86,17 +86,20 @@ body {
     background-position-y: -256px;
 
 }
-
+.map .terrain{
+    background-image: url("/assets/img/tilesets/terrain.png");
+    background-size: 200% 200%;
+}
 .map .base_out_atlas {
     background-image: url("/assets/img/tilesets/base_out_atlas.png");
     background-repeat: no-repeat;
-    background-size: 2048px 2048px;
+    background-size: 200% 200%;
 }
 
 .map .terrain_atlas {
     background-image: url("/assets/img/tilesets/terrain_atlas.png");
     background-repeat: no-repeat;
-    background-size: 2048px 2048px;
+    background-size: 200% 200%;
 }
 
 .map {
