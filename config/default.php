@@ -24,18 +24,18 @@ config('equipmentSlots', [
     4 => 'ring-left',
     5 => 'ring-right'
 ]);
-config('initialLocation' ,[
-   'map' => 'city',
-    'x'=>10,
-    'y'=>5
+config('initialLocation', [
+    'map' => 'city',
+    'x' => 10,
+    'y' => 5
 ]);
-config('viewport',[
+config('viewport', [
     'width' => 11,
-    'height'=>7
+    'height' => 7
 ]);
-config('tileSize',[
+config('tileSize', [
     'width' => 64,
-    'height'=>64
+    'height' => 64
 ]);
 config('initialEquipment', [
     'male.warrior' => [
@@ -71,4 +71,5 @@ config('initialEquipment', [
         2 => 'staff',
     ],
 ]);
-config('moduleFolder', ROOT_DIR . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
+
+config('moduleFolder', realpath(ROOT_DIR . '/source'));

@@ -41,17 +41,17 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
 {
     $pathToMapFile = realpath(ROOT_DOR . '/gamedata/maps/' . $name . '.json');
     if (!$pathToMapFile) {
-        trigger_error(_("File for map not exists"), E_USER_ERROR);
+        trigger_error(_("File for map not exists"));
         return;
     }
     $mapContent = file_get_contents($pathToMapFile);
     if (!$mapContent) {
-        trigger_error(_("File content is empty"), E_USER_ERROR);
+        trigger_error(_("File content is empty"));
         return;
     }
     $mapData = json_decode($mapContent, true);
     if (json_last_error()) {
-        trigger_error(json_last_error_msg(), E_USER_ERROR);
+        trigger_error(json_last_error_msg());
         return;
     }
     $originalLayers = $mapData['layers'];

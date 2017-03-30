@@ -203,7 +203,7 @@ function createCharacter($userId, $characterName, $characterClass, $characterGen
     VALUES ('" . $characterName . "'," . $userId . ",'" . $characterClass . "','" . $characterGender . "')";
     $result = mysqli_query($db, $sql);
     if (!$result) {
-        trigger_error(mysqli_error($db), E_USER_ERROR);
+        trigger_error(mysqli_error($db));
         return null;
     }
     return mysqli_insert_id($db);
