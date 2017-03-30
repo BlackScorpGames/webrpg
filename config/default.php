@@ -37,7 +37,6 @@ config('tileSize',[
     'width' => 64,
     'height'=>64
 ]);
-
 config('initialEquipment', [
     'male.warrior' => [
         0 => 'plateArmor',
@@ -72,3 +71,4 @@ config('initialEquipment', [
         2 => 'staff',
     ],
 ]);
+config('moduleFolder', ROOT_DIR . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);

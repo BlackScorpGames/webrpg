@@ -2,6 +2,7 @@
 /**
  * This is a place where we configure our application
  */
+define('ROOT_DIR', realpath(__DIR__));
 
 /**
  * Include base classes
@@ -9,11 +10,9 @@
 require_once __DIR__ . '/source/functions.php';
 require_once __DIR__ . '/source/template.php';
 
-
 /**
  * Include configuration files
  */
-
 require_once __DIR__ . '/config/default.php';
 
 if (!is_file(__DIR__ . '/config/database.php')) {
@@ -22,9 +21,15 @@ if (!is_file(__DIR__ . '/config/database.php')) {
 }
 require_once __DIR__ . '/config/database.php';
 
+/**
+ * Include all configured modules
+ */
+require_once __DIR__ . '/config/modules.php';
+
 set_error_handler(function () {
     event('http.500', ['message' => func_get_arg(1), 'context' => func_get_arg(4)]);
 });
+
 /**
  * Setup basic events
  */
@@ -48,13 +53,4 @@ event('http.500', [], function ($message,$context) {
 router('/', function () {
     echo "Hello world!";
 });
-define('ROOT_DOR',realpath(__DIR__));
-
-/**
- * Enable modules
- */
-require_once __DIR__ . '/source/account/index.php'; //include account module
-require_once __DIR__ . '/source/character/index.php'; //include character module
-require_once __DIR__ . '/source/inventory/index.php'; //include inventory module
-require_once __DIR__ . '/source/map/index.php'; //include map module
 

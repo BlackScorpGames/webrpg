@@ -221,3 +221,38 @@ function router($path, $action = null)
 
     return event('http.404', [$path, 'Route not found']);
 }
+
+/**
+ * @param string|null $name
+ * @param string|null $bootstrapFile
+ *
+ * @return string|array
+ */
+function module($name = null, $bootstrapFile = null)
+{
+    static $modules = [];
+
+    if(is_null($name)) {
+        return $modules;
+    }
+
+    if(is_null($bootstrapFile)) {
+        if(!isset($modules[$name])) {
+            $message = sprintf('Unknown module "%s".', $name);
+            die($message);
+        }
+
+        return $modules[$name];
+    }
+
+    event('module.before', [$name, $bootstrapFile]);
+    $moduleDir = config('moduleFolder') . $name . DIRECTORY_SEPARATOR;
+    if(isset($modules[$name])) {
+        $message = sprintf('Module "%s" already loaded.', $name);
+        die($message);
+    }
+    require_once $moduleDir . $bootstrapFile;
+    event('module.after', [$name, $bootstrapFile]);
+
+    return $modules[$name] = $moduleDir;
+}
