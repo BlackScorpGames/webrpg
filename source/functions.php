@@ -20,7 +20,7 @@ function isGet()
  */
 function redirect($path)
 {
-    header('Location:'.$path);
+    header('Location:' . $path);
     return;
 }
 
@@ -99,7 +99,7 @@ function navigation($title = null, $url = null)
 }
 
 /**
- * @param string      $name
+ * @param string $name
  * @param string|null $value
  *
  * @return mixed
@@ -119,7 +119,7 @@ function session($name, $value = null)
 }
 
 /**
- * @param string      $name
+ * @param string $name
  * @param string|null $value
  *
  * @return mixed
@@ -135,8 +135,8 @@ function sharedVariable($name, $value = null)
 }
 
 /**
- * @param string     $name
- * @param array      $data
+ * @param string $name
+ * @param array $data
  * @param mixed|null $action
  *
  * @return mixed
@@ -159,7 +159,7 @@ function event($name, array $data = [], $action = null)
 }
 
 /**
- * @param string      $key
+ * @param string $key
  * @param string|null $value
  *
  * @return mixed
@@ -179,11 +179,11 @@ function config($key, $value = null)
  */
 function getBadWords()
 {
-    return require_once __DIR__.'/../config/badwords.php';
+    return require_once __DIR__ . '/../config/badwords.php';
 }
 
 /**
- * @param string               $path
+ * @param string $path
  * @param closure|string|array $action
  *
  * @return mixed
@@ -210,9 +210,9 @@ function router($path, $action = null)
 
             array_shift($match);
             event('middleware.before', [$match]);
-            event('middleware.before.'.$route, [$match]);
+            event('middleware.before.' . $route, [$match]);
             call_user_func_array($action, $match);
-            event('middleware.after.'.$route, [$match]);
+            event('middleware.after.' . $route, [$match]);
             event('middleware.after', [$match]);
 
             return null;
@@ -232,27 +232,39 @@ function module($name = null, $bootstrapFile = null)
 {
     static $modules = [];
 
-    if(is_null($name)) {
+    if (is_null($name)) {
         return $modules;
     }
 
-    if(is_null($bootstrapFile)) {
-        if(!isset($modules[$name])) {
+    if (is_null($bootstrapFile)) {
+        if (!isset($modules[$name])) {
             $message = sprintf('Unknown module "%s".', $name);
-            die($message);
+
+            trigger_error($message);
+            return;
         }
 
         return $modules[$name];
     }
 
-    event('module.before', [$name, $bootstrapFile]);
-    $moduleDir = config('moduleFolder') . $name . DIRECTORY_SEPARATOR;
-    if(isset($modules[$name])) {
+
+
+    if (isset($modules[$name])) {
         $message = sprintf('Module "%s" already loaded.', $name);
-        die($message);
+        trigger_error($message);
+        return;
     }
-    require_once $moduleDir . $bootstrapFile;
+    $modulePath = realpath(config('moduleFolder') . '/' . $name.'/'.$bootstrapFile);
+
+
+    if (!is_file($modulePath)) {
+        $message = sprintf('Module "%s" not exists.', $name);
+        trigger_error($message);
+        return;
+    }
+    event('module.before', [$name, $bootstrapFile]);
+    require_once $modulePath;
     event('module.after', [$name, $bootstrapFile]);
 
-    return $modules[$name] = $moduleDir;
+    return $modules[$name] = $modulePath;
 }

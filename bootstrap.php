@@ -50,7 +50,4 @@ event('http.500', [], function ($message,$context) {
     header('HTTP/1.0 500 Internal Server Error');
     echo sprintf('Something went wrong, got exception with message "<b style="color:indianred">%s</b>" <pre>%s</pre>', $message,print_r($context,true));
 });
-router('/', function () {
-    echo "Hello world!";
-});
 

@@ -29,7 +29,7 @@ function getUserIdForUsername($username)
     $sql = "SELECT userId FROM users WHERE username = '" . mysqli_real_escape_string($db, $username) . "'";
     $result = mysqli_query($db, $sql);
     if (!$result) {
-        trigger_error(mysqli_error($db), E_USER_ERROR);
+        trigger_error(mysqli_error($db));
         return null;
     }
     return (int)mysqli_fetch_row($result)[0];
@@ -41,7 +41,7 @@ function getPasswordHashForUsername($username)
     $sql = "SELECT password FROM users WHERE username = '" . mysqli_real_escape_string($db, $username) . "'";
     $result = mysqli_query($db, $sql);
     if (!$result) {
-        trigger_error(mysqli_error($db), E_USER_ERROR);
+        trigger_error(mysqli_error($db));
         return null;
     }
     return mysqli_fetch_row($result)[0];
@@ -57,7 +57,7 @@ function createUser($username, $password, $email)
     $sql = "INSERT INTO users (username,password,email,registrationDate) VALUES('" . $username . "','" . $password . "','" . $email . "',NOW())";
     $result = mysqli_query($db, $sql);
     if (!$result) {
-        trigger_error(mysqli_error($db), E_USER_ERROR);
+        trigger_error(mysqli_error($db));
         return false;
     }
     return $result;

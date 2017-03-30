@@ -87,16 +87,31 @@ body {
 
 }
 
+.tile .body.female.walk.south.big,
+.tile .body.male.walk.south.big,
+.tile .armor.female.leatherArmor.walk.south.big,
+.tile .head.female.leatherArmor.walk.south.big,
+.tile .head.male.leatherArmor.walk.south.big,
+.tile .armor.male.leatherArmor.walk.south.big{
+    margin-left:-32px;
+    top:-64px;
+}
+
+
+.map .terrain{
+    background-image: url("/assets/img/tilesets/terrain.png");
+    background-size: 200% 200%;
+}
 .map .base_out_atlas {
     background-image: url("/assets/img/tilesets/base_out_atlas.png");
     background-repeat: no-repeat;
-    background-size: 2048px 2048px;
+    background-size: 200% 200%;
 }
 
 .map .terrain_atlas {
     background-image: url("/assets/img/tilesets/terrain_atlas.png");
     background-repeat: no-repeat;
-    background-size: 2048px 2048px;
+    background-size: 200% 200%;
 }
 
 .map {
@@ -105,6 +120,7 @@ body {
 
 .map .tile {
     position: absolute;
+
 }
 
 .viewport {
@@ -112,7 +128,8 @@ body {
     position: relative;
     margin: auto;
     padding: 0;
-    border: 1px solid black;
+    border: 3px groove cadetblue;
+    border-radius: 5px;
 }
 
 .mapWrapper {
@@ -136,21 +153,26 @@ body {
     left: 50%;
     top: 0;
     position: absolute;
+    margin-left: -20px;
 }
 
 .viewport .arrows .east {
     right: 0;
     top: 50%;
     position: absolute;
+    margin-top:-24px;
 }
 
 .viewport .arrows .south {
     left: 50%;
     bottom: 0;
     position: absolute;
+
+    margin-left: -20px;
 }
 .viewport .arrows .west {
     left: 0;
     top: 50%;
     position: absolute;
+    margin-top:-24px;
 }
