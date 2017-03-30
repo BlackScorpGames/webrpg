@@ -37,7 +37,7 @@ function moveCharacter($direction)
         return;
     }
 
-    $locationModifies = [
+    $locationModifiers = [
         'north' => [
             'x' => 0,
             'y' => -1
@@ -55,13 +55,43 @@ function moveCharacter($direction)
             'y' => 0
         ]
     ];
-    $map = getLocationForCharacter(getSelectedCharacterName());
-    return router('/map');
+
+
+    $activeCharacter = getSelectedCharacter();
+    $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
+    $viewPort = config('viewport');
+    $tileSize = config('tileSize');
+
+    $mapData = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
+    if (!isset($mapData['collision'])) {
+        trigger_error('Map does not have a "collision" layer');
+        return;
+    }
+    $collisionData = $mapData['collision'];
+    $locationModifier = $locationModifiers[$direction];
+    $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
+    $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
+    $index = $viewPort['width'] * $y + $x;
+
+    $isBlocked = (bool)$collisionData[$index];
+    if (!$isBlocked) {
+        $newX = $activeCharacter['x'] + $locationModifier['x'];
+        $newY = $activeCharacter['y'] + $locationModifier['y'];
+        updateCharacterLocation($newX, $newY, $activeCharacter);
+    }
+
+
+    return router('/map/' . $direction);
 }
 
-function getLocationForCharacter($characterName)
+function updateCharacterLocation($newX, $newY, $activeCharacter)
 {
-    return ['city', 12, 12];
+    $db = getDb();
+    $sql = "UPDATE characters SET x=" . (int)$newX . ", y= " . (int)$newY . " WHERE characterId = " . (int)$activeCharacter['characterId'];
+    $result = mysqli_query($db, $sql);
+    if (!$result) {
+        trigger_error(mysqli_error($db));
+    }
 }
 
 function askToDeleteCharacter($character = null)
@@ -280,15 +310,17 @@ function characterNameExists($characterName)
     return (bool)$result->num_rows;
 }
 
-function getSelectedCharacter(){
-    return getCharacterForUser(getSelectedCharacterName(),getCurrentUsername());
+function getSelectedCharacter()
+{
+    return getCharacterForUser(getSelectedCharacterName(), getCurrentUsername());
 }
+
 function getCharacterForUser($characterName, $username)
 {
     $db = getDb();
     $username = mysqli_real_escape_string($db, $username);
     $characterName = mysqli_real_escape_string($db, $characterName);
-    $sql = "SELECT name,class,gender,map,x,y FROM characters 
+    $sql = "SELECT characterId,name,class,gender,map,x,y FROM characters 
       INNER JOIN users ON(characters.userId = users.userId) 
       WHERE username = '" . $username . "' AND name='" . $characterName . "' LIMIT 1";
 
