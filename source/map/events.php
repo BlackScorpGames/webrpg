@@ -1,16 +1,15 @@
 <?php
-event('game.newCharacter', [], function ($characterId, $characterName, $class, $gender) {
 
+event('game.newCharacter', [], function ($characterId, $characterName, $class, $gender) {
     $initialLocation = config('initialLocation');
-    if (!$initialLocation) {
+    if ($initialLocation) {
         return;
     }
-    $map = $initialLocation['map'];
-    $x = $initialLocation['x'];
-    $y = $initialLocation['y'];
-
-    $sql = "UPDATE characters SET map = '" . $map . "',x = " . $x . ",y=" . $y . " WHERE characterId = " . $characterId;
-    $db = getDb();
-    mysqli_query($db, $sql);
-
+    $sql = sprintf('UPDATE characters SET map = "%s", x = %d, y = %d WHERE characterId = %d',
+        $initialLocation['map'],
+        $initialLocation['x'],
+        $initialLocation['y'],
+        $characterId
+    );
+    query($sql);
 });

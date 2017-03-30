@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @return bool is post request
  */
@@ -17,11 +18,13 @@ function isGet()
 
 /**
  * @param string $path
+ * @return null
  */
 function redirect($path)
 {
     header('Location:' . $path);
-    return;
+
+    return null;
 }
 
 /**
@@ -48,6 +51,48 @@ function getDb()
     mysqli_set_charset($mysqli, $charset);
 
     return $mysqli;
+}
+
+/**
+ * @param mysqli|null $db
+ * @return string
+ */
+function getDbError(mysqli $db = null)
+{
+    if (is_null($db)) {
+        $db = getDb();
+    }
+
+    return mysqli_error($db);
+}
+
+/**
+ * @param string      $sql
+ * @param mysqli|null $db
+ * @param int         $resultMode
+ * @return bool|mysqli_result
+ */
+function query($sql, mysqli $db = null, $resultMode = MYSQLI_STORE_RESULT)
+{
+    if (is_null($db)) {
+        $db = getDb();
+    }
+
+    return mysqli_query($db, $sql, $resultMode);
+}
+
+/**
+ * @param string      $text
+ * @param mysqli|null $db
+ * @return string
+ */
+function queryEscape($text, mysqli $db = null)
+{
+    if (is_null($db)) {
+        $db = getDb();
+    }
+
+    return mysqli_real_escape_string($db, $text);
 }
 
 /**
@@ -99,7 +144,7 @@ function navigation($title = null, $url = null)
 }
 
 /**
- * @param string $name
+ * @param string      $name
  * @param string|null $value
  *
  * @return mixed
@@ -109,7 +154,7 @@ function session($name, $value = null)
     if (!$value && func_num_args() === 2) {
         unset($_SESSION[$name]);
 
-        return;
+        return null;
     }
     if ($value) {
         return $_SESSION[$name] = $value;
@@ -119,7 +164,7 @@ function session($name, $value = null)
 }
 
 /**
- * @param string $name
+ * @param string      $name
  * @param string|null $value
  *
  * @return mixed
@@ -127,6 +172,7 @@ function session($name, $value = null)
 function sharedVariable($name, $value = null)
 {
     static $variables = [];
+
     if ($value) {
         return $variables[$name] = $value;
     }
@@ -135,8 +181,8 @@ function sharedVariable($name, $value = null)
 }
 
 /**
- * @param string $name
- * @param array $data
+ * @param string     $name
+ * @param array      $data
  * @param mixed|null $action
  *
  * @return mixed
@@ -159,7 +205,7 @@ function event($name, array $data = [], $action = null)
 }
 
 /**
- * @param string $key
+ * @param string      $key
  * @param string|null $value
  *
  * @return mixed
@@ -167,6 +213,7 @@ function event($name, array $data = [], $action = null)
 function config($key, $value = null)
 {
     static $config = [];
+
     if ($value) {
         return $config[$key] = $value;
     }
@@ -179,11 +226,11 @@ function config($key, $value = null)
  */
 function getBadWords()
 {
-    return require_once __DIR__ . '/../config/badwords.php';
+    return require_once __DIR__ . DS . '..' . DS . 'config' . DS . 'badwords.php';
 }
 
 /**
- * @param string $path
+ * @param string               $path
  * @param closure|string|array $action
  *
  * @return mixed
@@ -226,7 +273,7 @@ function router($path, $action = null)
  * @param string|null $name
  * @param string|null $bootstrapFile
  *
- * @return string|array
+ * @return string|array|null
  */
 function module($name = null, $bootstrapFile = null)
 {
@@ -241,26 +288,24 @@ function module($name = null, $bootstrapFile = null)
             $message = sprintf('Unknown module "%s".', $name);
 
             trigger_error($message);
-            return;
+            return null;
         }
 
         return $modules[$name];
     }
 
-
-
     if (isset($modules[$name])) {
         $message = sprintf('Module "%s" already loaded.', $name);
         trigger_error($message);
-        return;
+
+        return null;
     }
-    $modulePath = realpath(config('moduleFolder') . '/' . $name.'/'.$bootstrapFile);
-
-
+    $modulePath = config('moduleFolder') . DS . $name . DS . $bootstrapFile;
     if (!is_file($modulePath)) {
         $message = sprintf('Module "%s" not exists.', $name);
         trigger_error($message);
-        return;
+
+        return null;
     }
     event('module.before', [$name, $bootstrapFile]);
     require_once $modulePath;

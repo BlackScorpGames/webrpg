@@ -1,4 +1,5 @@
 <?php
+
 return [
     'clothing' => [
         'defence' => 1,
@@ -8,8 +9,8 @@ return [
         'defence' => 2,
         'weight' => 2
     ],
-    'plateArmor'=>[
-        'defence' =>  4,
+    'plateArmor' => [
+        'defence' => 4,
         'weight' => 4
     ]
 ];

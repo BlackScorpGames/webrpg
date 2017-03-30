@@ -2,29 +2,31 @@
 /**
  * This is a place where we configure our application
  */
+define('DS', '/');
 define('ROOT_DIR', realpath(__DIR__));
 
 /**
  * Include base classes
  */
-require_once __DIR__ . '/source/functions.php';
-require_once __DIR__ . '/source/template.php';
+require_once __DIR__ . DS . 'source' . DS . 'functions.php';
+require_once __DIR__ . DS . 'source' . DS . 'template.php';
 
 /**
  * Include configuration files
  */
-require_once __DIR__ . '/config/default.php';
+require_once __DIR__ . DS . 'config' . DS . 'default.php';
 
-if (!is_file(__DIR__ . '/config/database.php')) {
-    $message = sprintf("File '%s' is missing please copy and rename '%s' to '%s'", __DIR__ . '/config/database.php', __DIR__ . '/config/database.example.php', __DIR__ . '/config/database.php');
+$databaseFile = __DIR__ . DS . 'config' . DS . 'database.php';
+if (!is_file($databaseFile)) {
+    $message = sprintf("File '%s' is missing please copy and rename '%s' to '%s'", $databaseFile, __DIR__ . str_replace('database.php', 'database.example.php', $databaseFile), $databaseFile);
     die($message);
 }
-require_once __DIR__ . '/config/database.php';
+require_once $databaseFile;
 
 /**
  * Include all configured modules
  */
-require_once __DIR__ . '/config/modules.php';
+require_once __DIR__ . DS . 'config' . DS . 'modules.php';
 
 set_error_handler(function () {
     event('http.500', ['message' => func_get_arg(1), 'context' => func_get_arg(4)]);
@@ -45,9 +47,9 @@ event('http.404', [], function ($path) {
     echo sprintf("Path '%s' not found", $path);
 });
 
-event('http.500', [], function ($message,$context) {
+event('http.500', [], function ($message, $context) {
     header('Content-Type:text/html;charset=utf-8');
     header('HTTP/1.0 500 Internal Server Error');
-    echo sprintf('Something went wrong, got exception with message "<b style="color:indianred">%s</b>" <pre>%s</pre>', $message,print_r($context,true));
+    echo sprintf('Something went wrong, got exception with message "<b style="color:indianred">%s</b>" <pre>%s</pre>', $message, print_r($context, true));
 });
 

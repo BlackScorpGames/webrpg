@@ -2,8 +2,8 @@
 
 config('templateDirectories',
     [
-        __DIR__ . '/../templates/default/',
-        __DIR__ . '/../templates/'
+        __DIR__ . DS . '..' . DS . 'templates' . DS . 'default' . DS,
+        __DIR__ . DS . '..' . DS . 'templates' . DS
     ]
 );
 
@@ -24,19 +24,23 @@ config('equipmentSlots', [
     4 => 'ring-left',
     5 => 'ring-right'
 ]);
+
 config('initialLocation', [
     'map' => 'city',
     'x' => 10,
     'y' => 5
 ]);
+
 config('viewport', [
     'width' => 11,
     'height' => 7
 ]);
+
 config('tileSize', [
     'width' => 64,
     'height' => 64
 ]);
+
 config('initialEquipment', [
     'male.warrior' => [
         0 => 'plateArmor',
@@ -72,4 +76,4 @@ config('initialEquipment', [
     ],
 ]);
 
-config('moduleFolder', realpath(ROOT_DIR . '/source'));
+config('moduleFolder', ROOT_DIR . DS . 'source');
