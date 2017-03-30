@@ -1,6 +1,5 @@
 <?php
 
-
 router('/character/select/(\S+)','selectCharacter');
 router('/character/view/(\S+)?','viewCharacter');
 router('/character/view','viewCharacter');

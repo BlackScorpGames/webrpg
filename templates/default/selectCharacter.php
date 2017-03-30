@@ -5,9 +5,7 @@
 <?php section('styles') ?>
 
 <?php section('styles') ?>
-<?php require_once __DIR__ . '/../partials/navigationSection.php'; ?>
-
-
+<?php require_once __DIR__ . DS . '..' . DS . 'partials' . DS . 'navigationSection.php'; ?>
 <?php section('content') ?>
 <?php if ($isDeletion): ?>
     <div class="modal fade in show" role="dialog">
@@ -24,23 +22,18 @@
                 <div class="modal-footer">
                     <a href="/character/confirmDelete" class="btn btn-success">OK</a>
                     <a href="/character/view/<?= $activeCharacter['name'] ?>" class="btn btn-default">Cancel</a>
-
                 </div>
             </div>
         </div>
     </div>
 <?php endif; ?>
     <div class="col-md-4">
-
-
         <div class="list-group">
             <a href="/character/new" class="list-group-item">New</a>
             <?php foreach ($characters as $character): ?>
                 <a href="/character/view/<?= $character['name'] ?>"
                    class="list-group-item <?= $activeCharacter['name'] === $character['name'] ? 'active' : '' ?>  "><?= $character['name'] ?></a>
             <?php endforeach; ?>
-
-
         </div>
     </div>
     <div class="col-md-8">
@@ -68,9 +61,7 @@
                 <a href="/character/delete/<?= $activeCharacter['name'] ?>" class="btn btn-default">Delete</a>
             </div>
         </div>
-
     </div>
-
 <?php section('content') ?>
 
 <?php section('scripts') ?>

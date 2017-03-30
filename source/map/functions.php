@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @param string $direction
+ * @return null
+ */
 function viewMap($direction = 'south')
 {
     if (!isLoggedIn()) {
@@ -8,7 +12,7 @@ function viewMap($direction = 'south')
 
     if (!isCharacterSelected()) {
         echo router('/character/view');
-        return;
+        return null;
     }
     navigation(_('Map'), '/');
     navigation(_('Select character'), '/character/view');
@@ -22,8 +26,7 @@ function viewMap($direction = 'south')
     $tileSize = config('tileSize');
 
     $mapData = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
-
-    $mapData = addCharacterToMap($mapData,$viewPort['width'], $viewPort['height']);
+    $mapData = addCharacterToMap($mapData, $viewPort['width'], $viewPort['height']);
 
     $data = [
         'location' => 'test city',
@@ -36,67 +39,85 @@ function viewMap($direction = 'south')
     ];
 
     echo render('map', $data);
+
+    return null;
 }
 
-function addCharacterToMap(array $mapData,$width,$height)
+/**
+ * @param array $mapData
+ * @param int   $width
+ * @param int   $height
+ * @return array
+ */
+function addCharacterToMap(array $mapData, $width, $height)
 {
-    if(!isset($mapData['character'])){
+    if (!isset($mapData['character'])) {
         trigger_error('Missing layer "character"');
+
         return $mapData;
     }
-    $y = ~~($height/2);
-    $x = ~~($width/2);
+    $y = ~~($height / 2);
+    $x = ~~($width / 2);
     $index = $width * $y + $x;
     $mapData['character'][$index]['partial'] = 'displayCharacter';
 
     return $mapData;
 }
 
+/**
+ * @param string $name
+ * @param int    $centerX
+ * @param int    $centerY
+ * @param int    $viewPortWidth
+ * @param int    $viewPortHeight
+ * @param int    $tileWidth
+ * @param int    $tileHeight
+ * @return array|null
+ */
 function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $tileWidth, $tileHeight)
 {
-    $pathToMapFile = realpath(ROOT_DIR . '/gamedata/maps/' . $name . '.json');
+    $pathToMapFile = ROOT_DIR . DS . 'gamedata' . DS . 'maps' . DS . $name . '.json';
     if (!$pathToMapFile) {
-        trigger_error(_("File for map not exists"));
-        return;
+        trigger_error(_('File for map not exists'));
+
+        return null;
     }
     $mapContent = file_get_contents($pathToMapFile);
     if (!$mapContent) {
-        trigger_error(_("File content is empty"));
-        return;
+        trigger_error(_('File content is empty'));
+
+        return null;
     }
     $mapData = json_decode($mapContent, true);
     if (json_last_error()) {
         trigger_error(json_last_error_msg());
-        return;
+
+        return null;
     }
-    $originalLayers = $mapData['layers'];
-    $tilesets = $mapData['tilesets'];
     $tiles = [];
-    foreach ($tilesets as $tileset) {
-        $firstId = $tileset['firstgid'];
-        $ratioHeight = ~~($tileHeight / $tileset['tileheight']);
-        $ratioWidth = ~~($tileWidth / $tileset['tilewidth']);
-        $tileSetImageWidth = ($tileset['imagewidth'] * $ratioWidth);
-        $tileSetImageHeight = ($tileset['imageheight'] * $ratioHeight);
-        $tileSetTileImageHeight = ($tileset['tileheight'] * $ratioHeight);
-        $tileSetTileImageWidth = ($tileset['tilewidth'] * $ratioWidth);
+    $originalLayers = $mapData['layers'];
+    foreach ($mapData['tilesets'] as $tileSet) {
+        $firstId = $tileSet['firstgid'];
+        $ratioHeight = ~~($tileHeight / $tileSet['tileheight']);
+        $ratioWidth = ~~($tileWidth / $tileSet['tilewidth']);
+        $tileSetImageWidth = ($tileSet['imagewidth'] * $ratioWidth);
+        $tileSetImageHeight = ($tileSet['imageheight'] * $ratioHeight);
+        $tileSetTileImageHeight = ($tileSet['tileheight'] * $ratioHeight);
+        $tileSetTileImageWidth = ($tileSet['tilewidth'] * $ratioWidth);
 
         for ($tileSetHeight = 0; $tileSetHeight < $tileSetImageHeight; $tileSetHeight += $tileSetTileImageHeight) {
             for ($tileSetWidth = 0; $tileSetWidth < $tileSetImageWidth; $tileSetWidth += $tileSetTileImageWidth) {
                 $tiles[$firstId] = [
-                    'tileSetName' => $tileset['name'],
+                    'tileSetName' => $tileSet['name'],
                     'size' => sprintf('%dpx %dpx', $tileSetImageWidth, $tileSetImageHeight),
                     'position' => sprintf('-%dpx -%dpx', $tileSetWidth, $tileSetHeight)
                 ];
-
                 $firstId++;
             }
         }
-
     }
 
     $layers = [];
-
 
     $halfViewPortWidth = ~~($viewPortWidth / 2);
     $halfViewportHeight = ~~($viewPortHeight / 2);
@@ -112,12 +133,10 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
         if ($layer['type'] !== 'tilelayer') {
             continue;
         }
-
         $data = [];
-        $originalData = $layer['data'];
-
         $width = $layer['width'];
         $height= $layer['height'];
+        $originalData = $layer['data'];
         for ($y = $startY; $y < $endY; $y++) {
             for ($x = $startX; $x < $endX; $x++) {
                 $dataKey = $width * $y + $x;
@@ -135,15 +154,8 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
                 $data[] = $value;
             }
         }
-
-
         $layers[$layer['name']] = $data;
-
-
     }
 
-
     return $layers;
-
-
 }

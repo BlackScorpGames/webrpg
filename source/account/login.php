@@ -1,7 +1,10 @@
 <?php
+
+/**
+ * @return void
+ */
 function login()
 {
-
     if (isLoggedIn()) {
         echo router('/map');
         return;
@@ -24,9 +27,13 @@ function login()
     echo render('index', $data);
 }
 
+/**
+ * @param string $username
+ * @param string $password
+ * @return array
+ */
 function doLogin($username, $password)
 {
-
     if (!isPost()) {
         return [];
     }
@@ -48,5 +55,6 @@ function doLogin($username, $password)
     session('userId', $userId);
     session('username', $username);
     redirect('/');
+
     return [];
 }

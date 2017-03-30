@@ -1,64 +1,101 @@
 <?php
+
+/**
+ * @return bool
+ */
 function isLoggedIn()
 {
     return session('username') !== null;
 }
 
+/**
+ * @return mixed|string
+ */
 function getCurrentUsername()
 {
     if (isLoggedIn()) {
         return session('username');
     }
+
     return '';
 }
-function getCurrentUserId(){
+
+/**
+ * @return int
+ */
+function getCurrentUserId()
+{
     if (isLoggedIn()) {
         return (int)session('userId');
     }
+
     return 0;
 }
 
-function redirectIfNotLoggedIn(){
+/**
+ * @return void
+ */
+function redirectIfNotLoggedIn()
+{
     if (!isLoggedIn()) {
         redirect('/');
     }
 }
+
+/**
+ * @param string $username
+ * @return int|null
+ */
 function getUserIdForUsername($username)
 {
-    $db = getDb();
-    $sql = "SELECT userId FROM users WHERE username = '" . mysqli_real_escape_string($db, $username) . "'";
-    $result = mysqli_query($db, $sql);
+    $sql = sprintf('SELECT userId FROM users WHERE username = "%s"',
+        queryEscape($username)
+    );
+    $result = query($sql);
     if (!$result) {
-        trigger_error(mysqli_error($db));
+        trigger_error(getDbError());
         return null;
     }
+
     return (int)mysqli_fetch_row($result)[0];
 }
 
+/**
+ * @param string $username
+ * @return null|string
+ */
 function getPasswordHashForUsername($username)
 {
-    $db = getDb();
-    $sql = "SELECT password FROM users WHERE username = '" . mysqli_real_escape_string($db, $username) . "'";
-    $result = mysqli_query($db, $sql);
+    $sql = sprintf('SELECT password FROM users WHERE username = "%s"',
+        queryEscape($username)
+    );
+    $result = query($sql);
     if (!$result) {
-        trigger_error(mysqli_error($db));
+        trigger_error(getDbError());
         return null;
     }
+
     return mysqli_fetch_row($result)[0];
 }
 
+/**
+ * @param string $username
+ * @param string $password
+ * @param string $email
+ * @return bool|mysqli_result
+ */
 function createUser($username, $password, $email)
 {
-    $db = getDb();
-    $username = mysqli_real_escape_string($db, $username);
-    $password = password_hash($password, PASSWORD_DEFAULT);
-    $email = mysqli_real_escape_string($db, $email);
-
-    $sql = "INSERT INTO users (username,password,email,registrationDate) VALUES('" . $username . "','" . $password . "','" . $email . "',NOW())";
-    $result = mysqli_query($db, $sql);
+    $sql = sprintf('INSERT INTO users (username, password, email, registrationDate) VALUES("%s", "%s", "%s", NOW())',
+        queryEscape($username),
+        password_hash($password, PASSWORD_DEFAULT),
+        queryEscape($email)
+    );
+    $result = query($sql);
     if (!$result) {
-        trigger_error(mysqli_error($db));
+        trigger_error(getDbError());
         return false;
     }
+
     return $result;
 }

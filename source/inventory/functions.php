@@ -1,26 +1,26 @@
 <?php
+
+/**
+ * @param string $characterName
+ * @return array
+ */
 function getEquipmentForCharacter($characterName)
 {
-    $db = getDb();
-    $characterName = mysqli_real_escape_string($db, $characterName);
     $maxEquipmentSlots = count(config('equipmentSlots'));
-    $sql = "SELECT itemName,slot,amount FROM inventory 
-            INNER JOIN characters ON(inventory.characterId = characters.characterId)
-            WHERE name='" . $characterName . "' AND slot <= ".$maxEquipmentSlots."
-            ORDER BY slot DESC";
-
-    $result = mysqli_query($db, $sql);
-    $equipment = array_fill(0,$maxEquipmentSlots,[
-        'amount'=>0,
-        'slot'=>0,
+    $sql = sprintf('SELECT itemName, slot, amount FROM inventory INNER JOIN characters ON inventory.characterId = characters.characterId WHERE name="%s" AND slot <= %d ORDER BY slot DESC',
+        queryEscape($characterName),
+        $maxEquipmentSlots
+    );
+    $result = query($sql);
+    $equipment = array_fill(0, $maxEquipmentSlots, [
+        'amount' => 0,
+        'slot' => 0,
         'itemName' => ''
     ]);
-
-    if (!$result) {
-        return $equipment;
-    }
-    while ($row = mysqli_fetch_assoc($result)) {
-        $equipment[(int)$row['slot']] = $row;
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $equipment[(int)$row['slot']] = $row;
+        }
     }
 
     return $equipment;
