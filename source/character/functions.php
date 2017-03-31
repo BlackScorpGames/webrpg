@@ -270,7 +270,7 @@ function newCharacter()
 }
 
 /**
- * @param int    $userId
+ * @param int $userId
  * @param string $characterName
  * @param string $characterClass
  * @param string $characterGender
@@ -334,7 +334,7 @@ function validateCharacterClass($characterClass)
 
 /**
  * @param string $characterName
- * @param bool   $firstErrorOnly
+ * @param bool $firstErrorOnly
  * @return array
  */
 function validateCharacterName($characterName)
@@ -385,8 +385,10 @@ function characterNameExists($characterName)
 
 /**
  * @return array|null
- */function getSelectedCharacter()
-{    return getCharacterForUser(getSelectedCharacterName(),getCurrentUsername());
+ */
+function getSelectedCharacter()
+{
+    return getCharacterForUser(getSelectedCharacterName(), getCurrentUsername());
 }
 
 /**
@@ -402,9 +404,10 @@ function getCharacterForUser($characterName, $username)
     );
     $result = query($sql);
     if (!$result) {
+
         return null;
     }
-    $row = $result->fetch_assoc();
+    $row = mysqli_fetch_assoc($result);
     if ($row) {
         $row['gender'] = (int)$row['gender'] === 1 ? 'male' : 'female';
     }
@@ -424,7 +427,7 @@ function getCharactersForUser($username)
     );
     $result = query($sql);
     if ($result) {
-        while ($row = $result->fetch_assoc()) {
+        while ($row = mysqli_fetch_assoc($result)) {
             $row['gender'] = (int)$row['gender'] === 1 ? 'male' : 'female';
             $characters[md5($row['name'])] = $row;
         }
