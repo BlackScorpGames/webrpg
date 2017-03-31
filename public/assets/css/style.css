@@ -139,7 +139,14 @@ body {
     background: url("/assets/img/tilesets/base_out_atlas.png") no-repeat;
     background-size: 200% 200%;
 }
-
+.map .tile.town_buildings {
+    background: url("/assets/img/tilesets/town_buildings.png") no-repeat;
+    background-size: 200% 200%;
+}
+.map .tile.interior {
+    background: url("/assets/img/tilesets/interior.png") no-repeat;
+    background-size: 200% 200%;
+}
 .map .tile.terrain_atlas {
     background: url("/assets/img/tilesets/terrain_atlas.png") no-repeat;
     background-size: 200% 200%;

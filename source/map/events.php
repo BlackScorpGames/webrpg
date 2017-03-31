@@ -15,6 +15,11 @@ event('game.newCharacter', [], function ($characterId, $characterName, $class, $
 });
 
 
-event('map.moveTo',[],function($mapName,$newX,$newY){
-   var_dump($mapName,$newY,$newX);
+event('map.moveTo', [], function ($mapName, $newX, $newY) {
+    $pathToMapFile = realpath(ROOT_DIR . '/gamedata/maps/' . $mapName . '.json');
+    if (!$pathToMapFile) {
+        return;
+    }
+    updateCharacterLocation($newX, $newY, $mapName, getSelectedCharacterName());
+
 });

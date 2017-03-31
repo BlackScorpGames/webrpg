@@ -97,7 +97,7 @@ function moveCharacter($direction)
     if (!$isBlocked) {
         $newX = $activeCharacter['x'] + $locationModifier['x'];
         $newY = $activeCharacter['y'] + $locationModifier['y'];
-        updateCharacterLocation($newX, $newY, $activeCharacter);
+        updateCharacterLocation($newX, $newY,$activeCharacter['map'], $activeCharacter['name']);
     }
     $layerData = $mapData['events'];
     $baseTile = $layerData['baseTile'];
@@ -120,13 +120,18 @@ function moveCharacter($direction)
 }
 
 /**
+ * @param int $newX
+ * @param int $newY
+ * @param string $mapName
  * @param string $characterName
- * @return array
  */
-function updateCharacterLocation($newX, $newY, $activeCharacter)
+function updateCharacterLocation($newX, $newY,$mapName, $characterName)
 {
     $db = getDb();
-    $sql = "UPDATE characters SET x=" . (int)$newX . ", y= " . (int)$newY . " WHERE characterId = " . (int)$activeCharacter['characterId'];
+    $mapName = mysqli_real_escape_string($db,$mapName);
+    $characterName = mysqli_real_escape_string($db,$characterName);
+    $sql = "UPDATE characters SET map = '".$mapName."',x=" . (int)$newX . ", y= " . (int)$newY . " WHERE name = '" .$characterName."'";
+
     $result = mysqli_query($db, $sql);
     if (!$result) {
         trigger_error(mysqli_error($db));

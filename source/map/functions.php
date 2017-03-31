@@ -79,7 +79,7 @@ function addCharacterToMap(array $mapData, $width, $height, $activeCharacter)
  */
 function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $tileWidth, $tileHeight)
 {
-    $pathToMapFile = ROOT_DIR . '/gamedata/maps/' . $name . '.json';
+    $pathToMapFile = realpath(ROOT_DIR . '/gamedata/maps/' . $name . '.json');
     if (!$pathToMapFile) {
         trigger_error(_('File for map not exists'));
 
