@@ -2,7 +2,7 @@
 
 event('game.newCharacter', [], function ($characterId, $characterName, $class, $gender) {
     $initialLocation = config('initialLocation');
-    if ($initialLocation) {
+    if (!$initialLocation) {
         return;
     }
     $sql = sprintf('UPDATE characters SET map = "%s", x = %d, y = %d WHERE characterId = %d',
