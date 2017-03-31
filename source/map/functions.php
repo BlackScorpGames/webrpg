@@ -145,7 +145,7 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
                 if (isset($originalData[$dataKey]) && isset($tiles[$originalData[$dataKey]])) {
                     $value = $tiles[$originalData[$dataKey]];
                 }
-                if($x <= 0 || $y <= 0 || $x >= $width || $y >= $height){
+                if($x < 0 || $y < 0 || $x >= $width || $y >= $height){
                     $value = [
                         'tileSetName' =>'empty'
                     ];
