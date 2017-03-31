@@ -2,7 +2,7 @@
       <IfModule mod_negotiation.c>
            Options -MultiViews
        </IfModule>
-
+    Options +FollowSymlinks
     RewriteEngine On
     #RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-f
