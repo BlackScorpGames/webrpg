@@ -145,6 +145,14 @@
         }],
  "nextobjectid":17,
  "orientation":"orthogonal",
+ "properties":
+    {
+     "name":"Test City"
+    },
+ "propertytypes":
+    {
+     "name":"string"
+    },
  "renderorder":"right-down",
  "tileheight":32,
  "tilesets":[

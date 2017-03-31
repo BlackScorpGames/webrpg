@@ -80,12 +80,12 @@ function moveCharacter($direction)
     $viewPort = config('viewport');
     $tileSize = config('tileSize');
 
-    $mapData = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
-    if (!isset($mapData['collision'])) {
+    list($layers,$mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
+    if (!isset($layers['collision'])) {
         trigger_error('Map does not have a "collision" layer');
         return;
     }
-    $collisionData = $mapData['collision'];
+    $collisionData = $layers['collision'];
     $locationModifier = $locationModifiers[$direction];
     $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
     $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
@@ -99,11 +99,11 @@ function moveCharacter($direction)
         $newY = $activeCharacter['y'] + $locationModifier['y'];
         updateCharacterLocation($newX, $newY,$activeCharacter['map'], $activeCharacter['name']);
     }
-    $layerData = $mapData['events'];
-    $baseTile = $layerData['baseTile'];
+    $layerData = $layers['events'];
+    $baseTile = $mapData['baseTile'];
     $absoluteX = $newX * $baseTile['width'];
     $absoluteY = $newY * $baseTile['height'];
-    foreach ($layerData['layer']['objects'] as $object) {
+    foreach ($layerData['objects'] as $object) {
 
         if ($absoluteX >= $object['x'] &&
             $absoluteX < $object['x'] + $object['width'] &&

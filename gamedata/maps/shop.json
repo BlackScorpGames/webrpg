@@ -119,7 +119,7 @@
                     {
                      "targetMap":"city",
                      "x":24,
-                     "y":19
+                     "y":20
                     },
                  "propertytypes":
                     {
@@ -143,6 +143,14 @@
         }],
  "nextobjectid":19,
  "orientation":"orthogonal",
+ "properties":
+    {
+     "name":"Shop"
+    },
+ "propertytypes":
+    {
+     "name":"string"
+    },
  "renderorder":"right-down",
  "tileheight":32,
  "tilesets":[

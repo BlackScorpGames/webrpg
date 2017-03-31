@@ -25,13 +25,14 @@ function viewMap($direction = 'south')
     $viewPort = config('viewport');
     $tileSize = config('tileSize');
 
-    $mapData = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
-    unset($mapData['collision']);
-    $mapData = addCharacterToMap($mapData, $viewPort['width'], $viewPort['height'], $activeCharacter);
+
+    list($layers,$mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
+    unset($layers['collision']);
+    $layers = addCharacterToMap($layers, $viewPort['width'], $viewPort['height'], $activeCharacter);
 
     $data = [
-        'location' => 'test city',
-        'map' => $mapData,
+        'location' => $mapData['name'],
+        'map' => $layers,
         'viewPort' => $viewPort,
         'tile' => $tileSize,
         'activeCharacter' => $activeCharacter,
@@ -97,8 +98,11 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
 
         return null;
     }
+
+
     $tiles = [];
     $originalLayers = $mapData['layers'];
+
     foreach ($mapData['tilesets'] as $tileSet) {
         $firstId = $tileSet['firstgid'];
         $ratioHeight = ~~($tileHeight / $tileSet['tileheight']);
@@ -137,10 +141,7 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
         }
 
         if ($layer['type'] !== 'tilelayer') {
-            $layers[$layer['name']] = [
-                'layer' => $layer,
-                'baseTile' => $tiles[1]
-            ];
+            $layers[$layer['name']] =$layer;
             continue;
         }
         $data = [];
@@ -166,6 +167,9 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
         }
         $layers[$layer['name']] = $data;
     }
-
-    return $layers;
+    $data = [
+        'baseTile' =>  $tiles[1],
+        'name' => isset($mapData['properties']['name'])?$mapData['properties']['name']:_('Unnamed')
+    ];
+    return [$layers,$data];
 }
