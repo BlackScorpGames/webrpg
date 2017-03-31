@@ -5,7 +5,7 @@
 <?php section('styles') ?>
 
 <?php section('styles') ?>
-<?php require_once __DIR__ . DS . '..' . DS . 'partials' . DS . 'navigationSection.php'; ?>
+<?php require_once __DIR__ . '/../partials/navigationSection.php'; ?>
 <?php section('content') ?>
 <?php if ($isDeletion): ?>
     <div class="modal fade in show" role="dialog">

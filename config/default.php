@@ -2,8 +2,8 @@
 
 config('templateDirectories',
     [
-        __DIR__ . DS . '..' . DS . 'templates' . DS . 'default' . DS,
-        __DIR__ . DS . '..' . DS . 'templates' . DS
+        __DIR__ . '/../templates/default/',
+        __DIR__ . '/../templates/'
     ]
 );
 
@@ -76,4 +76,4 @@ config('initialEquipment', [
     ],
 ]);
 
-config('moduleFolder', ROOT_DIR . DS . 'source');
+config('moduleFolder', ROOT_DIR . '/source');

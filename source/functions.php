@@ -226,7 +226,7 @@ function config($key, $value = null)
  */
 function getBadWords()
 {
-    return require_once __DIR__ . DS . '..' . DS . 'config' . DS . 'badwords.php';
+    return require_once __DIR__ . '/../config/badwords.php';
 }
 
 /**
@@ -300,7 +300,7 @@ function module($name = null, $bootstrapFile = null)
 
         return null;
     }
-    $modulePath = config('moduleFolder') . DS . $name . DS . $bootstrapFile;
+    $modulePath = config('moduleFolder') . '/' . $name . '/' . $bootstrapFile;
     if (!is_file($modulePath)) {
         $message = sprintf('Module "%s" not exists.', $name);
         trigger_error($message);
