@@ -304,12 +304,13 @@ function validateCharacterGender($gender)
     $availableGenders = ['male', 'female'];
     if (!(bool)$gender) {
         $errors[] = _('Please select a gender');
+        return $errors;
     }
     if (!in_array($gender, $availableGenders)) {
         $errors[] = _('Invalid gender selected');
     }
 
-    return array_shift($errors);
+    return $errors;
 }
 
 /**
@@ -322,12 +323,13 @@ function validateCharacterClass($characterClass)
     $availableClasses = ['warrior', 'ranger', 'mage'];
     if (!(bool)$characterClass) {
         $errors[] = _('Please select a class');
+        return $errors;
     }
     if (!in_array($characterClass, $availableClasses)) {
         $errors[] = _('Invalid class selected');
     }
 
-    return array_shift($errors);
+    return $errors;
 }
 
 /**
@@ -335,65 +337,32 @@ function validateCharacterClass($characterClass)
  * @param bool   $firstErrorOnly
  * @return array
  */
-function validateCharacterName($characterName, $firstErrorOnly = true)
+function validateCharacterName($characterName)
 {
     $errors = [];
     $minLength = 3;
     $maxLength = 32;
-    $validations = [
-        [
-            _('Character name is empty'),
-            function ($characterName) {
-                return !(bool)$characterName;
-            },
-        ],
-        [
-            _('Character name contain non word characters'),
-            function ($characterName) {
-                return preg_match('~\W+~', $characterName);
-            },
-        ],
-        [
-            sprintf(_('Character name is too short, %d characters are at least required'), $minLength),
-            function ($characterName) use ($minLength) {
-                return mb_strlen($characterName) < $minLength;
-            },
-        ],
-        [
-            sprintf(_('Character name is too long, maximum %d characters'), $maxLength),
-            function ($characterName) use ($maxLength) {
-                return mb_strlen($characterName) >= $maxLength;
-            },
-        ],
-        [
-            _('Selected name is not allowed to use'),
-            function ($characterName) {
-                $blacklist = getBadWords();
+    $blacklist = getBadWords();
 
-                return in_array($characterName, $blacklist);
-            },
-        ],
-        [
-            sprintf(_('The character name %s already exists'), $characterName),
-            function ($characterName) {
-                return characterNameExists($characterName);
-            },
-        ],
-    ];
-    foreach ($validations as $validate) {
-        list($message, $validator) = $validate;
-        $result = true;
-        if ($validator instanceof Closure) {
-            $result = $validator($characterName);
-        }
-        if (!$result) {
-            $errors[] = $message;
-        }
-        if ($firstErrorOnly) {
-            return array_shift($errors);
-        }
+    if (!(bool)$characterName) {
+        $errors[] = _('Character name is empty');
+        return $errors;
     }
-
+    if (preg_match('~\W+~', $characterName)) {
+        $errors[] = _('Character name contain non word characters');
+    }
+    if (mb_strlen($characterName) < $minLength) {
+        $errors[] = sprintf(_('Character name is too short, %d characters are at least required'), $minLength);
+    }
+    if (mb_strlen($characterName) >= $maxLength) {
+        $errors[] = sprintf(_('Character name is too long, maximum %d characters'), $maxLength);
+    }
+    if (in_array($characterName, $blacklist)) {
+        $errors[] = _("Selected name is not allowed to use");
+    }
+    if (characterNameExists($characterName)) {
+        $errors[] = sprintf(_("The character name %s already exists"), $characterName);
+    }
     return $errors;
 }
 
