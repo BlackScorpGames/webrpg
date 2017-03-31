@@ -27,7 +27,7 @@ function viewMap($direction = 'south')
 
     $mapData = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
     unset($mapData['collision']);
-    $mapData = addCharacterToMap($mapData, $viewPort['width'], $viewPort['height'],$activeCharacter);
+    $mapData = addCharacterToMap($mapData, $viewPort['width'], $viewPort['height'], $activeCharacter);
 
     $data = [
         'location' => 'test city',
@@ -38,7 +38,7 @@ function viewMap($direction = 'south')
         'viewDirection' => $direction,
         'equipmentSlots' => config('equipmentSlots')
     ];
-    
+
 
     echo render('map', $data);
 
@@ -47,11 +47,12 @@ function viewMap($direction = 'south')
 
 /**
  * @param array $mapData
- * @param int   $width
- * @param int   $height
+ * @param int $width
+ * @param int $height
+ * @param $activeCharacter
  * @return array
  */
-function addCharacterToMap(array $mapData, $width, $height,$activeCharacter)
+function addCharacterToMap(array $mapData, $width, $height, $activeCharacter)
 {
     if (!isset($mapData['character'])) {
         trigger_error('Missing layer "character"');
@@ -62,23 +63,23 @@ function addCharacterToMap(array $mapData, $width, $height,$activeCharacter)
     $x = ~~($width / 2);
     $index = $width * $y + $x;
     $mapData['character'][$index]['partial'] = 'displayCharacter';
-    $mapData['character'][$index]['tileSetName'] = 'character '.$activeCharacter['name'];
+    $mapData['character'][$index]['tileSetName'] = 'character ' . $activeCharacter['name'];
     return $mapData;
 }
 
 /**
  * @param string $name
- * @param int    $centerX
- * @param int    $centerY
- * @param int    $viewPortWidth
- * @param int    $viewPortHeight
- * @param int    $tileWidth
- * @param int    $tileHeight
+ * @param int $centerX
+ * @param int $centerY
+ * @param int $viewPortWidth
+ * @param int $viewPortHeight
+ * @param int $tileWidth
+ * @param int $tileHeight
  * @return array|null
  */
 function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $tileWidth, $tileHeight)
 {
-    $pathToMapFile = ROOT_DIR . '/gamedata/maps/'. $name . '.json';
+    $pathToMapFile = ROOT_DIR . '/gamedata/maps/' . $name . '.json';
     if (!$pathToMapFile) {
         trigger_error(_('File for map not exists'));
 
@@ -112,7 +113,9 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
                 $tiles[$firstId] = [
                     'tileSetName' => $tileSet['name'],
                     'size' => sprintf('%dpx %dpx', $tileSetImageWidth, $tileSetImageHeight),
-                    'position' => sprintf('-%dpx -%dpx', $tileSetWidth, $tileSetHeight)
+                    'position' => sprintf('-%dpx -%dpx', $tileSetWidth, $tileSetHeight),
+                    'width' => (int)$tileSet['tilewidth'],
+                    'height' => (int)$tileSet['tileheight']
                 ];
                 $firstId++;
             }
@@ -132,12 +135,17 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
         if ($layer['name'] !== 'collision' && $layer['visible'] === false) {
             continue;
         }
+
         if ($layer['type'] !== 'tilelayer') {
+            $layers[$layer['name']] = [
+                'layer' => $layer,
+                'baseTile' => $tiles[1]
+            ];
             continue;
         }
         $data = [];
         $width = $layer['width'];
-        $height= $layer['height'];
+        $height = $layer['height'];
         $originalData = $layer['data'];
         for ($y = $startY; $y < $endY; $y++) {
             for ($x = $startX; $x < $endX; $x++) {
@@ -147,9 +155,9 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
                 if (isset($originalData[$dataKey]) && isset($tiles[$originalData[$dataKey]])) {
                     $value = $tiles[$originalData[$dataKey]];
                 }
-                if($x < 0 || $y < 0 || $x >= $width || $y >= $height){
+                if ($x < 0 || $y < 0 || $x >= $width || $y >= $height) {
                     $value = [
-                        'tileSetName' =>'empty'
+                        'tileSetName' => 'empty'
                     ];
                 }
 

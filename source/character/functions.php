@@ -92,10 +92,27 @@ function moveCharacter($direction)
     $index = $viewPort['width'] * $y + $x;
 
     $isBlocked = (bool)$collisionData[$index];
+    $newX = (int)$activeCharacter['x'];
+    $newY = (int)$activeCharacter['y'];
     if (!$isBlocked) {
         $newX = $activeCharacter['x'] + $locationModifier['x'];
         $newY = $activeCharacter['y'] + $locationModifier['y'];
         updateCharacterLocation($newX, $newY, $activeCharacter);
+    }
+    $layerData = $mapData['events'];
+    $baseTile = $layerData['baseTile'];
+    $absoluteX = $newX * $baseTile['width'];
+    $absoluteY = $newY * $baseTile['height'];
+    foreach ($layerData['layer']['objects'] as $object) {
+
+        if ($absoluteX >= $object['x'] &&
+            $absoluteX < $object['x'] + $object['width'] &&
+            $absoluteY >= $object['y'] &&
+            $absoluteY < $object['y'] + $object['height']
+        ){
+            event($object['name'],$object['properties']);
+        }
+
     }
 
 

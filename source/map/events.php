@@ -13,3 +13,8 @@ event('game.newCharacter', [], function ($characterId, $characterName, $class, $
     );
     query($sql);
 });
+
+
+event('map.moveTo',[],function($mapName,$newX,$newY){
+   var_dump($mapName,$newY,$newX);
+});
