@@ -26,7 +26,8 @@ function viewMap($direction = 'south')
     $tileSize = config('tileSize');
 
     $mapData = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
-    $mapData = addCharacterToMap($mapData, $viewPort['width'], $viewPort['height']);
+    unset($mapData['collision']);
+    $mapData = addCharacterToMap($mapData, $viewPort['width'], $viewPort['height'],$activeCharacter);
 
     $data = [
         'location' => 'test city',
@@ -37,6 +38,7 @@ function viewMap($direction = 'south')
         'viewDirection' => $direction,
         'equipmentSlots' => config('equipmentSlots')
     ];
+    
 
     echo render('map', $data);
 
@@ -49,7 +51,7 @@ function viewMap($direction = 'south')
  * @param int   $height
  * @return array
  */
-function addCharacterToMap(array $mapData, $width, $height)
+function addCharacterToMap(array $mapData, $width, $height,$activeCharacter)
 {
     if (!isset($mapData['character'])) {
         trigger_error('Missing layer "character"');
@@ -60,7 +62,7 @@ function addCharacterToMap(array $mapData, $width, $height)
     $x = ~~($width / 2);
     $index = $width * $y + $x;
     $mapData['character'][$index]['partial'] = 'displayCharacter';
-
+    $mapData['character'][$index]['tileSetName'] = 'character '.$activeCharacter['name'];
     return $mapData;
 }
 
