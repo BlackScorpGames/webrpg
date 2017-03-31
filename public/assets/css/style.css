@@ -19,27 +19,21 @@ body {
 .body.male {
     height: 64px;
     width: 64px;
-    background-image: url("/assets/img/male_body.png");
-    background-repeat: no-repeat;
-    background-position-y: -128px;
+    background: url("/assets/img/male_body.png") no-repeat -128px 0;
     position: relative;
 }
 
 .body.female {
     height: 64px;
     width: 64px;
-    background-image: url("/assets/img/female_body.png");
-    background-repeat: no-repeat;
-    background-position-y: -128px;
+    background: url("/assets/img/female_body.png") no-repeat -128px 0;
     position: relative;
 }
 
 .armor.female.leatherArmor {
     height: 64px;
     width: 64px;
-    background-image: url("/assets/img/inventory/female_leather_armor.png");
-    background-repeat: no-repeat;
-    background-position-y: -128px;
+    background: url("/assets/img/inventory/female_leather_armor.png") no-repeat -128px 0;
     position: absolute;
     top: 0;
 }
@@ -47,9 +41,7 @@ body {
 .armor.male.leatherArmor {
     height: 64px;
     width: 64px;
-    background-image: url("/assets/img/inventory/male_leather_armor.png");
-    background-repeat: no-repeat;
-    background-position-y: -128px;
+    background: url("/assets/img/inventory/male_leather_armor.png") no-repeat -128px 0;
     position: absolute;
     top: 0;
 }
@@ -57,19 +49,15 @@ body {
 .head.male.leatherArmor {
     height: 64px;
     width: 64px;
-    background-image: url("/assets/img/inventory/male_leather_cap.png");
-    background-repeat: no-repeat;
-    background-position-y: -128px;
+    background: url("/assets/img/inventory/male_leather_cap.png") no-repeat -128px 0;
     position: absolute;
     top: 0
 }
 
-.head.female.leatherArmor{
+.head.female.leatherArmor {
     height: 64px;
     width: 64px;
-    background-image: url("/assets/img/inventory/female_leather_cap.png");
-    background-repeat: no-repeat;
-    background-position-y: -128px;
+    background: url("/assets/img/inventory/female_leather_cap.png") no-repeat -128px 0;
     position: absolute;
     top: 0
 }
@@ -83,7 +71,7 @@ body {
     height: 128px;
     width: 128px;
     background-size: 1664px 2688px;
-    background-position-y: -256px;
+    background-position: 0 -1280px;
 }
 
 .body.female.walk.north.big,
@@ -95,7 +83,7 @@ body {
     height: 128px;
     width: 128px;
     background-size: 1664px 2688px;
-    background-position-y: -0px;
+    background-position: 0 -1024px;
 }
 
 .body.female.walk.west.big,
@@ -107,9 +95,8 @@ body {
     height: 128px;
     width: 128px;
     background-size: 1664px 2688px;
-    background-position-y: -128px;
+    background-position: 0 -1152px;
 }
-
 
 .body.female.walk.east.big,
 .body.male.walk.east.big,
@@ -120,7 +107,8 @@ body {
     height: 128px;
     width: 128px;
     background-size: 1664px 2688px;
-    background-position-y: -384px;
+
+    background-position: 0 -1408px;
 }
 
 .tile .body.female.walk,
@@ -128,29 +116,32 @@ body {
 .tile .armor.female.leatherArmor.walk,
 .tile .head.female.leatherArmor.walk,
 .tile .head.male.leatherArmor.walk,
-.tile .armor.male.leatherArmor.walk{
-    margin-left:-32px;
-    top:-64px;
+.tile .armor.male.leatherArmor.walk {
+    margin-left: -32px;
+    top: -64px;
 }
 
 .map .tile {
     position: absolute;
 
 }
-.map .tile.empty{
+
+.map .tile.empty {
     background: black;
 }
-.map .tile.terrain{
-    background: url("/assets/img/tilesets/terrain.png") no-repeat ;
+
+.map .tile.terrain {
+    background: url("/assets/img/tilesets/terrain.png") no-repeat;
     background-size: 200% 200%;
 }
+
 .map .tile.base_out_atlas {
-    background: url("/assets/img/tilesets/base_out_atlas.png") no-repeat ;
+    background: url("/assets/img/tilesets/base_out_atlas.png") no-repeat;
     background-size: 200% 200%;
 }
 
 .map .tile.terrain_atlas {
-    background: url("/assets/img/tilesets/terrain_atlas.png") no-repeat ;
+    background: url("/assets/img/tilesets/terrain_atlas.png") no-repeat;
     background-size: 200% 200%;
 }
 
@@ -158,8 +149,6 @@ body {
     position: absolute;
 
 }
-
-
 
 .viewport {
     overflow: hidden;
@@ -182,11 +171,13 @@ body {
     width: 100%;
     height: 100%;
 }
-.viewport .arrows a{
+
+.viewport .arrows a {
     font-size: 3em;
     color: white;
     text-decoration: none;
 }
+
 .viewport .arrows .north {
     left: 50%;
     top: 0;
@@ -198,7 +189,7 @@ body {
     right: 0;
     top: 50%;
     position: absolute;
-    margin-top:-24px;
+    margin-top: -24px;
 }
 
 .viewport .arrows .south {
@@ -208,9 +199,10 @@ body {
 
     margin-left: -20px;
 }
+
 .viewport .arrows .west {
     left: 0;
     top: 50%;
     position: absolute;
-    margin-top:-24px;
+    margin-top: -24px;
 }
