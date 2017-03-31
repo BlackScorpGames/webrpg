@@ -1,9 +1,11 @@
 <IfModule mod_rewrite.c>
-    Options -MultiViews
+      <IfModule mod_negotiation.c>
+           Options -MultiViews
+       </IfModule>
 
     RewriteEngine On
-    RewriteBase /
+    #RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME) !-d
-    RewriteRule ^ index.php [QSA,L]
+    RewriteRule ^ index.php [L]
 </IfModule>
