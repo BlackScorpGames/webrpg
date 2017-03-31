@@ -398,7 +398,9 @@ function getSelectedCharacter()
  */
 function getCharacterForUser($characterName, $username)
 {
-    $sql = sprintf('SELECT characterId,name, class, gender, map, x, y FROM characters INNER JOIN users ON characters.userId = users.userId WHERE username = "%s" AND name = "%s" LIMIT 1',
+    $sql = sprintf('SELECT characterId,name, class, gender, map, x, y 
+FROM characters INNER JOIN users ON characters.userId = users.userId 
+WHERE username = "%s" AND name = "%s" LIMIT 1',
         queryEscape($username),
         queryEscape($characterName)
     );
@@ -422,16 +424,19 @@ function getCharacterForUser($characterName, $username)
 function getCharactersForUser($username)
 {
     $characters = [];
-    $sql = sprintf('SELECT name, class, gender FROM characters INNER JOIN users ON characters.userId = users.userId WHERE username = "%s" ORDER BY characters.lastAction DESC',
+    $sql = sprintf('SELECT name, class, gender
+ FROM characters INNER JOIN users ON characters.userId = users.userId 
+ WHERE username = "%s" ORDER BY characters.lastAction DESC',
         queryEscape($username)
     );
     $result = query($sql);
-    if ($result) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $row['gender'] = (int)$row['gender'] === 1 ? 'male' : 'female';
-            $characters[md5($row['name'])] = $row;
-        }
+    if (!$result) {
+        return $characters;
     }
-
+    while ($row = mysqli_fetch_assoc($result)) {
+        $row['gender'] = (int)$row['gender'] === 1 ? 'male' : 'female';
+        $characters[md5($row['name'])] = $row;
+    }
     return $characters;
+
 }
