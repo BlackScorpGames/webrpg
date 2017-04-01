@@ -4,6 +4,10 @@
  */
 define('ROOT_DIR', realpath(__DIR__));
 
+if(!extension_loaded('gettext')){
+    $message = sprintf("Missing gettext extension, please modify '%s' and enable the gettext extension, afterwards restart server",php_ini_loaded_file());
+    die($message);
+}
 /**
  * Include base classes
  */
@@ -29,7 +33,7 @@ require_once __DIR__ . '/config/modules.php';
 
 set_error_handler(function () {
     event('http.500', ['message' => func_get_arg(1), 'context' => func_get_arg(4)]);
-});
+},E_ALL& ~E_WARNING);
 
 /**
  * Setup basic events

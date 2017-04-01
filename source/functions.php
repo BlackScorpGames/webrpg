@@ -42,9 +42,14 @@ function getDb()
     }
 
     list($host, $user, $password, $database, $port, $charset) = array_values(config('db'));
-    $mysqli = mysqli_connect($host, $user, $password, $database, $port);
 
-    if (mysqli_connect_error()) {
+    $mysqli = mysqli_init();
+    /**
+     * we need to add @ for mysqli_real_connect because of MAMMP PRO 3.3.0 it shows a warning
+     */
+    $connectionResult = @mysqli_real_connect($mysqli,$host, $user, $password, $database, $port);
+
+    if (!$connectionResult) {
         trigger_error(mysqli_connect_error());
         return null;
     }
