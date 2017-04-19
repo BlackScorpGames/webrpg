@@ -80,7 +80,7 @@ function moveCharacter($direction)
     $viewPort = config('viewport');
     $tileSize = config('tileSize');
 
-    list($layers,$mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
+    list($layers, $mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
     if (!isset($layers['collision'])) {
         trigger_error('Map does not have a "collision" layer');
         return;
@@ -97,7 +97,7 @@ function moveCharacter($direction)
     if (!$isBlocked) {
         $newX = $activeCharacter['x'] + $locationModifier['x'];
         $newY = $activeCharacter['y'] + $locationModifier['y'];
-        updateCharacterLocation($newX, $newY,$activeCharacter['map'], $activeCharacter['name']);
+        updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name']);
     }
     $layerData = $layers['events'];
     $baseTile = $mapData['baseTile'];
@@ -109,8 +109,8 @@ function moveCharacter($direction)
             $absoluteX < $object['x'] + $object['width'] &&
             $absoluteY >= $object['y'] &&
             $absoluteY < $object['y'] + $object['height']
-        ){
-            event($object['name'],$object['properties']);
+        ) {
+            event($object['name'], $object['properties']);
         }
 
     }
@@ -119,18 +119,109 @@ function moveCharacter($direction)
     return router('/map/' . $direction);
 }
 
+
+/**
+ * @param string $direction
+ * @return mixed|null
+ */
+function ajaxMoveCharacter($direction)
+{
+    if (!isCharacterSelected()) {
+        redirect('/');
+        return null;
+    }
+
+    $locationModifiers = [
+        'north' => [
+            'x' => 0,
+            'y' => -1
+        ],
+        'east' => [
+            'x' => 1,
+            'y' => 0
+        ],
+        'south' => [
+            'x' => 0,
+            'y' => +1
+        ],
+        'west' => [
+            'x' => -1,
+            'y' => 0
+        ]
+    ];
+
+
+    $activeCharacter = getSelectedCharacter();
+    $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
+    $viewPort = config('viewport');
+    $tileSize = config('tileSize');
+
+    list($layers, $mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
+    if (!isset($layers['collision'])) {
+        trigger_error('Map does not have a "collision" layer');
+        return;
+    }
+    $collisionData = $layers['collision'];
+    $locationModifier = $locationModifiers[$direction];
+    $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
+    $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
+    $index = $viewPort['width'] * $y + $x;
+
+    $isBlocked = (bool)$collisionData[$index];
+
+    if ($isBlocked) {
+        header('Content-Type:application/json;charset=utf8');
+        echo json_encode([]);
+        return;
+    }
+    $newX = $activeCharacter['x'] + $locationModifier['x'];
+    $newY = $activeCharacter['y'] + $locationModifier['y'];
+    updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name']);
+
+    unset($layers['collision']);
+
+    $layerData = $layers['events'];
+    $baseTile = $mapData['baseTile'];
+    $absoluteX = $newX * $baseTile['width'];
+    $absoluteY = $newY * $baseTile['height'];
+    foreach ($layerData['objects'] as $object) {
+
+        if ($absoluteX >= $object['x'] &&
+            $absoluteX < $object['x'] + $object['width'] &&
+            $absoluteY >= $object['y'] &&
+            $absoluteY < $object['y'] + $object['height']
+        ) {
+            event($object['name'], $object['properties']);
+        }
+
+    }
+    unset($layers['events']);
+
+
+    $activeCharacter = getSelectedCharacter();
+    list($newLayers, $newMapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
+    $newLayers = addCharacterToMap($newLayers, $viewPort['width'], $viewPort['height'], $activeCharacter);
+
+    unset($newLayers['events']);
+    unset($newLayers['collision']);
+
+    header('Content-Type:application/json;charset=utf8');
+    echo json_encode($newLayers);
+
+}
+
 /**
  * @param int $newX
  * @param int $newY
  * @param string $mapName
  * @param string $characterName
  */
-function updateCharacterLocation($newX, $newY,$mapName, $characterName)
+function updateCharacterLocation($newX, $newY, $mapName, $characterName)
 {
     $db = getDb();
-    $mapName = mysqli_real_escape_string($db,$mapName);
-    $characterName = mysqli_real_escape_string($db,$characterName);
-    $sql = "UPDATE characters SET map = '".$mapName."',x=" . (int)$newX . ", y= " . (int)$newY . " WHERE name = '" .$characterName."'";
+    $mapName = mysqli_real_escape_string($db, $mapName);
+    $characterName = mysqli_real_escape_string($db, $characterName);
+    $sql = "UPDATE characters SET map = '" . $mapName . "',x=" . (int)$newX . ", y= " . (int)$newY . " WHERE name = '" . $characterName . "'";
 
     $result = mysqli_query($db, $sql);
     if (!$result) {

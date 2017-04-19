@@ -26,8 +26,9 @@ function viewMap($direction = 'south')
     $tileSize = config('tileSize');
 
 
-    list($layers,$mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
+    list($layers, $mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
     unset($layers['collision']);
+    unset($layers['events']);
     $layers = addCharacterToMap($layers, $viewPort['width'], $viewPort['height'], $activeCharacter);
 
     $data = [
@@ -80,26 +81,35 @@ function addCharacterToMap(array $mapData, $width, $height, $activeCharacter)
  */
 function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $tileWidth, $tileHeight)
 {
-    $pathToMapFile = realpath(ROOT_DIR . '/gamedata/maps/' . $name . '.json');
-    if (!$pathToMapFile) {
-        trigger_error(_('File for map not exists'));
-
-        return null;
+    static $mapData = null;
+    static $mapName = null;
+    if (!$mapName) {
+        $mapName = $name;
     }
-    $mapContent = file_get_contents($pathToMapFile);
-    if (!$mapContent) {
-        trigger_error(_('File content is empty'));
-
-        return null;
+    if($mapName !== $name){
+        $mapData = null;
     }
-    $mapData = json_decode($mapContent, true);
-    if (json_last_error()) {
-        trigger_error(json_last_error_msg());
+    if (!$mapData) {
 
-        return null;
+        $pathToMapFile = realpath(ROOT_DIR . '/gamedata/maps/' . $name . '.json');
+        if (!$pathToMapFile) {
+            trigger_error(_('File for map not exists'));
+
+            return null;
+        }
+        $mapContent = file_get_contents($pathToMapFile);
+        if (!$mapContent) {
+            trigger_error(_('File content is empty'));
+
+            return null;
+        }
+        $mapData = json_decode($mapContent, true);
+        if (json_last_error()) {
+            trigger_error(json_last_error_msg());
+
+            return null;
+        }
     }
-
-
     $tiles = [];
     $originalLayers = $mapData['layers'];
 
@@ -141,7 +151,7 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
         }
 
         if ($layer['type'] !== 'tilelayer') {
-            $layers[$layer['name']] =$layer;
+            $layers[$layer['name']] = $layer;
             continue;
         }
         $data = [];
@@ -168,8 +178,8 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
         $layers[$layer['name']] = $data;
     }
     $data = [
-        'baseTile' =>  $tiles[1],
-        'name' => isset($mapData['properties']['name'])?$mapData['properties']['name']:_('Unnamed')
+        'baseTile' => $tiles[1],
+        'name' => isset($mapData['properties']['name']) ? $mapData['properties']['name'] : _('Unnamed')
     ];
-    return [$layers,$data];
+    return [$layers, $data];
 }
