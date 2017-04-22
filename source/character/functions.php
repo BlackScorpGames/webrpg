@@ -161,6 +161,7 @@ function ajaxMoveCharacter($direction)
         trigger_error('Map does not have a "collision" layer');
         return;
     }
+
     $collisionData = $layers['collision'];
     $locationModifier = $locationModifiers[$direction];
     $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
@@ -206,7 +207,11 @@ function ajaxMoveCharacter($direction)
     unset($newLayers['collision']);
 
     header('Content-Type:application/json;charset=utf8');
-    echo json_encode($newLayers);
+    $response = [
+        'layers' => $newLayers,
+        'character' =>$activeCharacter
+    ];
+    echo json_encode($response);
 
 }
 

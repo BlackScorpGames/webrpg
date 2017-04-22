@@ -51,7 +51,7 @@
                                     ?>
 
                                     <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= ($data && isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= ($data && isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"
-                                         class="tile<?= ($data && isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?>">
+                                         class="tile<?= ($data && isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?> <?= $data && isset($data['coordinates'])?sprintf('Y%dX%d',$data['coordinates']['y'],$data['coordinates']['x']):''?>">
                                         <?php if ($data && isset($data['partial'])) require_once __DIR__ . '/../partials/' . $data['partial'] . '.php'; ?>
 
                                     </div>

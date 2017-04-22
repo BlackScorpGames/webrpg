@@ -158,7 +158,7 @@ body {
 }
 
 .viewport {
-    overflow: hidden;
+    overflow: none;
     position: relative;
     margin: auto;
     padding: 0;
