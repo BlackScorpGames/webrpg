@@ -18,7 +18,7 @@ $(function () {
                 }
 
                 var coordinateClass = 'Y' + currentData['coordinates']['y'] + 'X' + currentData['coordinates']['x'];
-                var currentTile = $('.mapWrapper').find('.map.' + layerName + ' > .empty.' + coordinateClass);
+                var currentTile = $('.mapWrapper').find('.map.' + layerName + ' > .noContent.' + coordinateClass);
 
                 if (0 === currentTile.length) {
 
@@ -34,6 +34,7 @@ $(function () {
                     }).attr('class', 'tile ' + currentData.tileSetName + ' ' + coordinateClass);
 
                 }
+
                 if (currentData.size) {
                     currentTile.css('background-size', currentData.size);
                 }
@@ -64,7 +65,7 @@ $(function () {
                 for (var i = 0, il = viewPortWidth; i < il; i++) {
                     var layerLeft = left+i;
                     var coodiantesClassName = 'Y'+layerTop+'X'+layerLeft;
-                    var div = $('<div>').attr('class', 'tile empty ' +coodiantesClassName).css({
+                    var div = $('<div>').attr('class', 'tile noContent ' +coodiantesClassName).css({
                         'top': topPosition  + 'px',
                         'left': i * tileWidth + 'px',
                         'width': tileWidth + 'px',
@@ -85,9 +86,9 @@ $(function () {
                     layerLeft = right;
                 }
                 for (i = 0, il = viewPortHeight; i < il; i++) {
-                    var layerTop = top+i;
+                     layerTop = top+i;
                      coodiantesClassName = 'Y'+layerTop+'X'+layerLeft;
-                     div = $('<div>').attr('class', 'tile empty ' +coodiantesClassName).css({
+                     div = $('<div>').attr('class', 'tile noContent ' +coodiantesClassName).css({
                         'top': i*tileHeight  + 'px',
                         'left': leftPosition + 'px',
                         'width': tileWidth + 'px',
