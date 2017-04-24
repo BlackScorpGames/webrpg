@@ -3,17 +3,19 @@ $(function () {
 
     var map = $('.mapWrapper');
 
-    map.on('redraw', function (event, direction,data) {
+    map.on('redraw', function (event, direction, data) {
 
-        for (var layerName in data) {
-            var layerData = data[layerName];
-
+        for (var layerName in data.layers) {
+            var layerData = data.layers[layerName];
+            if(undefined === layerData){
+                continue;
+            }
 
             for (var tileIndex in layerData) {
 
                 var currentData = layerData[tileIndex];
 
-                if (null === currentData) {
+                if (undefined === currentData) {
                     continue;
                 }
 
@@ -43,26 +45,36 @@ $(function () {
 
         }
         var animationModifier = {
-            north:{
-                left:'+=0',
-                top:'+='+tileHeight+'px'
+            north: {
+                left: '+=0',
+                top: '+=' + tileHeight + 'px'
             },
-            south:{
-                left:'+=0',
-                top:'-='+tileHeight+'px'
+            south: {
+                left: '+=0',
+                top: '-=' + tileHeight + 'px'
             },
-            east:{
-                left:'-='+tileWidth+'px',
-                top:'+=0'
+            east: {
+                left: '-=' + tileWidth + 'px',
+                top: '+=0'
             },
-            west:{
-                left:'+='+tileWidth+'px',
-                top:'+=0'
+            west: {
+                left: '+=' + tileWidth + 'px',
+                top: '+=0'
             }
         };
         var currentMapAnimation = animationModifier[direction];
-        if(undefined !== currentMapAnimation){
-            map.animate(currentMapAnimation,300);
+
+        if (undefined !== currentMapAnimation) {
+            var characterDiv = $('.tile.character .equipment');
+            var character = data.character;
+
+            var characterX = ~~character['x'];
+            var characterY = ~~character['y'];
+            var coordiantesClassName = '.map.character .tile.Y' + characterY + 'X' + characterX;
+            characterDiv.css({position: 'fixed'});
+            map.animate(currentMapAnimation, 300, function () {
+                characterDiv.detach().appendTo(coordiantesClassName).css({position: 'absolute'});
+            });
         }
 
     }).on('newRow', function (event, direction, data) {
@@ -74,7 +86,7 @@ $(function () {
         var top = characterY - ~~(viewPortHeight / 2);
         var right = characterX + ~~(viewPortWidth / 2);
         var bottom = characterY + ~~(viewPortHeight / 2);
-        $('.mapWrapper .map').each(function (index, element) {
+        $('.mapWrapper .map').each(function () {
             if ('north' === direction || 'south' === direction) {
                 var topPosition = tileHeight * -1;
                 var layerTop = top;
@@ -84,8 +96,8 @@ $(function () {
                 }
                 for (var i = 0, il = viewPortWidth; i < il; i++) {
                     var layerLeft = left + i;
-                    var coodiantesClassName = 'Y' + layerTop + 'X' + layerLeft;
-                    var div = $('<div>').attr('class', 'tile noContent ' + coodiantesClassName).css({
+                    var coordiantesClassName = 'Y' + layerTop + 'X' + layerLeft;
+                    var div = $('<div>').attr('class', 'tile noContent ' + coordiantesClassName).css({
                         'top': topPosition + 'px',
                         'left': i * tileWidth + 'px',
                         'width': tileWidth + 'px',
@@ -100,15 +112,15 @@ $(function () {
 
             if ('west' === direction || 'east' === direction) {
                 var leftPosition = tileWidth * -1;
-                var layerLeft = left;
+                layerLeft = left;
                 if ('east' === direction) {
                     leftPosition = viewPortWidth * tileWidth;
                     layerLeft = right;
                 }
                 for (i = 0, il = viewPortHeight; i < il; i++) {
                     layerTop = top + i;
-                    coodiantesClassName = 'Y' + layerTop + 'X' + layerLeft;
-                    div = $('<div>').attr('class', 'tile noContent ' + coodiantesClassName).css({
+                    coordiantesClassName = 'Y' + layerTop + 'X' + layerLeft;
+                    div = $('<div>').attr('class', 'tile noContent ' + coordiantesClassName).css({
                         'top': i * tileHeight + 'px',
                         'left': leftPosition + 'px',
                         'width': tileWidth + 'px',
@@ -122,7 +134,7 @@ $(function () {
             }
 
         });
-        map.trigger('redraw',[direction, data.layers]);
+        map.trigger('redraw', [direction, data]);
     });
 
 
