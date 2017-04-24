@@ -21,7 +21,6 @@ function login()
 
     navigation(_('login'), '/');
     navigation(_('create account'), '/register');
-    navigation(_('create dummy user'), '/dummyUser');
     activateNavigation('/');
 
     echo render('index', $data);
