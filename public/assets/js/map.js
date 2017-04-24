@@ -3,7 +3,7 @@ $(function () {
 
     var map = $('.mapWrapper');
 
-    map.on('redraw', function (event, data) {
+    map.on('redraw', function (event, direction,data) {
 
         for (var layerName in data) {
             var layerData = data[layerName];
@@ -21,13 +21,10 @@ $(function () {
                 var currentTile = $('.mapWrapper').find('.map.' + layerName + ' > .noContent.' + coordinateClass);
 
                 if (0 === currentTile.length) {
-
                     continue;
                 }
 
-
                 if (currentData.tileSetName) {
-
                     currentTile.css({
                         'background-position': '',
                         'background-size': ''
@@ -45,28 +42,51 @@ $(function () {
             }
 
         }
+        var animationModifier = {
+            north:{
+                left:'+=0',
+                top:'+='+tileHeight+'px'
+            },
+            south:{
+                left:'+=0',
+                top:'-='+tileHeight+'px'
+            },
+            east:{
+                left:'-='+tileWidth+'px',
+                top:'+=0'
+            },
+            west:{
+                left:'+='+tileWidth+'px',
+                top:'+=0'
+            }
+        };
+        var currentMapAnimation = animationModifier[direction];
+        if(undefined !== currentMapAnimation){
+            map.animate(currentMapAnimation,300);
+        }
 
-    }).on('newRow', function (event, direction, character) {
+    }).on('newRow', function (event, direction, data) {
+        var character = data.character;
 
         var characterX = ~~character['x'];
         var characterY = ~~character['y'];
-        var left = characterX - ~~(viewPortWidth/2);
-        var top = characterY - ~~(viewPortHeight/2);
-        var right = characterX + ~~(viewPortWidth/2);
-        var bottom = characterY + ~~(viewPortHeight/2);
+        var left = characterX - ~~(viewPortWidth / 2);
+        var top = characterY - ~~(viewPortHeight / 2);
+        var right = characterX + ~~(viewPortWidth / 2);
+        var bottom = characterY + ~~(viewPortHeight / 2);
         $('.mapWrapper .map').each(function (index, element) {
             if ('north' === direction || 'south' === direction) {
                 var topPosition = tileHeight * -1;
                 var layerTop = top;
-                if('south' === direction){
+                if ('south' === direction) {
                     topPosition = viewPortHeight * tileHeight;
                     layerTop = bottom;
                 }
                 for (var i = 0, il = viewPortWidth; i < il; i++) {
-                    var layerLeft = left+i;
-                    var coodiantesClassName = 'Y'+layerTop+'X'+layerLeft;
-                    var div = $('<div>').attr('class', 'tile noContent ' +coodiantesClassName).css({
-                        'top': topPosition  + 'px',
+                    var layerLeft = left + i;
+                    var coodiantesClassName = 'Y' + layerTop + 'X' + layerLeft;
+                    var div = $('<div>').attr('class', 'tile noContent ' + coodiantesClassName).css({
+                        'top': topPosition + 'px',
                         'left': i * tileWidth + 'px',
                         'width': tileWidth + 'px',
                         'height': tileWidth + 'px'
@@ -81,15 +101,15 @@ $(function () {
             if ('west' === direction || 'east' === direction) {
                 var leftPosition = tileWidth * -1;
                 var layerLeft = left;
-                if('east' === direction){
+                if ('east' === direction) {
                     leftPosition = viewPortWidth * tileWidth;
                     layerLeft = right;
                 }
                 for (i = 0, il = viewPortHeight; i < il; i++) {
-                     layerTop = top+i;
-                     coodiantesClassName = 'Y'+layerTop+'X'+layerLeft;
-                     div = $('<div>').attr('class', 'tile noContent ' +coodiantesClassName).css({
-                        'top': i*tileHeight  + 'px',
+                    layerTop = top + i;
+                    coodiantesClassName = 'Y' + layerTop + 'X' + layerLeft;
+                    div = $('<div>').attr('class', 'tile noContent ' + coodiantesClassName).css({
+                        'top': i * tileHeight + 'px',
                         'left': leftPosition + 'px',
                         'width': tileWidth + 'px',
                         'height': tileWidth + 'px'
@@ -102,7 +122,7 @@ $(function () {
             }
 
         });
-
+        map.trigger('redraw',[direction, data.layers]);
     });
 
 
@@ -117,8 +137,8 @@ $(function () {
                     if (data instanceof Array) {
                         return;
                     }
-                    map.trigger('newRow', [direction, data.character]);
-                    map.trigger('redraw', data.layers);
+                    map.trigger('newRow', [direction, data]);
+
 
                 }
             }
