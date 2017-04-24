@@ -91,7 +91,8 @@ function moveCharacter($direction)
     $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
     $index = $viewPort['width'] * $y + $x;
 
-    $isBlocked = (bool)$collisionData[$index];
+    $isBlocked = (bool)$collisionData[$index] && isset($collisionData[$index]['tileSetName']);
+
     $newX = (int)$activeCharacter['x'];
     $newY = (int)$activeCharacter['y'];
     if (!$isBlocked) {
@@ -168,7 +169,7 @@ function ajaxMoveCharacter($direction)
     $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
     $index = $viewPort['width'] * $y + $x;
 
-    $isBlocked = (bool)$collisionData[$index];
+    $isBlocked = (bool)$collisionData[$index] && isset($collisionData[$index]['tileSetName']);
 
     if ($isBlocked) {
         header('Content-Type:application/json;charset=utf8');

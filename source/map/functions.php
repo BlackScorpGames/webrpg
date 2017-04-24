@@ -65,7 +65,7 @@ function addCharacterToMap(array $mapData, $width, $height, $activeCharacter)
     $x = ~~($width / 2);
     $index = $width * $y + $x;
     $mapData['character'][$index]['partial'] = 'displayCharacter';
-    $mapData['character'][$index]['tileSetName'] = 'character ' . $activeCharacter['name'];
+    $mapData['character'][$index]['tileSetName'] = 'character';
     $mapData['character'][$index]['coordinates'] = [
         'y' => $y,
         'x' => $x
@@ -176,12 +176,12 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
                         'tileSetName' => 'empty'
                     ];
                 }
-                if(null !== $value){
+
                     $value['coordinates'] = [
                         'x' => $x,
                         'y' => $y
                     ];
-                }
+
 
                 $data[] = $value;
             }
