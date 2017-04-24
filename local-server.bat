@@ -1,4 +1,9 @@
-SET PHP_EXE=C:\php7.0\php.exe
+@ECHO OFF
+:: path to php.exe
+SET PHP=C:\php7\php.exe
+:: port if different than 80 you have to open http://localhost:<yourPort> in browser
 SET PORT=80
-start %PHP_EXE% -S localhost:%PORT% -t %~dp0public
+:: %~dp0 is the full path where this batch file is located
+
+start %PHP% -S 0.0.0.0:%PORT% -t %~dp0public
 exit
