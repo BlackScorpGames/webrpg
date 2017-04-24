@@ -13,6 +13,7 @@ function registration()
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+    $errors = [];
 	if(isPost()){
 		$errors = doRegister($username, $password, $email);
 	}
@@ -26,7 +27,8 @@ function registration()
     ];
 
     navigation(_('login'), '/');
-    activateNavigation('/');
+    navigation(_('create account'), '/register');
+    activateNavigation('/register');
 
     echo render('registration', $data);
 }
