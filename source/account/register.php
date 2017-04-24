@@ -3,17 +3,20 @@
 /**
  * @return void
  */
-function Registration()
+function registration()
 {
     if (isLoggedIn()) {
-        echo router('/register');
+        echo router('/');
         return;
     }
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-    $errors = doRegistr($username, $password, $email);
+	if(isPost()){
+		$errors = doRegister($username, $password, $email);
+	}
+    
 
     $data = [
         'username' => $username,
@@ -34,11 +37,8 @@ function Registration()
  * @param string $email
  * @return array
  */
-function doRegistr($username, $password, $email )
+function doRegister($username, $password, $email )
 {
-    if (!isPost()) {
-        return [];
-    }
 
     if (!$username || !$password || !$email) {
         return [_('Please fill Username or Password or Email')];
