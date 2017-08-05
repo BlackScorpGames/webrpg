@@ -35,10 +35,10 @@ function initializeCharacterData($character = null)
     }
     $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
 
-    navigation(_('Select character'), '/character/view');
-    navigation(_('Logout'), '/logout');
+    navigation(_('Select character'), 'character/view');
+    navigation(_('Logout'), 'logout');
 
-    activateNavigation('/character/select');
+    activateNavigation('character/select');
 
     return [$characters, $activeCharacter];
 }
@@ -338,10 +338,10 @@ function newCharacter()
     }
     session('characterToDelete', null);
     session('characterName', null);
-    navigation(_('Select character'), '/character/view');
-    navigation(_('Logout'), '/logout');
+    navigation(_('Select character'), 'character/view');
+    navigation(_('Logout'), 'logout');
 
-    activateNavigation('/character/select');
+    activateNavigation('character/select');
 
     $characters = getCharactersForUser(getCurrentUsername());
 

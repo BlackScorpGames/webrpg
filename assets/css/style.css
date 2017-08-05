@@ -19,21 +19,21 @@ body {
 .body.male {
     height: 64px;
     width: 64px;
-    background: url("/assets/img/male_body.png") no-repeat -128px 0;
+    background: url("../img/male_body.png") no-repeat -128px 0;
     position: relative;
 }
 
 .body.female {
     height: 64px;
     width: 64px;
-    background: url("/assets/img/female_body.png") no-repeat -128px 0;
+    background: url("../img/female_body.png") no-repeat -128px 0;
     position: relative;
 }
 
 .armor.female.leatherArmor {
     height: 64px;
     width: 64px;
-    background: url("/assets/img/inventory/female_leather_armor.png") no-repeat -128px 0;
+    background: url("../img/inventory/female_leather_armor.png") no-repeat -128px 0;
     position: absolute;
     top: 0;
 }
@@ -41,7 +41,7 @@ body {
 .armor.male.leatherArmor {
     height: 64px;
     width: 64px;
-    background: url("/assets/img/inventory/male_leather_armor.png") no-repeat -128px 0;
+    background: url("../img/inventory/male_leather_armor.png") no-repeat -128px 0;
     position: absolute;
     top: 0;
 }
@@ -49,7 +49,7 @@ body {
 .head.male.leatherArmor {
     height: 64px;
     width: 64px;
-    background: url("/assets/img/inventory/male_leather_cap.png") no-repeat -128px 0;
+    background: url("../img/inventory/male_leather_cap.png") no-repeat -128px 0;
     position: absolute;
     top: 0
 }
@@ -57,7 +57,7 @@ body {
 .head.female.leatherArmor {
     height: 64px;
     width: 64px;
-    background: url("/assets/img/inventory/female_leather_cap.png") no-repeat -128px 0;
+    background: url("../img/inventory/female_leather_cap.png") no-repeat -128px 0;
     position: absolute;
     top: 0
 }
@@ -131,24 +131,24 @@ body {
 }
 
 .map .tile.terrain {
-    background: url("/assets/img/tilesets/terrain.png") no-repeat;
+    background: url("../img/tilesets/terrain.png") no-repeat;
     background-size: 200% 200%;
 }
 
 .map .tile.base_out_atlas {
-    background: url("/assets/img/tilesets/base_out_atlas.png") no-repeat;
+    background: url("../img/tilesets/base_out_atlas.png") no-repeat;
     background-size: 200% 200%;
 }
 .map .tile.town_buildings {
-    background: url("/assets/img/tilesets/town_buildings.png") no-repeat;
+    background: url("../img/tilesets/town_buildings.png") no-repeat;
     background-size: 200% 200%;
 }
 .map .tile.interior {
-    background: url("/assets/img/tilesets/interior.png") no-repeat;
+    background: url("../img/tilesets/interior.png") no-repeat;
     background-size: 200% 200%;
 }
 .map .tile.terrain_atlas {
-    background: url("/assets/img/tilesets/terrain_atlas.png") no-repeat;
+    background: url("../img/tilesets/terrain_atlas.png") no-repeat;
     background-size: 200% 200%;
 }
 

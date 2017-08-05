@@ -3,9 +3,9 @@
 <head>
     <title><?= $title ?></title>
     <meta charset="UTF-8"/>
-    <base href="/">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css">
+    <base href="<?= BASE_DIR ?>">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= $styles ?>
 </head>
@@ -34,8 +34,8 @@
     <?= $content ?>
 
 </div>
-<script src="/assets/js/vendor/jquery.min.js"></script>
-<script src="/assets/js/vendor/bootstrap.min.js"></script>
+<script src="assets/js/vendor/jquery.min.js"></script>
+<script src="assets/js/vendor/bootstrap.min.js"></script>
 <?= $scripts ?>
 </body>
 </html>

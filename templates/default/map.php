@@ -27,16 +27,16 @@
 
             <div class="viewport">
                 <div class="arrows">
-                    <div class="north"><a href="/character/move/north" data-direction="north"
+                    <div class="north"><a href="character/move/north" data-direction="north"
                                           class="glyphicon glyphicon-chevron-up"></a>
                     </div>
-                    <div class="east"><a href="/character/move/east" data-direction="east"
+                    <div class="east"><a href="character/move/east" data-direction="east"
                                          class="glyphicon glyphicon-chevron-right"></a>
                     </div>
-                    <div class="south"><a href="/character/move/south" data-direction="south"
+                    <div class="south"><a href="character/move/south" data-direction="south"
                                           class="glyphicon glyphicon-chevron-down"></a>
                     </div>
-                    <div class="west"><a href="/character/move/west" data-direction="west"
+                    <div class="west"><a href="character/move/west" data-direction="west"
                                          class="glyphicon glyphicon-chevron-left"></a>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
     var tileHeight = <?= $tile['height']?>;
     var tileWidth = <?= $tile['width'] ?>;
 </script>
-<script src="/assets/js/map.js"></script>
+<script src="assets/js/map.js"></script>
 <?php section('scripts') ?>
 
 <?php layout('layouts/game'); ?>

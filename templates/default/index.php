@@ -10,7 +10,7 @@
 <?php section('content') ?>
 
     <div class="col-lg-4">
-        <form method="POST" action="/login" class="form-group">
+        <form method="POST" action="login" class="form-group">
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">

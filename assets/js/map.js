@@ -199,7 +199,7 @@ $(function () {
         var direction = $(this).attr('data-direction');
 
 
-        $.ajax("/ajax/character/move/" + direction, {
+        $.ajax("ajax/character/move/" + direction, {
 
                 "dataType": "json",
                 "success": function (data) {

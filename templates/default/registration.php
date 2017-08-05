@@ -9,7 +9,7 @@
 <?php require_once __DIR__ . '/../partials/navigationSection.php'; ?>
 <?php section('content') ?>
     <div class="col-lg-4">
-        <form method="POST" action="/register" class="form-group">
+        <form method="POST" action="register" class="form-group">
             <div class="panel panel-default">
                 <div class="panel-heading">Registration</div>
                 <div class="panel-body">

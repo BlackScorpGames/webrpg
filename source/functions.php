@@ -22,6 +22,9 @@ function isGet()
  */
 function redirect($path)
 {
+    if($path === '/'){
+        $path = BASE_DIR;
+    }
     header('Location:' . $path);
 
     return null;
@@ -47,7 +50,7 @@ function getDb()
     /**
      * we need to add @ for mysqli_real_connect because of MAMMP PRO 3.3.0 it shows a warning
      */
-    $connectionResult = @mysqli_real_connect($mysqli,$host, $user, $password, $database, $port);
+    $connectionResult = @mysqli_real_connect($mysqli, $host, $user, $password, $database, $port);
 
     if (!$connectionResult) {
         trigger_error(mysqli_connect_error());
@@ -72,9 +75,9 @@ function getDbError(mysqli $db = null)
 }
 
 /**
- * @param string      $sql
+ * @param string $sql
  * @param mysqli|null $db
- * @param int         $resultMode
+ * @param int $resultMode
  * @return bool|mysqli_result
  */
 function query($sql, mysqli $db = null, $resultMode = MYSQLI_STORE_RESULT)
@@ -87,7 +90,7 @@ function query($sql, mysqli $db = null, $resultMode = MYSQLI_STORE_RESULT)
 }
 
 /**
- * @param string      $text
+ * @param string $text
  * @param mysqli|null $db
  * @return string
  */
@@ -149,7 +152,7 @@ function navigation($title = null, $url = null)
 }
 
 /**
- * @param string      $name
+ * @param string $name
  * @param string|null $value
  *
  * @return mixed
@@ -169,7 +172,7 @@ function session($name, $value = null)
 }
 
 /**
- * @param string      $name
+ * @param string $name
  * @param string|null $value
  *
  * @return mixed
@@ -185,9 +188,14 @@ function sharedVariable($name, $value = null)
     return isset($variables[$name]) ? $variables[$name] : null;
 }
 
+function loadAsset($path)
+{
+
+}
+
 /**
- * @param string     $name
- * @param array      $data
+ * @param string $name
+ * @param array $data
  * @param mixed|null $action
  *
  * @return mixed
@@ -210,7 +218,7 @@ function event($name, array $data = [], $action = null)
 }
 
 /**
- * @param string      $key
+ * @param string $key
  * @param string|null $value
  *
  * @return mixed
@@ -235,7 +243,7 @@ function getBadWords()
 }
 
 /**
- * @param string               $path
+ * @param string $path
  * @param closure|string|array $action
  *
  * @return mixed

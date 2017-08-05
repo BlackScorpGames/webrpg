@@ -26,9 +26,9 @@ function registration()
         'errors' => $errors
     ];
 
-    navigation(_('login'), '/');
-    navigation(_('create account'), '/register');
-    activateNavigation('/register');
+    navigation(_('login'), '');
+    navigation(_('create account'), 'register');
+    activateNavigation('register');
 
     echo render('registration', $data);
 }

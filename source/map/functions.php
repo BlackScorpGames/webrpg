@@ -14,11 +14,11 @@ function viewMap($direction = 'south')
         echo router('/character/view');
         return null;
     }
-    navigation(_('Map'), '/');
-    navigation(_('Select character'), '/character/view');
-    navigation(_('Logout'), '/logout');
+    navigation(_('Map'), '');
+    navigation(_('Select character'), 'character/view');
+    navigation(_('Logout'), 'logout');
 
-    activateNavigation('/');
+    activateNavigation('');
 
     $activeCharacter = getSelectedCharacter();
     $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
