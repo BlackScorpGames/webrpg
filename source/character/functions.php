@@ -51,30 +51,10 @@ function moveCharacter($direction)
 {
     if (!isCharacterSelected()) {
         redirect('/');
-
         return null;
     }
 
-    $locationModifiers = [
-        'north' => [
-            'x' => 0,
-            'y' => -1
-        ],
-        'east' => [
-            'x' => 1,
-            'y' => 0
-        ],
-        'south' => [
-            'x' => 0,
-            'y' => +1
-        ],
-        'west' => [
-            'x' => -1,
-            'y' => 0
-        ]
-    ];
-
-
+    $locationModifiers = config('locationModifiers');
     $activeCharacter = getSelectedCharacter();
     $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
     $viewPort = config('viewport');
@@ -83,105 +63,33 @@ function moveCharacter($direction)
     list($layers, $mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
     if (!isset($layers['collision'])) {
         trigger_error('Map does not have a "collision" layer');
-        return;
-    }
-    $collisionData = $layers['collision'];
-    $locationModifier = $locationModifiers[$direction];
-    $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
-    $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
-    $index = $viewPort['width'] * $y + $x;
-
-    $isBlocked = (bool)$collisionData[$index] && isset($collisionData[$index]['tileSetName']);
-
-    $newX = (int)$activeCharacter['x'];
-    $newY = (int)$activeCharacter['y'];
-    if (!$isBlocked) {
-        $newX = $activeCharacter['x'] + $locationModifier['x'];
-        $newY = $activeCharacter['y'] + $locationModifier['y'];
-        updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name']);
-    }
-    $layerData = $layers['events'];
-    $baseTile = $mapData['baseTile'];
-    $absoluteX = $newX * $baseTile['width'];
-    $absoluteY = $newY * $baseTile['height'];
-    foreach ($layerData['objects'] as $object) {
-
-        if ($absoluteX >= $object['x'] &&
-            $absoluteX < $object['x'] + $object['width'] &&
-            $absoluteY >= $object['y'] &&
-            $absoluteY < $object['y'] + $object['height']
-        ) {
-            event($object['name'], $object['properties']);
-        }
-
-    }
-
-
-    return router('/map/' . $direction);
-}
-
-
-/**
- * @param string $direction
- * @return mixed|null
- */
-function ajaxMoveCharacter($direction)
-{
-    if (!isCharacterSelected()) {
-        redirect('/');
         return null;
     }
-
-    $locationModifiers = [
-        'north' => [
-            'x' => 0,
-            'y' => -1
-        ],
-        'east' => [
-            'x' => 1,
-            'y' => 0
-        ],
-        'south' => [
-            'x' => 0,
-            'y' => +1
-        ],
-        'west' => [
-            'x' => -1,
-            'y' => 0
-        ]
-    ];
-
-
-    $activeCharacter = getSelectedCharacter();
-    $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
-    $viewPort = config('viewport');
-    $tileSize = config('tileSize');
-
-    list($layers, $mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
-    if (!isset($layers['collision'])) {
-        trigger_error('Map does not have a "collision" layer');
-        return;
-    }
-
-    $collisionData = $layers['collision'];
     $locationModifier = $locationModifiers[$direction];
-    $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
-    $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
-    $index = $viewPort['width'] * $y + $x;
-
-    $isBlocked = (bool)$collisionData[$index] && isset($collisionData[$index]['tileSetName']);
-
+    $isBlocked = checkCollision($layers, $viewPort, $locationModifier);
     if ($isBlocked) {
-        header('Content-Type:application/json;charset=utf8');
-        echo json_encode([]);
-        return;
+        if(isAjax()){
+            header('Content-Type:application/json;charset=utf-8');
+            echo json_encode([]);
+            return null;
+        }
+        return router('/map/' . $direction);
     }
     $newX = $activeCharacter['x'] + $locationModifier['x'];
     $newY = $activeCharacter['y'] + $locationModifier['y'];
     updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name']);
+    triggerEvents($layers, $mapData, $newX, $newY);
+    return router('/map/' . $direction);
+}
 
-    unset($layers['collision']);
-
+/**
+ * @param $layers
+ * @param $mapData
+ * @param $newX
+ * @param $newY
+ */
+function triggerEvents($layers, $mapData, $newX, $newY)
+{
     $layerData = $layers['events'];
     $baseTile = $mapData['baseTile'];
     $absoluteX = $newX * $baseTile['width'];
@@ -197,24 +105,25 @@ function ajaxMoveCharacter($direction)
         }
 
     }
-    unset($layers['events']);
+}
 
-
-    $activeCharacter = getSelectedCharacter();
-    list($newLayers, $newMapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
-    $newLayers = addCharacterToMap($newLayers, $viewPort['width'], $viewPort['height'], $activeCharacter);
-
-    unset($newLayers['events']);
-    unset($newLayers['collision']);
-
-    header('Content-Type:application/json;charset=utf8');
-    $response = [
-        'layers' => $newLayers,
-        'character' =>$activeCharacter
-    ];
-    echo json_encode($response);
+/**
+ * @param $layers
+ * @param $viewPort
+ * @param $locationModifier
+ * @return bool
+ */
+function checkCollision($layers, $viewPort, $locationModifier)
+{
+    $collisionData = $layers['collision'];
+    $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
+    $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
+    $index = $viewPort['width'] * $y + $x;
+    return (bool)$collisionData[$index] && isset($collisionData[$index]['tileSetName']);
 
 }
+
+
 
 /**
  * @param int $newX

@@ -16,6 +16,9 @@ function isGet()
     return $_SERVER['REQUEST_METHOD'] === 'GET';
 }
 
+function isAjax(){
+    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'XMLHttpRequest' === $_SERVER['HTTP_X_REQUESTED_WITH'];
+}
 /**
  * @param string $path
  * @return null

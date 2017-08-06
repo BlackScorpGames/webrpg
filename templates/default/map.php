@@ -49,10 +49,10 @@
                                     $dataKey = $viewPort['width'] * $y + $x;
                                     $data = isset($mapData[$dataKey]) ? $mapData[$dataKey] : null;
                                     ?>
-
-                                    <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= ($data && isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= ($data && isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"
-                                         class="tile<?= ($data && isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?> <?= $data && isset($data['coordinates'])?sprintf('Y%dX%d',$data['coordinates']['y'],$data['coordinates']['x']):''?>">
-                                        <?php if ($data && isset($data['partial'])) require_once __DIR__ . '/../partials/' . $data['partial'] . '.php'; ?>
+                                    <?php if(!$data){ continue;}?>
+                                    <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= (isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= (isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"
+                                         class="tile<?= (isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?> <?= isset($data['coordinates'])?sprintf('Y%dX%d',$data['coordinates']['y'],$data['coordinates']['x']):''?>">
+                                        <?php if (isset($data['partial'])) require_once __DIR__ . '/../partials/' . $data['partial'] . '.php'; ?>
 
                                     </div>
                                 <?php endfor; ?>
