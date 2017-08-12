@@ -452,6 +452,7 @@ function getCharactersForArea($left, $right, $top, $bottom)
     $sql = sprintf('SELECT characterId,name, class, gender, map, x, y,viewDirection 
 FROM characters WHERE x BETWEEN %d AND %d AND y BETWEEN %d AND %d AND lastAction 
 AND NOW() < ADDTIME(lastAction,"0 00:05:00")
+ORDER BY lastAction
 ',
         $left, $right, $top, $bottom
     );

@@ -11,7 +11,9 @@ body {
 .modal {
     background: rgba(0, 0, 0, 0.5);
 }
-
+.map .equipment{
+    position: absolute;
+}
 .equipment {
     position: relative;
 }

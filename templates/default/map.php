@@ -58,8 +58,9 @@
                                     <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= (isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= (isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"
                                          class="tile<?= (isset($data['tileSetName'])) ? ' ' . $data['tileSetName'] : '' ?> <?= isset($data['coordinates'])?sprintf('Y%dX%d',$data['coordinates']['y'],$data['coordinates']['x']):''?>">
                                         <?php if (isset($data['partial'])){
-                                            $character = $data['character'];
-                                            require __DIR__ . '/../partials/' . $data['partial'] . '.php';
+                                            foreach($data['characters'] as $character){
+                                                require __DIR__ . '/../partials/' . $data['partial'] . '.php';
+                                            }
                                         }  ?>
 
                                     </div>
