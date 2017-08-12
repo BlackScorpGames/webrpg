@@ -1,0 +1,2 @@
+ALTER TABLE `characters`
+	ADD COLUMN `viewDirection` VARCHAR(32) NOT NULL DEFAULT '' AFTER `y`;

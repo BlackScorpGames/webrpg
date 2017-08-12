@@ -80,7 +80,7 @@ function moveCharacter($direction)
         return router('/map/' . $direction);
     }
 
-    updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name']);
+    updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name'],$direction);
     triggerEvents($layers, $mapData, $newX, $newY);
     return router('/map/' . $direction);
 }
@@ -133,12 +133,13 @@ function checkCollision($collisionLayer, $x,$y, $mapData)
  * @param string $mapName
  * @param string $characterName
  */
-function updateCharacterLocation($newX, $newY, $mapName, $characterName)
+function updateCharacterLocation($newX, $newY, $mapName, $characterName,$viewDirection)
 {
     $db = getDb();
     $mapName = mysqli_real_escape_string($db, $mapName);
     $characterName = mysqli_real_escape_string($db, $characterName);
-    $sql = "UPDATE characters SET map = '" . $mapName . "',x=" . (int)$newX . ", y= " . (int)$newY . " WHERE name = '" . $characterName . "'";
+    $viewDirection = mysqli_real_escape_string($db,$viewDirection);
+    $sql = "UPDATE characters SET map = '" . $mapName . "',x=" . (int)$newX . ", y= " . (int)$newY . " ,viewDirection='".$viewDirection."' WHERE name = '" . $characterName . "'";
 
     $result = mysqli_query($db, $sql);
     if (!$result) {
@@ -428,7 +429,7 @@ function getSelectedCharacter()
  */
 function getCharacterForUser($characterName, $username)
 {
-    $sql = sprintf('SELECT characterId,name, class, gender, map, x, y 
+    $sql = sprintf('SELECT characterId,name, class, gender, map, x, y,viewDirection 
 FROM characters INNER JOIN users ON characters.userId = users.userId 
 WHERE username = "%s" AND name = "%s" LIMIT 1',
         queryEscape($username),
@@ -446,7 +447,23 @@ WHERE username = "%s" AND name = "%s" LIMIT 1',
 
     return $row;
 }
+function getCharactersForArea($left,$right,$top,$bottom){
+    $sql = sprintf('SELECT characterId,name, class, gender, map, x, y,viewDirection 
+FROM characters WHERE x BETWEEN %d AND %d AND y BETWEEN %d AND %d',
+        $left,$right,$top,$bottom
+    );
+    $characters = [];
+    $result = query($sql);
+    if (!$result) {
+        return $characters;
+    }
+    while($row = mysqli_fetch_assoc($result)){
+        $row['gender']  = (int)$row['gender'] === 1 ? 'male' : 'female';
+        $characters[]=$row;
+    }
 
+    return $characters;
+}
 /**
  * @param string $username
  * @return array

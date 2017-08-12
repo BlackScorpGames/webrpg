@@ -37,7 +37,8 @@ config('equipmentSlots', [
 config('initialLocation', [
     'map' => 'city',
     'x' => 10,
-    'y' => 5
+    'y' => 5,
+    'viewDirection'=>'south'
 ]);
 
 config('viewport', [
