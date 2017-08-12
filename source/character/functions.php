@@ -70,9 +70,9 @@ function moveCharacter($direction)
     $newX = $activeCharacter['x'] + $locationModifier['x'];
     $newY = $activeCharacter['y'] + $locationModifier['y'];
 
-    $isBlocked = checkCollision($layers['collision'], $newX, $newY,$mapData);
+    $isBlocked = checkCollision($layers['collision'], $newX, $newY, $mapData);
     if ($isBlocked) {
-        if(isAjax()){
+        if (isAjax()) {
             header('Content-Type:application/json;charset=utf-8');
             echo json_encode([]);
             return null;
@@ -80,7 +80,7 @@ function moveCharacter($direction)
         return router('/map/' . $direction);
     }
 
-    updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name'],$direction);
+    updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name'], $direction);
     triggerEvents($layers, $mapData, $newX, $newY);
     return router('/map/' . $direction);
 }
@@ -117,7 +117,7 @@ function triggerEvents($layers, $mapData, $newX, $newY)
  * @param $mapData
  * @return bool
  */
-function checkCollision($collisionLayer, $x,$y, $mapData)
+function checkCollision($collisionLayer, $x, $y, $mapData)
 {
 
     $index = $mapData['width'] * $y + $x;
@@ -126,20 +126,19 @@ function checkCollision($collisionLayer, $x,$y, $mapData)
 }
 
 
-
 /**
  * @param int $newX
  * @param int $newY
  * @param string $mapName
  * @param string $characterName
  */
-function updateCharacterLocation($newX, $newY, $mapName, $characterName,$viewDirection)
+function updateCharacterLocation($newX, $newY, $mapName, $characterName, $viewDirection)
 {
     $db = getDb();
     $mapName = mysqli_real_escape_string($db, $mapName);
     $characterName = mysqli_real_escape_string($db, $characterName);
-    $viewDirection = mysqli_real_escape_string($db,$viewDirection);
-    $sql = "UPDATE characters SET map = '" . $mapName . "',x=" . (int)$newX . ", y= " . (int)$newY . " ,viewDirection='".$viewDirection."' WHERE name = '" . $characterName . "'";
+    $viewDirection = mysqli_real_escape_string($db, $viewDirection);
+    $sql = "UPDATE characters SET map = '" . $mapName . "',x=" . (int)$newX . ", y= " . (int)$newY . " ,viewDirection='" . $viewDirection . "' WHERE name = '" . $characterName . "'";
 
     $result = mysqli_query($db, $sql);
     if (!$result) {
@@ -447,23 +446,29 @@ WHERE username = "%s" AND name = "%s" LIMIT 1',
 
     return $row;
 }
-function getCharactersForArea($left,$right,$top,$bottom){
+
+function getCharactersForArea($left, $right, $top, $bottom)
+{
     $sql = sprintf('SELECT characterId,name, class, gender, map, x, y,viewDirection 
-FROM characters WHERE x BETWEEN %d AND %d AND y BETWEEN %d AND %d',
-        $left,$right,$top,$bottom
+FROM characters WHERE x BETWEEN %d AND %d AND y BETWEEN %d AND %d AND lastAction 
+AND NOW() < ADDTIME(lastAction,"0 00:05:00")
+',
+        $left, $right, $top, $bottom
     );
+
     $characters = [];
     $result = query($sql);
     if (!$result) {
         return $characters;
     }
-    while($row = mysqli_fetch_assoc($result)){
-        $row['gender']  = (int)$row['gender'] === 1 ? 'male' : 'female';
-        $characters[]=$row;
+    while ($row = mysqli_fetch_assoc($result)) {
+        $row['gender'] = (int)$row['gender'] === 1 ? 'male' : 'female';
+        $characters[] = $row;
     }
 
     return $characters;
 }
+
 /**
  * @param string $username
  * @return array

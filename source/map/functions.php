@@ -21,7 +21,7 @@ function viewMap($direction = 'south')
     activateNavigation('');
 
     $activeCharacter = getSelectedCharacter();
-
+    $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
     $viewPort = config('viewport');
     $tileSize = config('tileSize');
 
@@ -42,7 +42,7 @@ function viewMap($direction = 'south')
         $character['inventory'] = getEquipmentForCharacter($character['name']);
         $layers = addCharacterToMap($layers, $mapData, $character);
     }
-   // $layers = addCharacterToMap($layers, $mapData, $activeCharacter);
+    $layers = addCharacterToMap($layers, $mapData, $activeCharacter);
 
     $data = [
         'map' => $mapData,
