@@ -38,7 +38,7 @@ function viewMap($direction = 'south')
 
     $characters = getCharactersForArea($viewPort['left'], $viewPort['right'], $viewPort['top'], $viewPort['bottom']);
 
-    foreach($characters as $character){
+    foreach ($characters as $character) {
         $character['inventory'] = getEquipmentForCharacter($character['name']);
         $layers = addCharacterToMap($layers, $mapData, $character);
     }

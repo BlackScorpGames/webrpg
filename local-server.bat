@@ -5,5 +5,5 @@ SET PHP=C:\php7\php.exe
 SET PORT=80
 :: %~dp0 is the full path where this batch file is located
 
-start %PHP% -S 0.0.0.0:%PORT% -t %~dp0public
+start %PHP% -S 0.0.0.0:%PORT% -t %~dp0public %~dp0public\index.php
 exit
