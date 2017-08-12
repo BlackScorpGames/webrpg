@@ -41,13 +41,18 @@
                     </div>
                 </div>
                 <div class="mapWrapper"
-                     style="margin-left:-<?= ~~(($tile['width'] * $viewPort['width']) / 2) ?>px;width:<?= $tile['width'] * $viewPort['width'] ?>px;height: <?= $tile['height'] * $viewPort['height'] ?>px ">
-                    <?php foreach ($map as $name => $mapData): ?>
-                        <div class="map <?= $name ?>">
-                            <?php for ($y = 0; $y < $viewPort['height']; $y++): ?>
-                                <?php for ($x = 0; $x < $viewPort['width']; $x++):
-                                    $dataKey = $viewPort['width'] * $y + $x;
+                     style="
+
+                             width:<?= $tile['width'] * $viewPort['width'] ?>px;
+                             height: <?= $tile['height'] * $viewPort['height'] ?>px ">
+                    <?php foreach ($layers as $name => $mapData): ?>
+                        <div class="map <?= $name ?>" style=" top:<?= ($tile['height']*$viewPort['top'])*-1;  ?>px;left:<?= ($tile['width']*$viewPort['left'])*-1;  ?>px;">
+                            <?php for ($y = $viewPort['top']; $y < $viewPort['bottom']; $y++): ?>
+                                <?php for ($x = $viewPort['left']; $x < $viewPort['right']; $x++):
+                                    $dataKey = $map['width'] * $y + $x;
+
                                     $data = isset($mapData[$dataKey]) ? $mapData[$dataKey] : null;
+
                                     ?>
                                     <?php if(!$data){ continue;}?>
                                     <div style="height:<?= $tile['height'] ?>px;width:<?= $tile['width'] ?>px;left:<?= $x * $tile['width'] ?>px;top:<?= $y * $tile['height'] ?>px<?= (isset($data['position'])) ? ';background-position:' . $data['position'] : '' ?><?= (isset($data['size'])) ? ';background-size:' . $data['size'] : '' ?>"

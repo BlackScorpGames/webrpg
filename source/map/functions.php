@@ -29,11 +29,19 @@ function viewMap($direction = 'south')
     list($layers, $mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
     unset($layers['collision']);
     unset($layers['events']);
-    $layers = addCharacterToMap($layers, $viewPort['width'], $viewPort['height']);
+    $halfViewPortWidth =~~($viewPort['width']/2);
+    $halfViewPortHeight = ~~($viewPort['height']/2);
+    $viewPort['left'] = $activeCharacter['x']-$halfViewPortWidth;
+    $viewPort['top'] = $activeCharacter['y']-$halfViewPortHeight;
+    $viewPort['right'] =  $viewPort['left']+$viewPort['width'];
+    $viewPort['bottom'] =  $viewPort['top'] +$viewPort['height'];
+
+    $layers = addCharacterToMap($layers,$mapData, $activeCharacter);
 
     $data = [
+        'map'=>$mapData,
         'location' => $mapData['name'],
-        'map' => $layers,
+        'layers' => $layers,
         'viewPort' => $viewPort,
         'tile' => $tileSize,
         'activeCharacter' => $activeCharacter,
@@ -51,34 +59,33 @@ function viewMap($direction = 'south')
 }
 
 /**
+ * @param array $layers
  * @param array $mapData
- * @param int $width
- * @param int $height
- * @param $activeCharacter
+ * @param array $character
  * @return array
  */
-function addCharacterToMap(array $mapData, $width, $height)
+function addCharacterToMap(array $layers, array $mapData,array $character)
 {
-    if (!isset($mapData['character'])) {
+    if (!isset($layers['character'])) {
         trigger_error('Missing layer "character"');
 
-        return $mapData;
+        return $layers;
     }
+    $y = $character['y'];
+    $x = $character['x'];
+    $index = $mapData['width'] * $y + $x;
 
-    $x = ~~($width/2);
-    $y = ~~($height/2);
 
-    $index = $width * $y + $x;
 
-    $mapData['character'][$index]['partial'] = 'displayCharacter';
-    $mapData['character'][$index]['tileSetName'] = 'character';
-    $mapData['character'][$index]['coordinates'] = [
+    $layers['character'][$index]['partial'] = 'displayCharacter';
+    $layers['character'][$index]['tileSetName'] = 'character';
+    $layers['character'][$index]['coordinates'] = [
         'y' => $y,
         'x' => $x
     ];
 
 
-    return $mapData;
+    return $layers;
 }
 
 /**
@@ -156,6 +163,7 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
     $startY = $centerY - $halfViewportHeight;
     $endX = $startX + $viewPortWidth;
     $endY = $startY + $viewPortHeight;
+
     $width = 0;
     $height = 0;
     foreach ($originalLayers as $layer) {
@@ -191,11 +199,12 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
                 ];
 
 
-                $data[] = $value;
+                $data[$dataKey] = $value;
             }
         }
         $layers[$layer['name']] = $data;
     }
+
     $data = [
         'baseTile' => $tiles[1],
         'width'=>$width,

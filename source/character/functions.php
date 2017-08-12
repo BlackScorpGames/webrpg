@@ -65,8 +65,12 @@ function moveCharacter($direction)
         trigger_error('Map does not have a "collision" layer');
         return null;
     }
+
     $locationModifier = $locationModifiers[$direction];
-    $isBlocked = checkCollision($layers, $viewPort, $locationModifier);
+    $newX = $activeCharacter['x'] + $locationModifier['x'];
+    $newY = $activeCharacter['y'] + $locationModifier['y'];
+
+    $isBlocked = checkCollision($layers['collision'], $newX, $newY,$mapData);
     if ($isBlocked) {
         if(isAjax()){
             header('Content-Type:application/json;charset=utf-8');
@@ -75,8 +79,7 @@ function moveCharacter($direction)
         }
         return router('/map/' . $direction);
     }
-    $newX = $activeCharacter['x'] + $locationModifier['x'];
-    $newY = $activeCharacter['y'] + $locationModifier['y'];
+
     updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name']);
     triggerEvents($layers, $mapData, $newX, $newY);
     return router('/map/' . $direction);
@@ -108,18 +111,17 @@ function triggerEvents($layers, $mapData, $newX, $newY)
 }
 
 /**
- * @param $layers
- * @param $viewPort
- * @param $locationModifier
+ * @param $collisionLayer
+ * @param $x
+ * @param $y
+ * @param $mapData
  * @return bool
  */
-function checkCollision($layers, $viewPort, $locationModifier)
+function checkCollision($collisionLayer, $x,$y, $mapData)
 {
-    $collisionData = $layers['collision'];
-    $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
-    $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
-    $index = $viewPort['width'] * $y + $x;
-    return (bool)$collisionData[$index] && isset($collisionData[$index]['tileSetName']);
+
+    $index = $mapData['width'] * $y + $x;
+    return (bool)$collisionLayer[$index] && isset($collisionLayer[$index]['tileSetName']);
 
 }
 
