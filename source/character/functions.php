@@ -132,7 +132,7 @@ function checkCollision($collisionLayer, $x, $y, $mapData)
  * @param string $mapName
  * @param string $characterName
  */
-function updateCharacterLocation($newX, $newY, $mapName, $characterName, $viewDirection)
+function updateCharacterLocation($newX, $newY, $mapName, $characterName, $viewDirection = 'south')
 {
     $db = getDb();
     $mapName = mysqli_real_escape_string($db, $mapName);
