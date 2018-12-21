@@ -249,9 +249,10 @@ function getBadWords()
  * @param string $path
  * @param closure|string|array $action
  *
+ * @param string $methods
  * @return mixed
  */
-function router($path, $action = null)
+function router($path,$action = null,$methods='GET|POST|PUT|HEAD')
 {
     static $routes = [];
 
@@ -260,10 +261,14 @@ function router($path, $action = null)
     }
 
     if ($action) {
-        return $routes[$path] = $action;
+        foreach(explode('|',$methods) as $method){
+            $routes[strtolower($method)][$path] = $action;
+        }
+        return $routes;
     }
+    $requestedMethod = isset($_SERVER['REQUEST_METHOD'])?strtolower($_SERVER['REQUEST_METHOD']):'get';
 
-    foreach ($routes as $route => $action) {
+    foreach ($routes[$requestedMethod] as $route => $action) {
         $match = [];
 
         if (preg_match("~^$route$~", $path, $match)) {
