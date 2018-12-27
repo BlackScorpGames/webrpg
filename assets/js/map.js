@@ -2,12 +2,7 @@ $(function () {
     var arrows = $('.arrows > div > a');
 
     var map = $('.mapWrapper');
-    var directionCounters = {
-        south: 0,
-        east: 0,
-        west: 0,
-        north: 0
-    };
+
     map.on('redraw', function (event, direction, data) {
 
         for (var layerName in data.layers) {
@@ -85,7 +80,8 @@ $(function () {
             });
         }
 
-    }).on('newRow', function (event, direction, data) {
+    })
+        .on('newRow', function (event, direction, data) {
         var character = data.character;
 
         var characterX = ~~character['x'];
@@ -94,12 +90,15 @@ $(function () {
         var top = characterY - ~~(viewPortHeight / 2);
         var right = characterX + ~~(viewPortWidth / 2);
         var bottom = characterY + ~~(viewPortHeight / 2);
-        directionCounters[direction]++;
+            console.log(left,top,right,bottom,characterX,characterY);
+        return;
+
 
         $('.mapWrapper .map').each(function () {
             if ('north' === direction || 'south' === direction) {
                 var topPosition = (tileHeight) * -1;
                 var layerTop = top;
+
                 if ('south' === direction) {
                     topPosition = (viewPortHeight) * (tileHeight);
                     layerTop = bottom;
@@ -147,7 +146,7 @@ $(function () {
 
         });
 
-        map.trigger('redraw', [direction, data]);
+      //  map.trigger('redraw', [direction, data]);
     }).on('deleteRow', function (event, direction, data) {
         var character = data.character;
 
