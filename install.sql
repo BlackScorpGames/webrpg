@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `map` varchar(64) NOT NULL DEFAULT '',
   `x` int(11) NOT NULL DEFAULT '0',
   `y` int(11) NOT NULL DEFAULT '0',
+  `viewDirection` varchar(32) NOT NULL DEFAULT '',
   `lastAction` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`characterId`),
   UNIQUE KEY `name` (`name`),

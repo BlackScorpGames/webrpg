@@ -51,30 +51,10 @@ function moveCharacter($direction)
 {
     if (!isCharacterSelected()) {
         redirect('/');
-
         return null;
     }
 
-    $locationModifiers = [
-        'north' => [
-            'x' => 0,
-            'y' => -1
-        ],
-        'east' => [
-            'x' => 1,
-            'y' => 0
-        ],
-        'south' => [
-            'x' => 0,
-            'y' => +1
-        ],
-        'west' => [
-            'x' => -1,
-            'y' => 0
-        ]
-    ];
-
-
+    $locationModifiers = config('locationModifiers');
     $activeCharacter = getSelectedCharacter();
     $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
     $viewPort = config('viewport');
@@ -83,105 +63,36 @@ function moveCharacter($direction)
     list($layers, $mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
     if (!isset($layers['collision'])) {
         trigger_error('Map does not have a "collision" layer');
-        return;
+        return null;
     }
-    $collisionData = $layers['collision'];
+
     $locationModifier = $locationModifiers[$direction];
-    $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
-    $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
-    $index = $viewPort['width'] * $y + $x;
+    $newX = $activeCharacter['x'] + $locationModifier['x'];
+    $newY = $activeCharacter['y'] + $locationModifier['y'];
 
-    $isBlocked = (bool)$collisionData[$index] && isset($collisionData[$index]['tileSetName']);
-
-    $newX = (int)$activeCharacter['x'];
-    $newY = (int)$activeCharacter['y'];
-    if (!$isBlocked) {
-        $newX = $activeCharacter['x'] + $locationModifier['x'];
-        $newY = $activeCharacter['y'] + $locationModifier['y'];
-        updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name']);
-    }
-    $layerData = $layers['events'];
-    $baseTile = $mapData['baseTile'];
-    $absoluteX = $newX * $baseTile['width'];
-    $absoluteY = $newY * $baseTile['height'];
-    foreach ($layerData['objects'] as $object) {
-
-        if ($absoluteX >= $object['x'] &&
-            $absoluteX < $object['x'] + $object['width'] &&
-            $absoluteY >= $object['y'] &&
-            $absoluteY < $object['y'] + $object['height']
-        ) {
-            event($object['name'], $object['properties']);
+    $isBlocked = checkCollision($layers['collision'], $newX, $newY, $mapData);
+    if ($isBlocked) {
+        if (isAjax()) {
+            header('Content-Type:application/json;charset=utf-8');
+            echo json_encode([]);
+            return null;
         }
-
+        return router('/map/' . $direction);
     }
 
-
+    updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name'], $direction);
+    triggerEvents($layers, $mapData, $newX, $newY);
     return router('/map/' . $direction);
 }
 
-
 /**
- * @param string $direction
- * @return mixed|null
+ * @param $layers
+ * @param $mapData
+ * @param $newX
+ * @param $newY
  */
-function ajaxMoveCharacter($direction)
+function triggerEvents($layers, $mapData, $newX, $newY)
 {
-    if (!isCharacterSelected()) {
-        redirect('/');
-        return null;
-    }
-
-    $locationModifiers = [
-        'north' => [
-            'x' => 0,
-            'y' => -1
-        ],
-        'east' => [
-            'x' => 1,
-            'y' => 0
-        ],
-        'south' => [
-            'x' => 0,
-            'y' => +1
-        ],
-        'west' => [
-            'x' => -1,
-            'y' => 0
-        ]
-    ];
-
-
-    $activeCharacter = getSelectedCharacter();
-    $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
-    $viewPort = config('viewport');
-    $tileSize = config('tileSize');
-
-    list($layers, $mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
-    if (!isset($layers['collision'])) {
-        trigger_error('Map does not have a "collision" layer');
-        return;
-    }
-
-    $collisionData = $layers['collision'];
-    $locationModifier = $locationModifiers[$direction];
-    $x = ~~($viewPort['width'] / 2) + $locationModifier['x'];
-    $y = ~~($viewPort['height'] / 2) + $locationModifier['y'];
-    $index = $viewPort['width'] * $y + $x;
-
-    $isBlocked = (bool)$collisionData[$index] && isset($collisionData[$index]['tileSetName']);
-
-    if ($isBlocked) {
-        header('Content-Type:application/json;charset=utf8');
-        echo json_encode([]);
-        return;
-    }
-    $newX = $activeCharacter['x'] + $locationModifier['x'];
-    $newY = $activeCharacter['y'] + $locationModifier['y'];
-    updateCharacterLocation($newX, $newY, $activeCharacter['map'], $activeCharacter['name']);
-
-    unset($layers['collision']);
-
     $layerData = $layers['events'];
     $baseTile = $mapData['baseTile'];
     $absoluteX = $newX * $baseTile['width'];
@@ -197,24 +108,23 @@ function ajaxMoveCharacter($direction)
         }
 
     }
-    unset($layers['events']);
+}
 
+/**
+ * @param $collisionLayer
+ * @param $x
+ * @param $y
+ * @param $mapData
+ * @return bool
+ */
+function checkCollision($collisionLayer, $x, $y, $mapData)
+{
 
-    $activeCharacter = getSelectedCharacter();
-    list($newLayers, $newMapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
-    $newLayers = addCharacterToMap($newLayers, $viewPort['width'], $viewPort['height'], $activeCharacter);
-
-    unset($newLayers['events']);
-    unset($newLayers['collision']);
-
-    header('Content-Type:application/json;charset=utf8');
-    $response = [
-        'layers' => $newLayers,
-        'character' =>$activeCharacter
-    ];
-    echo json_encode($response);
+    $index = $mapData['width'] * $y + $x;
+    return (bool)$collisionLayer[$index] && isset($collisionLayer[$index]['tileSetName']);
 
 }
+
 
 /**
  * @param int $newX
@@ -222,12 +132,13 @@ function ajaxMoveCharacter($direction)
  * @param string $mapName
  * @param string $characterName
  */
-function updateCharacterLocation($newX, $newY, $mapName, $characterName)
+function updateCharacterLocation($newX, $newY, $mapName, $characterName, $viewDirection = 'south')
 {
     $db = getDb();
     $mapName = mysqli_real_escape_string($db, $mapName);
     $characterName = mysqli_real_escape_string($db, $characterName);
-    $sql = "UPDATE characters SET map = '" . $mapName . "',x=" . (int)$newX . ", y= " . (int)$newY . " WHERE name = '" . $characterName . "'";
+    $viewDirection = mysqli_real_escape_string($db, $viewDirection);
+    $sql = "UPDATE characters SET map = '" . $mapName . "',x=" . (int)$newX . ", y= " . (int)$newY . " ,viewDirection='" . $viewDirection . "' WHERE name = '" . $characterName . "'";
 
     $result = mysqli_query($db, $sql);
     if (!$result) {
@@ -517,7 +428,7 @@ function getSelectedCharacter()
  */
 function getCharacterForUser($characterName, $username)
 {
-    $sql = sprintf('SELECT characterId,name, class, gender, map, x, y 
+    $sql = sprintf('SELECT characterId,name, class, gender, map, x, y,viewDirection 
 FROM characters INNER JOIN users ON characters.userId = users.userId 
 WHERE username = "%s" AND name = "%s" LIMIT 1',
         queryEscape($username),
@@ -534,6 +445,29 @@ WHERE username = "%s" AND name = "%s" LIMIT 1',
     }
 
     return $row;
+}
+
+function getCharactersForArea($left, $right, $top, $bottom)
+{
+    $sql = sprintf('SELECT characterId,name, class, gender, map, x, y,viewDirection 
+FROM characters WHERE x BETWEEN %d AND %d AND y BETWEEN %d AND %d AND lastAction 
+AND NOW() < ADDTIME(lastAction,"0 00:05:00")
+ORDER BY lastAction
+',
+        $left, $right, $top, $bottom
+    );
+
+    $characters = [];
+    $result = query($sql);
+    if (!$result) {
+        return $characters;
+    }
+    while ($row = mysqli_fetch_assoc($result)) {
+        $row['gender'] = (int)$row['gender'] === 1 ? 'male' : 'female';
+        $characters[] = $row;
+    }
+
+    return $characters;
 }
 
 /**

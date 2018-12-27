@@ -11,7 +11,9 @@ body {
 .modal {
     background: rgba(0, 0, 0, 0.5);
 }
-
+.map .equipment{
+    position: absolute;
+}
 .equipment {
     position: relative;
 }
@@ -158,7 +160,7 @@ body {
 }
 
 .viewport {
-    overflow: none;
+    overflow: hidden;
     position: relative;
     margin: auto;
     padding: 0;
@@ -168,8 +170,17 @@ body {
 
 .mapWrapper {
     position: relative;
-    left: 50%;
 
+
+}
+.tile.character .characterName{
+    background: white;
+    position: absolute;
+    left:-16px;
+    top:-64px;
+    padding: 5px;
+    border:1px solid black;
+    border-radius: 5px;
 }
 
 .viewport .arrows {

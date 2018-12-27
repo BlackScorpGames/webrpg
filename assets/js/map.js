@@ -1,4 +1,5 @@
 $(function () {
+return;
     var arrows = $('.arrows > div > a');
 
     var map = $('.mapWrapper');
@@ -196,29 +197,20 @@ $(function () {
 
     arrows.on('click', function () {
         var direction = $(this).attr('data-direction');
-
-
         $.ajax("ajax/character/move/" + direction, {
-
                 "dataType": "json",
                 "success": function (data) {
                     if (data instanceof Array) {
                         return;
                     }
-                    map.trigger('newRow', [direction, data]);
-
-
+                    body.trigger('characterMoved',[]);
+                    map.trigger('redraw', [direction, data]);
                 }
             }
         );
 
+    }).each(function(){
+        $(this).attr('href', '#' + $(this).attr('data-direction'));
     });
-
-
-    for (var arrowIndex = 0, arrowIndexLength = arrows.length; arrowIndex < arrowIndexLength; arrowIndex++) {
-        var currentArrow = $(arrows[arrowIndex]);
-        currentArrow.attr('href', '#' + currentArrow.attr('data-direction'));
-
-    }
 
 });

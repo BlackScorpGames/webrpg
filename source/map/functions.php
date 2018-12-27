@@ -21,7 +21,7 @@ function viewMap($direction = 'south')
     activateNavigation('');
 
     $activeCharacter = getSelectedCharacter();
-    $activeCharacter['inventory'] = getEquipmentForCharacter($activeCharacter['name']);
+
     $viewPort = config('viewport');
     $tileSize = config('tileSize');
 
@@ -29,49 +29,68 @@ function viewMap($direction = 'south')
     list($layers, $mapData) = loadMap($activeCharacter['map'], $activeCharacter['x'], $activeCharacter['y'], $viewPort['width'], $viewPort['height'], $tileSize['width'], $tileSize['height']);
     unset($layers['collision']);
     unset($layers['events']);
-    $layers = addCharacterToMap($layers, $viewPort['width'], $viewPort['height'], $activeCharacter);
+    $halfViewPortWidth = ~~($viewPort['width'] / 2);
+    $halfViewPortHeight = ~~($viewPort['height'] / 2);
+    $viewPort['left'] = $activeCharacter['x'] - $halfViewPortWidth;
+    $viewPort['top'] = $activeCharacter['y'] - $halfViewPortHeight;
+    $viewPort['right'] = $viewPort['left'] + $viewPort['width'];
+    $viewPort['bottom'] = $viewPort['top'] + $viewPort['height'];
+
+    $characters = getCharactersForArea($viewPort['left'], $viewPort['right'], $viewPort['top'], $viewPort['bottom']);
+
+    foreach ($characters as $character) {
+        $character['inventory'] = getEquipmentForCharacter($character['name']);
+        $layers = addCharacterToMap($layers, $mapData, $character);
+    }
+
 
     $data = [
+        'map' => $mapData,
         'location' => $mapData['name'],
-        'map' => $layers,
+        'layers' => $layers,
         'viewPort' => $viewPort,
         'tile' => $tileSize,
         'activeCharacter' => $activeCharacter,
-        'viewDirection' => $direction,
         'equipmentSlots' => config('equipmentSlots')
     ];
 
-
-    echo render('map', $data);
-
+    if (!isAjax()) {
+        echo render('map', $data);
+        return null;
+    }
+    header('Content-Type:application/json;charset=utf-8');
+    echo json_encode($data);
     return null;
 }
 
 /**
+ * @param array $layers
  * @param array $mapData
- * @param int $width
- * @param int $height
- * @param $activeCharacter
+ * @param array $character
  * @return array
  */
-function addCharacterToMap(array $mapData, $width, $height, $activeCharacter)
+function addCharacterToMap(array $layers, array $mapData, array $character)
 {
-    if (!isset($mapData['character'])) {
+    if (!isset($layers['character'])) {
         trigger_error('Missing layer "character"');
 
-        return $mapData;
+        return $layers;
     }
-    $y = ~~($height / 2);
-    $x = ~~($width / 2);
-    $index = $width * $y + $x;
-    $mapData['character'][$index]['partial'] = 'displayCharacter';
-    $mapData['character'][$index]['tileSetName'] = 'character';
-    $mapData['character'][$index]['coordinates'] = [
+    $y = $character['y'];
+    $x = $character['x'];
+    $index = $mapData['width'] * $y + $x;
+
+
+    $layers['character'][$index]['partial'] = 'displayCharacter';
+    $layers['character'][$index]['tileSetName'] = 'character';
+    $layers['character'][$index]['characters'][] = $character;
+    $layers['character'][$index]['coordinates'] = [
         'y' => $y,
         'x' => $x
     ];
 
-    return $mapData;
+
+    return $layers;
 }
 
 /**
@@ -150,6 +169,8 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
     $endX = $startX + $viewPortWidth;
     $endY = $startY + $viewPortHeight;
 
+    $width = 0;
+    $height = 0;
     foreach ($originalLayers as $layer) {
         if ($layer['name'] !== 'collision' && $layer['visible'] === false) {
             continue;
@@ -160,8 +181,8 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
             continue;
         }
         $data = [];
-        $width = $layer['width'];
-        $height = $layer['height'];
+        $width = (int)$layer['width'];
+        $height = (int)$layer['height'];
         $originalData = $layer['data'];
         for ($y = $startY; $y < $endY; $y++) {
             for ($x = $startX; $x < $endX; $x++) {
@@ -177,20 +198,24 @@ function loadMap($name, $centerX, $centerY, $viewPortWidth, $viewPortHeight, $ti
                     ];
                 }
 
-                    $value['coordinates'] = [
-                        'x' => $x,
-                        'y' => $y
-                    ];
+                $value['coordinates'] = [
+                    'x' => $x,
+                    'y' => $y
+                ];
 
 
-                $data[] = $value;
+                $data[$dataKey] = $value;
             }
         }
         $layers[$layer['name']] = $data;
     }
+
     $data = [
         'baseTile' => $tiles[1],
+        'width' => $width,
+        'height' => $height,
         'name' => isset($mapData['properties']['name']) ? $mapData['properties']['name'] : _('Unnamed')
     ];
+
     return [$layers, $data];
 }

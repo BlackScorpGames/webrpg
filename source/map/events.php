@@ -5,10 +5,11 @@ event('game.newCharacter', [], function ($characterId, $characterName, $class, $
     if (!$initialLocation) {
         return;
     }
-    $sql = sprintf('UPDATE characters SET map = "%s", x = %d, y = %d WHERE characterId = %d',
+    $sql = sprintf('UPDATE characters SET map = "%s", x = %d, y = %d,viewDirection = "%s" WHERE characterId = %d',
         $initialLocation['map'],
         $initialLocation['x'],
         $initialLocation['y'],
+        $initialLocation['viewDirection'],
         $characterId
     );
     query($sql);
