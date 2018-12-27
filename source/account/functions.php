@@ -43,8 +43,7 @@ function redirectIfNotLoggedIn()
 }
 
 /**
- * @param string $username
- * @return int|null
+ *@return int|null
  */
 function getUserIdForUsername($username)
 {
